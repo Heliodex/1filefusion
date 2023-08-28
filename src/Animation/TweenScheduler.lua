@@ -38,7 +38,7 @@ end
 	Updates all Tween objects.
 ]]
 function TweenScheduler.updateAllTweens()
-	local now = os.clock()
+	local now = time()
 	-- FIXME: Typed Luau doesn't understand this loop yet
 	for tween: Tween in pairs(allTweens :: any) do
 		local currentTime = now - tween._currentTweenStartTime

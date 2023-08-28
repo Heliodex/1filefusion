@@ -142,7 +142,7 @@ local function applyInstanceProps(
 		key:apply(value, applyTo, cleanupTasks)
 	end
 
-	applyTo.Destroying:Connect(function()
+	applyTo.Destroying:connect(function()
 		cleanup(cleanupTasks)
 	end)
 end

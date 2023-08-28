@@ -29,7 +29,7 @@ local function OnEvent(eventName: string): PubTypes.SpecialKey
 		elseif typeof(callback) ~= "function" then
 			logError("invalidEventHandler", nil, eventName)
 		else
-			table.insert(cleanupTasks, event:Connect(callback))
+			table.insert(cleanupTasks, event:connect(callback))
 		end
 	end
 

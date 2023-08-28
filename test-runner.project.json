@@ -6,7 +6,7 @@
 	"ReplicatedStorage": {
 	  "$className": "ReplicatedStorage",
 	  "Fusion": {
-		  "$path": "src"
+		  "$path": "darksrc"
 	  },
 	  "FusionBench": {
 		"$path": "benchmark"

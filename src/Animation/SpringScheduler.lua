@@ -16,7 +16,7 @@ local SpringScheduler = {}
 
 local EPSILON = 0.0001
 local activeSprings: Set<Spring> = {}
-local lastUpdateTime = os.clock()
+local lastUpdateTime = time()
 
 function SpringScheduler.add(spring: Spring)
 	-- we don't necessarily want to use the most accurate time - here we snap to
@@ -40,7 +40,7 @@ end
 
 function SpringScheduler.updateAllSprings()
 	local springsToSleep: Set<Spring> = {}
-	lastUpdateTime = os.clock()
+	lastUpdateTime = time()
 
 	for spring in pairs(activeSprings) do
 		local posPos, posVel, velPos, velVel = springCoefficients(

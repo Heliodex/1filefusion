@@ -30,7 +30,7 @@ local function Out(propertyName: string): PubTypes.SpecialKey
 			outState:set((applyTo :: any)[propertyName])
 			table.insert(
 				cleanupTasks,
-				event:Connect(function()
+				event:connect(function()
 					outState:set((applyTo :: any)[propertyName])
 				end)
 			)

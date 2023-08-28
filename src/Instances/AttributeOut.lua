@@ -38,7 +38,7 @@ local function AttributeOut(attributeName: string): PubTypes.SpecialKey
 			stateObject:set((applyTo :: any):GetAttribute(attributeName))
 			table.insert(
 				cleanupTasks,
-				event:Connect(function()
+				event:connect(function()
 					stateObject:set(
 						(applyTo :: any):GetAttribute(attributeName)
 					)

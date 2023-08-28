@@ -33,7 +33,7 @@ local function OnChange(propertyName: string): PubTypes.SpecialKey
 		else
 			table.insert(
 				cleanupTasks,
-				event:Connect(function()
+				event:connect(function()
 					callback((applyTo :: any)[propertyName])
 				end)
 			)

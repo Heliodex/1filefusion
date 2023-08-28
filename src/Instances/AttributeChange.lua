@@ -40,7 +40,7 @@ local function AttributeChange(attributeName: string): PubTypes.SpecialKey
 			callback((applyTo :: any):GetAttribute(attributeName))
 			table.insert(
 				cleanupTasks,
-				event:Connect(function()
+				event:connect(function()
 					callback((applyTo :: any):GetAttribute(attributeName))
 				end)
 			)
