@@ -5,14 +5,13 @@
 	an instance.
 ]]
 
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local logWarn = require(Package.Logging.logWarn)
-local Observer = require(Package.State.Observer)
-local peek = require(Package.State.peek)
-local isState = require(Package.State.isState)
+local PubTypes = require("../PubTypes")
+local logWarn = require("../Logging/logWarn")
+local Observer = require("../State/Observer")
+local peek = require("../State/peek")
+local isState = require("../State/isState")
 
-type Set<T> = {[T]: boolean}
+type Set<T> = { [T]: boolean }
 
 -- Experimental flag: name children based on the key used in the [Children] table
 local EXPERIMENTAL_AUTO_NAMING = false
@@ -22,13 +21,13 @@ Children.type = "SpecialKey"
 Children.kind = "Children"
 Children.stage = "descendants"
 
-function Children:apply(propValue: any, applyTo: Instance, cleanupTasks: {PubTypes.Task})
+function Children:apply(propValue: any, applyTo: Instance, cleanupTasks: { PubTypes.Task })
 	local newParented: Set<Instance> = {}
 	local oldParented: Set<Instance> = {}
 
 	-- save disconnection functions for state object observers
-	local newDisconnects: {[PubTypes.StateObject<any>]: () -> ()} = {}
-	local oldDisconnects: {[PubTypes.StateObject<any>]: () -> ()} = {}
+	local newDisconnects: { [PubTypes.StateObject<any>]: () -> () } = {}
+	local oldDisconnects: { [PubTypes.StateObject<any>]: () -> () } = {}
 
 	local updateQueued = false
 	local queueUpdate: () -> ()
@@ -68,7 +67,6 @@ function Children:apply(propValue: any, applyTo: Instance, cleanupTasks: {PubTyp
 				if EXPERIMENTAL_AUTO_NAMING and autoName ~= nil then
 					child.Name = autoName
 				end
-
 			elseif isState(child) then
 				-- case 2; state object
 
@@ -89,7 +87,6 @@ function Children:apply(propValue: any, applyTo: Instance, cleanupTasks: {PubTyp
 				end
 
 				newDisconnects[child] = disconnect
-
 			elseif childType == "table" then
 				-- case 3; table of objects
 
@@ -105,7 +102,6 @@ function Children:apply(propValue: any, applyTo: Instance, cleanupTasks: {PubTyp
 
 					processChild(subChild, subAutoName)
 				end
-
 			else
 				logWarn("unrecognisedChildType", childType)
 			end

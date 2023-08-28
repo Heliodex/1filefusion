@@ -11,27 +11,25 @@
 	second value to pass data from the processor to the destructor.
 ]]
 
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local Types = require(Package.Types)
+local PubTypes = require("../PubTypes")
+local Types = require("../Types")
 -- Logging
-local parseError = require(Package.Logging.parseError)
-local logErrorNonFatal = require(Package.Logging.logErrorNonFatal)
-local logError = require(Package.Logging.logError)
-local logWarn = require(Package.Logging.logWarn)
+local parseError = require("../Logging/parseError")
+local logErrorNonFatal = require("../Logging/logErrorNonFatal")
+local logError = require("../Logging/logError")
+local logWarn = require("../Logging/logWarn")
 -- Utility
-local cleanup = require(Package.Utility.cleanup)
-local needsDestruction = require(Package.Utility.needsDestruction)
+local cleanup = require("../Utility/cleanup")
+local needsDestruction = require("../Utility/needsDestruction")
 -- State
-local peek = require(Package.State.peek)
-local makeUseCallback = require(Package.State.makeUseCallback)
-local isState = require(Package.State.isState)
+local peek = require("../State/peek")
+local makeUseCallback = require("../State/makeUseCallback")
+local isState = require("../State/isState")
 
 local class = {}
 
 local CLASS_METATABLE = { __index = class }
 local WEAK_KEYS_METATABLE = { __mode = "k" }
-
 
 --[[
 	Called when the original table is changed.
@@ -63,7 +61,6 @@ function class:update(): boolean
 
 	local didChange = false
 
-
 	-- clean out main dependency set
 	for dependency in pairs(self.dependencySet) do
 		dependency.dependentSet[self] = nil
@@ -77,7 +74,6 @@ function class:update(): boolean
 		self._inputTable.dependentSet[self] = true
 		self.dependencySet[self._inputTable] = true
 	end
-
 
 	-- STEP 1: find keys that changed or were not previously present
 	for newInKey, value in pairs(newInputTable) do
@@ -105,7 +101,6 @@ function class:update(): boolean
 				end
 			end
 		end
-
 
 		-- recalculate the output key if necessary
 		if shouldRecalculate then
@@ -160,7 +155,6 @@ function class:update(): boolean
 			end
 		end
 
-
 		-- save dependency values and add to main dependency set
 		for dependency in pairs(keyData.dependencySet) do
 			keyData.dependencyValues[dependency] = peek(dependency)
@@ -169,7 +163,6 @@ function class:update(): boolean
 			dependency.dependentSet[self] = true
 		end
 	end
-
 
 	-- STEP 2: find keys that were removed
 	for outputKey, inputKey in pairs(keyOIMap) do
@@ -214,7 +207,6 @@ local function ForKeys<KI, KO, M>(
 	processor: (KI) -> (KO, M?),
 	destructor: (KO, M?) -> ()?
 ): Types.ForKeys<KI, KO, M>
-
 	local inputIsState = isState(inputTable)
 
 	local self = setmetatable({

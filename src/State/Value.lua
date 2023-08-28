@@ -5,19 +5,18 @@
 	reactive state.
 ]]
 
-local Package = script.Parent.Parent
-local Types = require(Package.Types)
+local Types = require("../Types")
 -- Logging
-local logError = require(Package.Logging.logError)
+local logError = require("../Logging/logError")
 -- State
-local updateAll = require(Package.State.updateAll)
+local updateAll = require("../State/updateAll")
 -- Utility
-local isSimilar = require(Package.Utility.isSimilar)
+local isSimilar = require("../Utility/isSimilar")
 
 local class = {}
 
-local CLASS_METATABLE = {__index = class}
-local WEAK_KEYS_METATABLE = {__mode = "k"}
+local CLASS_METATABLE = { __index = class }
+local WEAK_KEYS_METATABLE = { __mode = "k" }
 
 --[[
 	Updates the value stored in this State object.
@@ -52,7 +51,7 @@ local function Value<T>(initialValue: T): Types.State<T>
 		-- if we held strong references to the dependents, then they wouldn't be
 		-- able to get garbage collected when they fall out of scope
 		dependentSet = setmetatable({}, WEAK_KEYS_METATABLE),
-		_value = initialValue
+		_value = initialValue,
 	}, CLASS_METATABLE)
 
 	return self

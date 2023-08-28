@@ -4,38 +4,38 @@
 	The entry point for the Fusion library.
 ]]
 
-local PubTypes = require(script.PubTypes)
-local restrictRead = require(script.Utility.restrictRead)
-local bindScheduler = require(script.bindScheduler)
+local PubTypes = require("./PubTypes")
+local restrictRead = require("./Utility/restrictRead")
+local bindScheduler = require("./bindScheduler")
 
 local Fusion = restrictRead("Fusion", {
-	version = {major = 0, minor = 3, isRelease = false},
+	version = { major = 0, minor = 3, isRelease = false },
 
-	New = require(script.Instances.New),
-	Hydrate = require(script.Instances.Hydrate),
-	Ref = require(script.Instances.Ref),
-	Out = require(script.Instances.Out),
-	Cleanup = require(script.Instances.Cleanup),
-	Children = require(script.Instances.Children),
-	OnEvent = require(script.Instances.OnEvent),
-	OnChange = require(script.Instances.OnChange),
-	Attribute = require(script.Instances.Attribute),
-	AttributeChange = require(script.Instances.AttributeChange),
-	AttributeOut = require(script.Instances.AttributeOut),
+	New = require("./Instances/New"),
+	Hydrate = require("./Instances/Hydrate"),
+	Ref = require("./Instances/Ref"),
+	Out = require("./Instances/Out"),
+	Cleanup = require("./Instances/Cleanup"),
+	Children = require("./Instances/Children"),
+	OnEvent = require("./Instances/OnEvent"),
+	OnChange = require("./Instances/OnChange"),
+	Attribute = require("./Instances/Attribute"),
+	AttributeChange = require("./Instances/AttributeChange"),
+	AttributeOut = require("./Instances/AttributeOut"),
 
-	Value = require(script.State.Value),
-	Computed = require(script.State.Computed),
-	ForPairs = require(script.State.ForPairs),
-	ForKeys = require(script.State.ForKeys),
-	ForValues = require(script.State.ForValues),
-	Observer = require(script.State.Observer),
+	Value = require("./State/Value"),
+	Computed = require("./State/Computed"),
+	ForPairs = require("./State/ForPairs"),
+	ForKeys = require("./State/ForKeys"),
+	ForValues = require("./State/ForValues"),
+	Observer = require("./State/Observer"),
 
-	Tween = require(script.Animation.Tween),
-	Spring = require(script.Animation.Spring),
+	Tween = require("./Animation/Tween"),
+	Spring = require("./Animation/Spring"),
 
-	cleanup = require(script.Utility.cleanup),
-	doNothing = require(script.Utility.doNothing),
-	peek = require(script.State.peek)
+	cleanup = require("./Utility/cleanup"),
+	doNothing = require("./Utility/doNothing"),
+	peek = require("./State/peek"),
 }) :: Fusion
 
 export type StateObject<T> = PubTypes.StateObject<T>
@@ -68,9 +68,21 @@ type Fusion = {
 
 	Value: <T>(initialValue: T) -> Value<T>,
 	Computed: <T>(callback: (Use) -> T, destructor: (T) -> ()?) -> Computed<T>,
-	ForPairs: <KI, VI, KO, VO, M>(inputTable: CanBeState<{[KI]: VI}>, processor: (Use, KI, VI) -> (KO, VO, M?), destructor: (KO, VO, M?) -> ()?) -> ForPairs<KO, VO>,
-	ForKeys: <KI, KO, M>(inputTable: CanBeState<{[KI]: any}>, processor: (Use, KI) -> (KO, M?), destructor: (KO, M?) -> ()?) -> ForKeys<KO, any>,
-	ForValues: <VI, VO, M>(inputTable: CanBeState<{[any]: VI}>, processor: (Use, VI) -> (VO, M?), destructor: (VO, M?) -> ()?) -> ForValues<any, VO>,
+	ForPairs: <KI, VI, KO, VO, M>(
+		inputTable: CanBeState<{ [KI]: VI }>,
+		processor: (Use, KI, VI) -> (KO, VO, M?),
+		destructor: (KO, VO, M?) -> ()?
+	) -> ForPairs<KO, VO>,
+	ForKeys: <KI, KO, M>(
+		inputTable: CanBeState<{ [KI]: any }>,
+		processor: (Use, KI) -> (KO, M?),
+		destructor: (KO, M?) -> ()?
+	) -> ForKeys<KO, any>,
+	ForValues: <VI, VO, M>(
+		inputTable: CanBeState<{ [any]: VI }>,
+		processor: (Use, VI) -> (VO, M?),
+		destructor: (VO, M?) -> ()?
+	) -> ForValues<any, VO>,
 	Observer: (watchedState: StateObject<any>) -> Observer,
 
 	Tween: <T>(goalState: StateObject<T>, tweenInfo: TweenInfo?) -> Tween<T>,
@@ -78,7 +90,7 @@ type Fusion = {
 
 	cleanup: (...any) -> (),
 	doNothing: (...any) -> (),
-	peek: Use
+	peek: Use,
 }
 
 bindScheduler()

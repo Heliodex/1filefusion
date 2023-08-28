@@ -11,21 +11,20 @@
 	when running the processor to the destructor when the created object is cleaned up.
 ]]
 
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local Types = require(Package.Types)
+local PubTypes = require("../PubTypes")
+local Types = require("../Types")
 -- Logging
-local parseError = require(Package.Logging.parseError)
-local logErrorNonFatal = require(Package.Logging.logErrorNonFatal)
-local logError = require(Package.Logging.logError)
-local logWarn = require(Package.Logging.logWarn)
+local parseError = require("../Logging/parseError")
+local logErrorNonFatal = require("../Logging/logErrorNonFatal")
+local logError = require("../Logging/logError")
+local logWarn = require("../Logging/logWarn")
 -- Utility
-local cleanup = require(Package.Utility.cleanup)
-local needsDestruction = require(Package.Utility.needsDestruction)
+local cleanup = require("../Utility/cleanup")
+local needsDestruction = require("../Utility/needsDestruction")
 -- State
-local peek = require(Package.State.peek)
-local makeUseCallback = require(Package.State.makeUseCallback)
-local isState = require(Package.State.isState)
+local peek = require("../State/peek")
+local makeUseCallback = require("../State/makeUseCallback")
+local isState = require("../State/isState")
 
 local class = {}
 
@@ -59,7 +58,6 @@ function class:update(): boolean
 	local meta = self._meta
 
 	local didChange = false
-
 
 	-- clean out main dependency set
 	for dependency in pairs(self.dependencySet) do
@@ -97,7 +95,6 @@ function class:update(): boolean
 			self._keyData[newInKey] = keyData
 		end
 
-
 		-- check if the pair is new or changed
 		local shouldRecalculate = oldInputTable[newInKey] ~= newInValue
 
@@ -111,19 +108,20 @@ function class:update(): boolean
 			end
 		end
 
-
 		-- recalculate the output pair if necessary
 		if shouldRecalculate then
 			keyData.oldDependencySet, keyData.dependencySet = keyData.dependencySet, keyData.oldDependencySet
 			table.clear(keyData.dependencySet)
 
 			local use = makeUseCallback(keyData.dependencySet)
-			local processOK, newOutKey, newOutValue, newMetaValue = xpcall(
-				self._processor, parseError, use, newInKey, newInValue
-			)
+			local processOK, newOutKey, newOutValue, newMetaValue =
+				xpcall(self._processor, parseError, use, newInKey, newInValue)
 
 			if processOK then
-				if self._destructor == nil and (needsDestruction(newOutKey) or needsDestruction(newOutValue) or needsDestruction(newMetaValue)) then
+				if
+					self._destructor == nil
+					and (needsDestruction(newOutKey) or needsDestruction(newOutValue) or needsDestruction(newMetaValue))
+				then
 					logWarn("destructorNeededForPairs")
 				end
 
@@ -159,7 +157,8 @@ function class:update(): boolean
 				if oldOutValue ~= newOutValue then
 					local oldMetaValue = meta[newOutKey]
 					if oldOutValue ~= nil then
-						local destructOK, err = xpcall(self._destructor or cleanup, parseError, newOutKey, oldOutValue, oldMetaValue)
+						local destructOK, err =
+							xpcall(self._destructor or cleanup, parseError, newOutKey, oldOutValue, oldMetaValue)
 						if not destructOK then
 							logErrorNonFatal("forPairsDestructorError", err)
 						end
@@ -217,7 +216,6 @@ function class:update(): boolean
 			newOutputTable[storedOutKey] = oldOutputTable[storedOutKey]
 		end
 
-
 		-- save dependency values and add to main dependency set
 		for dependency in pairs(keyData.dependencySet) do
 			keyData.dependencyValues[dependency] = peek(dependency)
@@ -234,7 +232,8 @@ function class:update(): boolean
 			-- clean up the old output pair
 			local oldMetaValue = meta[oldOutKey]
 			if oldOutValue ~= nil then
-				local destructOK, err = xpcall(self._destructor or cleanup, parseError, oldOutKey, oldOutValue, oldMetaValue)
+				local destructOK, err =
+					xpcall(self._destructor or cleanup, parseError, oldOutKey, oldOutValue, oldMetaValue)
 				if not destructOK then
 					logErrorNonFatal("forPairsDestructorError", err)
 				end
@@ -276,7 +275,6 @@ local function ForPairs<KI, VI, KO, VO, M>(
 	processor: (KI, VI) -> (KO, VO, M?),
 	destructor: (KO, VO, M?) -> ()?
 ): Types.ForPairs<KI, VI, KO, VO, M>
-
 	local inputIsState = isState(inputTable)
 
 	local self = setmetatable({

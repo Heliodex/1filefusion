@@ -5,10 +5,9 @@
     into state objects
 ]]
 
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local logError = require(Package.Logging.logError)
-local xtypeof = require(Package.Utility.xtypeof)
+local PubTypes = require("../PubTypes")
+local logError = require("../Logging/logError")
+local xtypeof = require("../Utility/xtypeof")
 
 local function AttributeOut(attributeName: string): PubTypes.SpecialKey
 	local attributeOutKey = {}
@@ -16,7 +15,11 @@ local function AttributeOut(attributeName: string): PubTypes.SpecialKey
 	attributeOutKey.kind = "AttributeOut"
 	attributeOutKey.stage = "observer"
 
-	function attributeOutKey:apply(stateObject: PubTypes.StateObject, applyTo: Instance, cleanupTasks: { PubTypes.Task })
+	function attributeOutKey:apply(
+		stateObject: PubTypes.StateObject,
+		applyTo: Instance,
+		cleanupTasks: { PubTypes.Task }
+	)
 		if xtypeof(stateObject) ~= "State" or stateObject.kind ~= "Value" then
 			logError("invalidAttributeOutType")
 		end
@@ -28,9 +31,12 @@ local function AttributeOut(attributeName: string): PubTypes.SpecialKey
 			logError("invalidOutAttributeName", applyTo.ClassName, attributeName)
 		else
 			stateObject:set((applyTo :: any):GetAttribute(attributeName))
-			table.insert(cleanupTasks, event:Connect(function()	
-				stateObject:set((applyTo :: any):GetAttribute(attributeName))
-			end))
+			table.insert(
+				cleanupTasks,
+				event:Connect(function()
+					stateObject:set((applyTo :: any):GetAttribute(attributeName))
+				end)
+			)
 			table.insert(cleanupTasks, function()
 				stateObject:set(nil)
 			end)

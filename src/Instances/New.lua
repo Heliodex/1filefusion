@@ -5,11 +5,10 @@
 	event handlers and other attributes on the instance right away.
 ]]
 
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local defaultProps = require(Package.Instances.defaultProps)
-local applyInstanceProps = require(Package.Instances.applyInstanceProps)
-local logError= require(Package.Logging.logError)
+local PubTypes = require("../PubTypes")
+local defaultProps = require("../Instances/defaultProps")
+local applyInstanceProps = require("../Instances/applyInstanceProps")
+local logError = require("../Logging/logError")
 
 local function New(className: string)
 	return function(props: PubTypes.PropertyTable): Instance

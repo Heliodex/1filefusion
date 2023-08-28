@@ -4,8 +4,7 @@
 	Utility function to log a Fusion-specific warning.
 ]]
 
-local Package = script.Parent.Parent
-local messages = require(Package.Logging.messages)
+local messages = require("../Logging/messages")
 
 local function logWarn(messageID, ...)
 	local formatString: string

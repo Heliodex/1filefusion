@@ -7,14 +7,13 @@
 	FIXME: enabling strict types here causes free types to leak
 ]]
 
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local Types = require(Package.Types)
+local PubTypes = require("../PubTypes")
+local Types = require("../Types")
 
-type Set<T> = {[T]: any}
+type Set<T> = { [T]: any }
 
 local class = {}
-local CLASS_METATABLE = {__index = class}
+local CLASS_METATABLE = { __index = class }
 
 -- Table used to hold Observer objects in memory.
 local strongRefs: Set<Types.Observer> = {}
@@ -75,7 +74,7 @@ local function Observer(watchedState: PubTypes.Value<any>): Types.Observer
 	local self = setmetatable({
 		type = "State",
 		kind = "Observer",
-		dependencySet = {[watchedState] = true},
+		dependencySet = { [watchedState] = true },
 		dependentSet = {},
 		_changeListeners = {},
 		_numChangeListeners = 0,

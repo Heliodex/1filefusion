@@ -5,21 +5,20 @@
 	state object using a spring simulation.
 ]]
 
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local Types = require(Package.Types)
-local logError = require(Package.Logging.logError)
-local logErrorNonFatal = require(Package.Logging.logErrorNonFatal)
-local unpackType = require(Package.Animation.unpackType)
-local SpringScheduler = require(Package.Animation.SpringScheduler)
-local updateAll = require(Package.State.updateAll)
-local xtypeof = require(Package.Utility.xtypeof)
-local peek = require(Package.State.peek)
+local PubTypes = require("../PubTypes")
+local Types = require("../Types")
+local logError = require("../Logging/logError")
+local logErrorNonFatal = require("../Logging/logErrorNonFatal")
+local unpackType = require("../Animation/unpackType")
+local SpringScheduler = require("../Animation/SpringScheduler")
+local updateAll = require("../State/updateAll")
+local xtypeof = require("../Utility/xtypeof")
+local peek = require("../State/peek")
 
 local class = {}
 
-local CLASS_METATABLE = {__index = class}
-local WEAK_KEYS_METATABLE = {__mode = "k"}
+local CLASS_METATABLE = { __index = class }
+local WEAK_KEYS_METATABLE = { __mode = "k" }
 
 --[[
 	Sets the position of the internal springs, meaning the value of this
@@ -140,7 +139,6 @@ function class:update(): boolean
 			-- if the type isn't animatable, snap to the new value
 			self._currentValue = self._goalValue
 			return true
-
 		else
 			-- if it's animatable, let it animate to the goal
 			SpringScheduler.add(self)
@@ -173,7 +171,7 @@ local function Spring<T>(
 		damping = 1
 	end
 
-	local dependencySet = {[goalState] = true}
+	local dependencySet = { [goalState] = true }
 	if xtypeof(speed) == "State" then
 		dependencySet[speed] = true
 	end
@@ -201,7 +199,7 @@ local function Spring<T>(
 
 		_springPositions = nil,
 		_springGoals = nil,
-		_springVelocities = nil
+		_springVelocities = nil,
 	}, CLASS_METATABLE)
 
 	-- add this object to the goal state's dependent set

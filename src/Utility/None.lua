@@ -4,10 +4,9 @@
 	A symbol for representing nil values in contexts where nil is not usable.
 ]]
 
-local Package = script.Parent.Parent
-local Types = require(Package.Types)
+local Types = require("../Types")
 
 return {
 	type = "Symbol",
-	name = "None"
+	name = "None",
 } :: Types.None

@@ -4,13 +4,12 @@
 	Constructs a 'use callback' for the purposes of collecting dependencies.
 ]]
 
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local Types = require(Package.Types)
+local PubTypes = require("../PubTypes")
+local Types = require("../Types")
 -- State
-local isState = require(Package.State.isState)
+local isState = require("../State/isState")
 
-type Set<T> = {[T]: any}
+type Set<T> = { [T]: any }
 
 local function makeUseCallback(dependencySet: Set<PubTypes.Dependency>)
 	local function use<T>(target: PubTypes.CanBeState<T>): T

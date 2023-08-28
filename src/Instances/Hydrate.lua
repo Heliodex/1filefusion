@@ -5,9 +5,8 @@
 	properties, event handlers and other attributes on the instance.
 ]]
 
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local applyInstanceProps = require(Package.Instances.applyInstanceProps)
+local PubTypes = require("../PubTypes")
+local applyInstanceProps = require("../Instances/applyInstanceProps")
 
 local function Hydrate(target: Instance)
 	return function(props: PubTypes.PropertyTable): Instance

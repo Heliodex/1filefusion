@@ -4,18 +4,17 @@
 	Manages batch updating of tween objects.
 ]]
 
-local Package = script.Parent.Parent
-local Types = require(Package.Types)
-local lerpType = require(Package.Animation.lerpType)
-local getTweenRatio = require(Package.Animation.getTweenRatio)
-local updateAll = require(Package.State.updateAll)
+local Types = require("../Types")
+local lerpType = require("../Animation/lerpType")
+local getTweenRatio = require("../Animation/getTweenRatio")
+local updateAll = require("../State/updateAll")
 
 local TweenScheduler = {}
 
-type Set<T> = {[T]: any}
+type Set<T> = { [T]: any }
 type Tween = Types.Tween<any>
 
-local WEAK_KEYS_METATABLE = {__mode = "k"}
+local WEAK_KEYS_METATABLE = { __mode = "k" }
 
 -- all the tweens currently being updated
 local allTweens: Set<Tween> = {}

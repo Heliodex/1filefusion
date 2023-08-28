@@ -5,10 +5,9 @@
 	an instance into an automatically-updated Value object.
 ]]
 
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local logError = require(Package.Logging.logError)
-local xtypeof = require(Package.Utility.xtypeof)
+local PubTypes = require("../PubTypes")
+local logError = require("../Logging/logError")
+local xtypeof = require("../Utility/xtypeof")
 
 local function Out(propertyName: string): PubTypes.SpecialKey
 	local outKey = {}

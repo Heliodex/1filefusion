@@ -5,23 +5,22 @@
 	state.
 ]]
 
-local Package = script.Parent.Parent
-local Types = require(Package.Types)
+local Types = require("../Types")
 -- Logging
-local logError = require(Package.Logging.logError)
-local logErrorNonFatal = require(Package.Logging.logErrorNonFatal)
-local logWarn = require(Package.Logging.logWarn)
-local parseError = require(Package.Logging.parseError)
+local logError = require("../Logging/logError")
+local logErrorNonFatal = require("../Logging/logErrorNonFatal")
+local logWarn = require("../Logging/logWarn")
+local parseError = require("../Logging/parseError")
 -- Utility
-local isSimilar = require(Package.Utility.isSimilar)
-local needsDestruction = require(Package.Utility.needsDestruction)
+local isSimilar = require("../Utility/isSimilar")
+local needsDestruction = require("../Utility/needsDestruction")
 -- State
-local makeUseCallback = require(Package.State.makeUseCallback)
+local makeUseCallback = require("../State/makeUseCallback")
 
 local class = {}
 
-local CLASS_METATABLE = {__index = class}
-local WEAK_KEYS_METATABLE = {__mode = "k"}
+local CLASS_METATABLE = { __index = class }
+local WEAK_KEYS_METATABLE = { __mode = "k" }
 
 --[[
 	Recalculates this Computed's cached value and dependencies.
@@ -105,7 +104,7 @@ local function Computed<T>(processor: () -> T, destructor: ((T) -> ())?): Types.
 		_oldDependencySet = {},
 		_processor = processor,
 		_destructor = destructor,
-		_value = nil
+		_value = nil,
 	}, CLASS_METATABLE)
 
 	self:update()

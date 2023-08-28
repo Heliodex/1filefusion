@@ -5,9 +5,8 @@
 	an instance.
 ]]
 
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local logError = require(Package.Logging.logError)
+local PubTypes = require("../PubTypes")
+local logError = require("../Logging/logError")
 
 local function getProperty_unsafe(instance: Instance, property: string)
 	return (instance :: any)[property]
@@ -19,7 +18,7 @@ local function OnEvent(eventName: string): PubTypes.SpecialKey
 	eventKey.kind = "OnEvent"
 	eventKey.stage = "observer"
 
-	function eventKey:apply(callback: any, applyTo: Instance, cleanupTasks: {PubTypes.Task})
+	function eventKey:apply(callback: any, applyTo: Instance, cleanupTasks: { PubTypes.Task })
 		local ok, event = pcall(getProperty_unsafe, applyTo, eventName)
 		if not ok or typeof(event) ~= "RBXScriptSignal" then
 			logError("cannotConnectEvent", nil, applyTo.ClassName, eventName)

@@ -4,13 +4,12 @@
 	Manages batch updating of spring objects.
 ]]
 
-local Package = script.Parent.Parent
-local Types = require(Package.Types)
-local packType = require(Package.Animation.packType)
-local springCoefficients = require(Package.Animation.springCoefficients)
-local updateAll = require(Package.State.updateAll)
+local Types = require("../Types")
+local packType = require("../Animation/packType")
+local springCoefficients = require("../Animation/springCoefficients")
+local updateAll = require("../State/updateAll")
 
-type Set<T> = {[T]: any}
+type Set<T> = { [T]: any }
 type Spring = Types.Spring<any>
 
 local SpringScheduler = {}
@@ -43,7 +42,8 @@ function SpringScheduler.updateAllSprings()
 	lastUpdateTime = os.clock()
 
 	for spring in pairs(activeSprings) do
-		local posPos, posVel, velPos, velVel = springCoefficients(lastUpdateTime - spring._lastSchedule, spring._currentDamping, spring._currentSpeed)
+		local posPos, posVel, velPos, velVel =
+			springCoefficients(lastUpdateTime - spring._lastSchedule, spring._currentDamping, spring._currentSpeed)
 
 		local positions = spring._springPositions
 		local velocities = spring._springVelocities

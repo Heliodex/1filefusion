@@ -5,19 +5,18 @@
 	state object using a tween.
 ]]
 
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local Types = require(Package.Types)
-local TweenScheduler = require(Package.Animation.TweenScheduler)
-local logError = require(Package.Logging.logError)
-local logErrorNonFatal = require(Package.Logging.logErrorNonFatal)
-local xtypeof = require(Package.Utility.xtypeof)
-local peek = require(Package.State.peek)
+local PubTypes = require("../PubTypes")
+local Types = require("../Types")
+local TweenScheduler = require("../Animation/TweenScheduler")
+local logError = require("../Logging/logError")
+local logErrorNonFatal = require("../Logging/logErrorNonFatal")
+local xtypeof = require("../Utility/xtypeof")
+local peek = require("../State/peek")
 
 local class = {}
 
-local CLASS_METATABLE = {__index = class}
-local WEAK_KEYS_METATABLE = {__mode = "k"}
+local CLASS_METATABLE = { __index = class }
+local WEAK_KEYS_METATABLE = { __mode = "k" }
 
 --[[
 	Called when the goal state changes value; this will initiate a new tween.
@@ -81,7 +80,7 @@ local function Tween<T>(
 		tweenInfo = TweenInfo.new()
 	end
 
-	local dependencySet = {[goalState] = true}
+	local dependencySet = { [goalState] = true }
 	local tweenInfoIsState = xtypeof(tweenInfo) == "State"
 	if tweenInfoIsState then
 		dependencySet[tweenInfo] = true
@@ -113,7 +112,7 @@ local function Tween<T>(
 		_currentTweenInfo = tweenInfo,
 		_currentTweenDuration = 0,
 		_currentTweenStartTime = 0,
-		_currentlyAnimating = false
+		_currentlyAnimating = false,
 	}, CLASS_METATABLE)
 
 	-- add this object to the goal state's dependent set
