@@ -4,4 +4,6 @@
 # To add a new tool, add an entry to this table.
 [tools]
 rojo = "rojo-rbx/rojo@7.2.1"
-# rojo = "rojo-rbx/rojo@6.2.0"
+run-in-roblox = "rojo-rbx/run-in-roblox@0.3.0"
+selene = "Kampfkarren/selene@0.25.0"
+darklua = "seaofvoices/darklua@0.10.2"
