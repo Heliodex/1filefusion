@@ -5,17 +5,17 @@
 	state.
 ]]
 
-local Types = require("../Types")
+local Types = require "../Types"
 -- Logging
-local logError = require("../Logging/logError")
-local logErrorNonFatal = require("../Logging/logErrorNonFatal")
-local logWarn = require("../Logging/logWarn")
-local parseError = require("../Logging/parseError")
+local logError = require "../Logging/logError"
+local logErrorNonFatal = require "../Logging/logErrorNonFatal"
+local logWarn = require "../Logging/logWarn"
+local parseError = require "../Logging/parseError"
 -- Utility
-local isSimilar = require("../Utility/isSimilar")
-local needsDestruction = require("../Utility/needsDestruction")
+local isSimilar = require "../Utility/isSimilar"
+local needsDestruction = require "../Utility/needsDestruction"
 -- State
-local makeUseCallback = require("../State/makeUseCallback")
+local makeUseCallback = require "../State/makeUseCallback"
 
 local class = {}
 
@@ -36,7 +36,8 @@ function class:update(): boolean
 	-- into, but in case there's an error, we want to restore our old set of
 	-- dependencies. by using this table-swapping solution, we can avoid the
 	-- overhead of allocating new tables each update.
-	self._oldDependencySet, self.dependencySet = self.dependencySet, self._oldDependencySet
+	self._oldDependencySet, self.dependencySet =
+		self.dependencySet, self._oldDependencySet
 	table.clear(self.dependencySet)
 
 	local use = makeUseCallback(self.dependencySet)
@@ -44,11 +45,11 @@ function class:update(): boolean
 
 	if ok then
 		if self._destructor == nil and needsDestruction(newValue) then
-			logWarn("destructorNeededComputed")
+			logWarn "destructorNeededComputed"
 		end
 
 		if newMetaValue ~= nil then
-			logWarn("multiReturnComputed")
+			logWarn "multiReturnComputed"
 		end
 
 		local oldValue = self._value
@@ -70,7 +71,8 @@ function class:update(): boolean
 		logErrorNonFatal("computedCallbackError", newValue)
 
 		-- restore old dependencies, because the new dependencies may be corrupt
-		self._oldDependencySet, self.dependencySet = self.dependencySet, self._oldDependencySet
+		self._oldDependencySet, self.dependencySet =
+			self.dependencySet, self._oldDependencySet
 
 		-- restore this object in the dependencies' dependent sets
 		for dependency in pairs(self.dependencySet) do
@@ -89,10 +91,13 @@ function class:_peek(): any
 end
 
 function class:get()
-	logError("stateGetWasRemoved")
+	logError "stateGetWasRemoved"
 end
 
-local function Computed<T>(processor: () -> T, destructor: ((T) -> ())?): Types.Computed<T>
+local function Computed<T>(
+	processor: () -> T,
+	destructor: ((T) -> ())?
+): Types.Computed<T>
 	local dependencySet = {}
 	local self = setmetatable({
 		type = "State",

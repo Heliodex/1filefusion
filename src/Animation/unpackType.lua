@@ -12,8 +12,8 @@
 	type checkable.
 ]]
 
-local PubTypes = require("../PubTypes")
-local Oklab = require("../Colour/Oklab")
+local PubTypes = require "../PubTypes"
+local Oklab = require "../Colour/Oklab"
 
 local function unpackType(value: any, typeString: string): { number }
 	if typeString == "number" then
@@ -37,7 +37,13 @@ local function unpackType(value: any, typeString: string): { number }
 	elseif typeString == "NumberSequenceKeypoint" then
 		return { value.Value, value.Time, value.Envelope }
 	elseif typeString == "PhysicalProperties" then
-		return { value.Density, value.Friction, value.Elasticity, value.FrictionWeight, value.ElasticityWeight }
+		return {
+			value.Density,
+			value.Friction,
+			value.Elasticity,
+			value.FrictionWeight,
+			value.ElasticityWeight,
+		}
 	elseif typeString == "Ray" then
 		return {
 			value.Origin.X,
@@ -60,7 +66,14 @@ local function unpackType(value: any, typeString: string): { number }
 			value.Size.Z,
 		}
 	elseif typeString == "Region3int16" then
-		return { value.Min.X, value.Min.Y, value.Min.Z, value.Max.X, value.Max.Y, value.Max.Z }
+		return {
+			value.Min.X,
+			value.Min.Y,
+			value.Min.Z,
+			value.Max.X,
+			value.Max.Y,
+			value.Max.Z,
+		}
 	elseif typeString == "UDim" then
 		return { value.Scale, value.Offset }
 	elseif typeString == "UDim2" then

@@ -7,7 +7,7 @@
 	unchanged.
 ]]
 
-local PubTypes = require("../PubTypes")
+local PubTypes = require "../PubTypes"
 
 type Set<T> = { [T]: any }
 type Descendant = (PubTypes.Dependent & PubTypes.Dependency) | PubTypes.Dependent
@@ -46,7 +46,12 @@ local function updateAll(root: PubTypes.Dependency)
 		local next = queue[queuePos]
 		local counter = counters[next] - 1
 		counters[next] = counter
-		if counter == 0 and flags[next] and next:update() and (next :: any).dependentSet ~= nil then
+		if
+			counter == 0
+			and flags[next]
+			and next:update()
+			and (next :: any).dependentSet ~= nil
+		then
 			for object in (next :: any).dependentSet do
 				flags[object] = true
 			end

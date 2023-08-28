@@ -4,8 +4,8 @@
 	Utility function to log a Fusion-specific error, without halting execution.
 ]]
 
-local Types = require("../Types")
-local messages = require("../Logging/messages")
+local Types = require "../Types"
+local messages = require "../Logging/messages"
 
 local function logErrorNonFatal(messageID: string, errObj: Types.Error?, ...)
 	local formatString: string
@@ -19,11 +19,19 @@ local function logErrorNonFatal(messageID: string, errObj: Types.Error?, ...)
 
 	local errorString
 	if errObj == nil then
-		errorString = string.format("[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")", ...)
+		errorString = string.format(
+			"[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")",
+			...
+		)
 	else
 		formatString = formatString:gsub("ERROR_MESSAGE", errObj.message)
 		errorString = string.format(
-			"[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")\n---- Stack trace ----\n" .. errObj.trace,
+			"[Fusion] "
+				.. formatString
+				.. "\n(ID: "
+				.. messageID
+				.. ")\n---- Stack trace ----\n"
+				.. errObj.trace,
 			...
 		)
 	end

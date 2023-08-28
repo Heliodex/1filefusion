@@ -4,7 +4,7 @@
 	Utility function to log a Fusion-specific warning.
 ]]
 
-local messages = require("../Logging/messages")
+local messages = require "../Logging/messages"
 
 local function logWarn(messageID, ...)
 	local formatString: string
@@ -16,7 +16,12 @@ local function logWarn(messageID, ...)
 		formatString = messages[messageID]
 	end
 
-	warn(string.format("[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")", ...))
+	warn(
+		string.format(
+			"[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")",
+			...
+		)
+	)
 end
 
 return logWarn

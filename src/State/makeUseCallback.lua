@@ -4,10 +4,10 @@
 	Constructs a 'use callback' for the purposes of collecting dependencies.
 ]]
 
-local PubTypes = require("../PubTypes")
-local Types = require("../Types")
+local PubTypes = require "../PubTypes"
+local Types = require "../Types"
 -- State
-local isState = require("../State/isState")
+local isState = require "../State/isState"
 
 type Set<T> = { [T]: any }
 

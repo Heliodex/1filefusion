@@ -5,14 +5,18 @@
 	when the instance is destroyed.
 ]]
 
-local PubTypes = require("../PubTypes")
+local PubTypes = require "../PubTypes"
 
 local Cleanup = {}
 Cleanup.type = "SpecialKey"
 Cleanup.kind = "Cleanup"
 Cleanup.stage = "observer"
 
-function Cleanup:apply(userTask: any, applyTo: Instance, cleanupTasks: { PubTypes.Task })
+function Cleanup:apply(
+	userTask: any,
+	applyTo: Instance,
+	cleanupTasks: { PubTypes.Task }
+)
 	table.insert(cleanupTasks, userTask)
 end
 

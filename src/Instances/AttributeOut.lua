@@ -5,9 +5,9 @@
     into state objects
 ]]
 
-local PubTypes = require("../PubTypes")
-local logError = require("../Logging/logError")
-local xtypeof = require("../Utility/xtypeof")
+local PubTypes = require "../PubTypes"
+local logError = require "../Logging/logError"
+local xtypeof = require "../Utility/xtypeof"
 
 local function AttributeOut(attributeName: string): PubTypes.SpecialKey
 	local attributeOutKey = {}
@@ -21,20 +21,27 @@ local function AttributeOut(attributeName: string): PubTypes.SpecialKey
 		cleanupTasks: { PubTypes.Task }
 	)
 		if xtypeof(stateObject) ~= "State" or stateObject.kind ~= "Value" then
-			logError("invalidAttributeOutType")
+			logError "invalidAttributeOutType"
 		end
 		if attributeName == nil then
-			logError("attributeNameNil")
+			logError "attributeNameNil"
 		end
-		local ok, event = pcall(applyTo.GetAttributeChangedSignal, applyTo, attributeName)
+		local ok, event =
+			pcall(applyTo.GetAttributeChangedSignal, applyTo, attributeName)
 		if not ok then
-			logError("invalidOutAttributeName", applyTo.ClassName, attributeName)
+			logError(
+				"invalidOutAttributeName",
+				applyTo.ClassName,
+				attributeName
+			)
 		else
 			stateObject:set((applyTo :: any):GetAttribute(attributeName))
 			table.insert(
 				cleanupTasks,
 				event:Connect(function()
-					stateObject:set((applyTo :: any):GetAttribute(attributeName))
+					stateObject:set(
+						(applyTo :: any):GetAttribute(attributeName)
+					)
 				end)
 			)
 			table.insert(cleanupTasks, function()

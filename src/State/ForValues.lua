@@ -10,20 +10,20 @@
 	Additionally, a `meta` table/value can optionally be returned to pass data created
 	when running the processor to the destructor when the created object is cleaned up.
 ]]
-local PubTypes = require("../PubTypes")
-local Types = require("../Types")
+local PubTypes = require "../PubTypes"
+local Types = require "../Types"
 -- Logging
-local parseError = require("../Logging/parseError")
-local logError = require("../Logging/logError")
-local logErrorNonFatal = require("../Logging/logErrorNonFatal")
-local logWarn = require("../Logging/logWarn")
+local parseError = require "../Logging/parseError"
+local logError = require "../Logging/logError"
+local logErrorNonFatal = require "../Logging/logErrorNonFatal"
+local logWarn = require "../Logging/logWarn"
 -- Utility
-local cleanup = require("../Utility/cleanup")
-local needsDestruction = require("../Utility/needsDestruction")
+local cleanup = require "../Utility/cleanup"
+local needsDestruction = require "../Utility/needsDestruction"
 -- State
-local peek = require("../State/peek")
-local makeUseCallback = require("../State/makeUseCallback")
-local isState = require("../State/isState")
+local peek = require "../State/peek"
+local makeUseCallback = require "../State/makeUseCallback"
+local isState = require "../State/isState"
 
 local class = {}
 
@@ -56,7 +56,8 @@ function class:update(): boolean
 	local didChange = false
 
 	-- clean out value cache
-	self._oldValueCache, self._valueCache = self._valueCache, self._oldValueCache
+	self._oldValueCache, self._valueCache =
+		self._valueCache, self._oldValueCache
 	local newValueCache = self._valueCache
 	local oldValueCache = self._oldValueCache
 	table.clear(newValueCache)
@@ -65,7 +66,8 @@ function class:update(): boolean
 	for dependency in pairs(self.dependencySet) do
 		dependency.dependentSet[self] = nil
 	end
-	self._oldDependencySet, self.dependencySet = self.dependencySet, self._oldDependencySet
+	self._oldDependencySet, self.dependencySet =
+		self.dependencySet, self._oldDependencySet
 	table.clear(self.dependencySet)
 
 	-- if the input table is a state object, add it as a dependency
@@ -117,20 +119,33 @@ function class:update(): boolean
 
 		-- recalculate the output value if necessary
 		if shouldRecalculate then
-			valueData.oldDependencySet, valueData.dependencySet = valueData.dependencySet, valueData.oldDependencySet
+			valueData.oldDependencySet, valueData.dependencySet =
+				valueData.dependencySet, valueData.oldDependencySet
 			table.clear(valueData.dependencySet)
 
 			local use = makeUseCallback(valueData.dependencySet)
-			local processOK, newOutValue, newMetaValue = xpcall(self._processor, parseError, use, inValue)
+			local processOK, newOutValue, newMetaValue =
+				xpcall(self._processor, parseError, use, inValue)
 
 			if processOK then
-				if self._destructor == nil and (needsDestruction(newOutValue) or needsDestruction(newMetaValue)) then
-					logWarn("destructorNeededForValues")
+				if
+					self._destructor == nil
+					and (
+						needsDestruction(newOutValue)
+						or needsDestruction(newMetaValue)
+					)
+				then
+					logWarn "destructorNeededForValues"
 				end
 
 				-- pass the old value to the destructor if it exists
 				if value ~= nil then
-					local destructOK, err = xpcall(self._destructor or cleanup, parseError, value, meta)
+					local destructOK, err = xpcall(
+						self._destructor or cleanup,
+						parseError,
+						value,
+						meta
+					)
 					if not destructOK then
 						logErrorNonFatal("forValuesDestructorError", err)
 					end
@@ -179,7 +194,12 @@ function class:update(): boolean
 			local oldValue = valueInfo.value
 			local oldMetaValue = valueInfo.meta
 
-			local destructOK, err = xpcall(self._destructor or cleanup, parseError, oldValue, oldMetaValue)
+			local destructOK, err = xpcall(
+				self._destructor or cleanup,
+				parseError,
+				oldValue,
+				oldMetaValue
+			)
 			if not destructOK then
 				logErrorNonFatal("forValuesDestructorError", err)
 			end
@@ -203,7 +223,7 @@ function class:_peek(): any
 end
 
 function class:get()
-	logError("stateGetWasRemoved")
+	logError "stateGetWasRemoved"
 end
 
 local function ForValues<VI, VO, M>(

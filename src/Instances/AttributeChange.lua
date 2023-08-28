@@ -5,9 +5,9 @@
     an attribute change on an instance.
 ]]
 
-local PubTypes = require("../PubTypes")
-local logError = require("../Logging/logError")
-local xtypeof = require("../Utility/xtypeof")
+local PubTypes = require "../PubTypes"
+local logError = require "../Logging/logError"
+local xtypeof = require "../Utility/xtypeof"
 
 local function AttributeChange(attributeName: string): PubTypes.SpecialKey
 	local attributeKey = {}
@@ -16,16 +16,26 @@ local function AttributeChange(attributeName: string): PubTypes.SpecialKey
 	attributeKey.stage = "observer"
 
 	if attributeName == nil then
-		logError("attributeNameNil")
+		logError "attributeNameNil"
 	end
 
-	function attributeKey:apply(callback: any, applyTo: Instance, cleanupTasks: { PubTypes.Task })
+	function attributeKey:apply(
+		callback: any,
+		applyTo: Instance,
+		cleanupTasks: { PubTypes.Task }
+	)
 		if typeof(callback) ~= "function" then
 			logError("invalidAttributeChangeHandler", nil, attributeName)
 		end
-		local ok, event = pcall(applyTo.GetAttributeChangedSignal, applyTo, attributeName)
+		local ok, event =
+			pcall(applyTo.GetAttributeChangedSignal, applyTo, attributeName)
 		if not ok then
-			logError("cannotConnectAttributeChange", nil, applyTo.ClassName, attributeName)
+			logError(
+				"cannotConnectAttributeChange",
+				nil,
+				applyTo.ClassName,
+				attributeName
+			)
 		else
 			callback((applyTo :: any):GetAttribute(attributeName))
 			table.insert(

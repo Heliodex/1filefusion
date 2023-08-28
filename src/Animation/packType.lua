@@ -9,19 +9,31 @@
 	type checkable.
 ]]
 
-local PubTypes = require("../PubTypes")
-local Oklab = require("../Colour/Oklab")
+local PubTypes = require "../PubTypes"
+local Oklab = require "../Colour/Oklab"
 
-local function packType(numbers: { number }, typeString: string): PubTypes.Animatable?
+local function packType(
+	numbers: { number },
+	typeString: string
+): PubTypes.Animatable?
 	if typeString == "number" then
 		return numbers[1]
 	elseif typeString == "CFrame" then
 		return CFrame.new(numbers[1], numbers[2], numbers[3])
-			* CFrame.fromAxisAngle(Vector3.new(numbers[4], numbers[5], numbers[6]).Unit, numbers[7])
+			* CFrame.fromAxisAngle(
+				Vector3.new(numbers[4], numbers[5], numbers[6]).Unit,
+				numbers[7]
+			)
 	elseif typeString == "Color3" then
-		return Oklab.from(Vector3.new(numbers[1], numbers[2], numbers[3]), false)
+		return Oklab.from(
+			Vector3.new(numbers[1], numbers[2], numbers[3]),
+			false
+		)
 	elseif typeString == "ColorSequenceKeypoint" then
-		return ColorSequenceKeypoint.new(numbers[4], Oklab.from(Vector3.new(numbers[1], numbers[2], numbers[3]), false))
+		return ColorSequenceKeypoint.new(
+			numbers[4],
+			Oklab.from(Vector3.new(numbers[1], numbers[2], numbers[3]), false)
+		)
 	elseif typeString == "DateTime" then
 		return DateTime.fromUnixTimestampMillis(numbers[1])
 	elseif typeString == "NumberRange" then
@@ -29,15 +41,25 @@ local function packType(numbers: { number }, typeString: string): PubTypes.Anima
 	elseif typeString == "NumberSequenceKeypoint" then
 		return NumberSequenceKeypoint.new(numbers[2], numbers[1], numbers[3])
 	elseif typeString == "PhysicalProperties" then
-		return PhysicalProperties.new(numbers[1], numbers[2], numbers[3], numbers[4], numbers[5])
+		return PhysicalProperties.new(
+			numbers[1],
+			numbers[2],
+			numbers[3],
+			numbers[4],
+			numbers[5]
+		)
 	elseif typeString == "Ray" then
-		return Ray.new(Vector3.new(numbers[1], numbers[2], numbers[3]), Vector3.new(numbers[4], numbers[5], numbers[6]))
+		return Ray.new(
+			Vector3.new(numbers[1], numbers[2], numbers[3]),
+			Vector3.new(numbers[4], numbers[5], numbers[6])
+		)
 	elseif typeString == "Rect" then
 		return Rect.new(numbers[1], numbers[2], numbers[3], numbers[4])
 	elseif typeString == "Region3" then
 		-- FUTURE: support rotated Region3s if/when they become constructable
 		local position = Vector3.new(numbers[1], numbers[2], numbers[3])
-		local halfSize = Vector3.new(numbers[4] / 2, numbers[5] / 2, numbers[6] / 2)
+		local halfSize =
+			Vector3.new(numbers[4] / 2, numbers[5] / 2, numbers[6] / 2)
 		return Region3.new(position - halfSize, position + halfSize)
 	elseif typeString == "Region3int16" then
 		return Region3int16.new(

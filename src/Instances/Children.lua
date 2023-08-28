@@ -5,11 +5,11 @@
 	an instance.
 ]]
 
-local PubTypes = require("../PubTypes")
-local logWarn = require("../Logging/logWarn")
-local Observer = require("../State/Observer")
-local peek = require("../State/peek")
-local isState = require("../State/isState")
+local PubTypes = require "../PubTypes"
+local logWarn = require "../Logging/logWarn"
+local Observer = require "../State/Observer"
+local peek = require "../State/peek"
+local isState = require "../State/isState"
 
 type Set<T> = { [T]: boolean }
 
@@ -21,7 +21,11 @@ Children.type = "SpecialKey"
 Children.kind = "Children"
 Children.stage = "descendants"
 
-function Children:apply(propValue: any, applyTo: Instance, cleanupTasks: { PubTypes.Task })
+function Children:apply(
+	propValue: any,
+	applyTo: Instance,
+	cleanupTasks: { PubTypes.Task }
+)
 	local newParented: Set<Instance> = {}
 	local oldParented: Set<Instance> = {}
 

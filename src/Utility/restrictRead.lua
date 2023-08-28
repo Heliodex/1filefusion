@@ -4,7 +4,7 @@
 	Restricts the reading of missing members for a table.
 ]]
 
-local logError = require("../Logging/logError")
+local logError = require "../Logging/logError"
 
 type table = { [any]: any }
 

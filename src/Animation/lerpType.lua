@@ -9,8 +9,8 @@
 	from the Luau typechecker - ideally these wouldn't be required
 ]]
 
-local PubTypes = require("../PubTypes")
-local Oklab = require("../Colour/Oklab")
+local PubTypes = require "../PubTypes"
+local Oklab = require "../Colour/Oklab"
 
 local function lerpType(from: any, to: any, ratio: number): any
 	local typeString = typeof(from)
@@ -29,7 +29,8 @@ local function lerpType(from: any, to: any, ratio: number): any
 			local toLab = Oklab.to(to)
 			return Oklab.from(fromLab:Lerp(toLab, ratio), false)
 		elseif typeString == "ColorSequenceKeypoint" then
-			local to, from = to :: ColorSequenceKeypoint, from :: ColorSequenceKeypoint
+			local to, from =
+				to :: ColorSequenceKeypoint, from :: ColorSequenceKeypoint
 			local fromLab = Oklab.to(from.Value)
 			local toLab = Oklab.to(to.Value)
 			return ColorSequenceKeypoint.new(
@@ -39,37 +40,52 @@ local function lerpType(from: any, to: any, ratio: number): any
 		elseif typeString == "DateTime" then
 			local to, from = to :: DateTime, from :: DateTime
 			return DateTime.fromUnixTimestampMillis(
-				(to.UnixTimestampMillis - from.UnixTimestampMillis) * ratio + from.UnixTimestampMillis
+				(to.UnixTimestampMillis - from.UnixTimestampMillis) * ratio
+					+ from.UnixTimestampMillis
 			)
 		elseif typeString == "NumberRange" then
 			local to, from = to :: NumberRange, from :: NumberRange
-			return NumberRange.new((to.Min - from.Min) * ratio + from.Min, (to.Max - from.Max) * ratio + from.Max)
+			return NumberRange.new(
+				(to.Min - from.Min) * ratio + from.Min,
+				(to.Max - from.Max) * ratio + from.Max
+			)
 		elseif typeString == "NumberSequenceKeypoint" then
-			local to, from = to :: NumberSequenceKeypoint, from :: NumberSequenceKeypoint
+			local to, from =
+				to :: NumberSequenceKeypoint, from :: NumberSequenceKeypoint
 			return NumberSequenceKeypoint.new(
 				(to.Time - from.Time) * ratio + from.Time,
 				(to.Value - from.Value) * ratio + from.Value,
 				(to.Envelope - from.Envelope) * ratio + from.Envelope
 			)
 		elseif typeString == "PhysicalProperties" then
-			local to, from = to :: PhysicalProperties, from :: PhysicalProperties
+			local to, from =
+				to :: PhysicalProperties, from :: PhysicalProperties
 			return PhysicalProperties.new(
 				(to.Density - from.Density) * ratio + from.Density,
 				(to.Friction - from.Friction) * ratio + from.Friction,
 				(to.Elasticity - from.Elasticity) * ratio + from.Elasticity,
-				(to.FrictionWeight - from.FrictionWeight) * ratio + from.FrictionWeight,
-				(to.ElasticityWeight - from.ElasticityWeight) * ratio + from.ElasticityWeight
+				(to.FrictionWeight - from.FrictionWeight) * ratio
+					+ from.FrictionWeight,
+				(to.ElasticityWeight - from.ElasticityWeight) * ratio
+					+ from.ElasticityWeight
 			)
 		elseif typeString == "Ray" then
 			local to, from = to :: Ray, from :: Ray
-			return Ray.new(from.Origin:Lerp(to.Origin, ratio), from.Direction:Lerp(to.Direction, ratio))
+			return Ray.new(
+				from.Origin:Lerp(to.Origin, ratio),
+				from.Direction:Lerp(to.Direction, ratio)
+			)
 		elseif typeString == "Rect" then
 			local to, from = to :: Rect, from :: Rect
-			return Rect.new(from.Min:Lerp(to.Min, ratio), from.Max:Lerp(to.Max, ratio))
+			return Rect.new(
+				from.Min:Lerp(to.Min, ratio),
+				from.Max:Lerp(to.Max, ratio)
+			)
 		elseif typeString == "Region3" then
 			local to, from = to :: Region3, from :: Region3
 			-- FUTURE: support rotated Region3s if/when they become constructable
-			local position = from.CFrame.Position:Lerp(to.CFrame.Position, ratio)
+			local position =
+				from.CFrame.Position:Lerp(to.CFrame.Position, ratio)
 			local halfSize = from.Size:Lerp(to.Size, ratio) / 2
 			return Region3.new(position - halfSize, position + halfSize)
 		elseif typeString == "Region3int16" then
@@ -100,7 +116,10 @@ local function lerpType(from: any, to: any, ratio: number): any
 			return from:Lerp(to, ratio)
 		elseif typeString == "Vector2int16" then
 			local to, from = to :: Vector2int16, from :: Vector2int16
-			return Vector2int16.new((to.X - from.X) * ratio + from.X, (to.Y - from.Y) * ratio + from.Y)
+			return Vector2int16.new(
+				(to.X - from.X) * ratio + from.X,
+				(to.Y - from.Y) * ratio + from.Y
+			)
 		elseif typeString == "Vector3" then
 			local to, from = to :: Vector3, from :: Vector3
 			return from:Lerp(to, ratio)

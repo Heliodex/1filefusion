@@ -1,7 +1,7 @@
-local RunService = game:GetService("RunService")
+local RunService = game:GetService "RunService"
 
-local TweenScheduler = require("./Animation/TweenScheduler")
-local SpringScheduler = require("./Animation/SpringScheduler")
+local TweenScheduler = require "./Animation/TweenScheduler"
+local SpringScheduler = require "./Animation/SpringScheduler"
 
 local function bindScheduler()
 	if RunService:IsClient() then

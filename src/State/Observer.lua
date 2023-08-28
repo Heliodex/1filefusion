@@ -7,8 +7,8 @@
 	FIXME: enabling strict types here causes free types to leak
 ]]
 
-local PubTypes = require("../PubTypes")
-local Types = require("../Types")
+local PubTypes = require "../PubTypes"
+local Types = require "../Types"
 
 type Set<T> = { [T]: any }
 

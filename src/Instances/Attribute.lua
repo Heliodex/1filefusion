@@ -5,17 +5,22 @@
     attributes to instances
 ]]
 
-local PubTypes = require("../PubTypes")
-local logError = require("../Logging/logError")
-local xtypeof = require("../Utility/xtypeof")
-local Observer = require("../State/Observer")
-local peek = require("../State/peek")
+local PubTypes = require "../PubTypes"
+local logError = require "../Logging/logError"
+local xtypeof = require "../Utility/xtypeof"
+local Observer = require "../State/Observer"
+local peek = require "../State/peek"
 
 local function setAttribute(instance: Instance, attribute: string, value: any)
 	instance:SetAttribute(attribute, value)
 end
 
-local function bindAttribute(instance: Instance, attribute: string, value: any, cleanupTasks: { PubTypes.Task })
+local function bindAttribute(
+	instance: Instance,
+	attribute: string,
+	value: any,
+	cleanupTasks: { PubTypes.Task }
+)
 	if xtypeof(value) == "State" then
 		local didDefer = false
 		local function update()
@@ -41,10 +46,14 @@ local function Attribute(attributeName: string): PubTypes.SpecialKey
 	AttributeKey.stage = "self"
 
 	if attributeName == nil then
-		logError("attributeNameNil")
+		logError "attributeNameNil"
 	end
 
-	function AttributeKey:apply(attributeValue: any, applyTo: Instance, cleanupTasks: { PubTypes.Task })
+	function AttributeKey:apply(
+		attributeValue: any,
+		applyTo: Instance,
+		cleanupTasks: { PubTypes.Task }
+	)
 		bindAttribute(applyTo, attributeName, attributeValue, cleanupTasks)
 	end
 	return AttributeKey

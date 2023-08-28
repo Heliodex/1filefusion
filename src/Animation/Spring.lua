@@ -5,15 +5,15 @@
 	state object using a spring simulation.
 ]]
 
-local PubTypes = require("../PubTypes")
-local Types = require("../Types")
-local logError = require("../Logging/logError")
-local logErrorNonFatal = require("../Logging/logErrorNonFatal")
-local unpackType = require("../Animation/unpackType")
-local SpringScheduler = require("../Animation/SpringScheduler")
-local updateAll = require("../State/updateAll")
-local xtypeof = require("../Utility/xtypeof")
-local peek = require("../State/peek")
+local PubTypes = require "../PubTypes"
+local Types = require "../Types"
+local logError = require "../Logging/logError"
+local logErrorNonFatal = require "../Logging/logErrorNonFatal"
+local unpackType = require "../Animation/unpackType"
+local SpringScheduler = require "../Animation/SpringScheduler"
+local updateAll = require "../State/updateAll"
+local xtypeof = require "../Utility/xtypeof"
+local peek = require "../State/peek"
 
 local class = {}
 
@@ -155,7 +155,7 @@ function class:_peek(): any
 end
 
 function class:get()
-	logError("stateGetWasRemoved")
+	logError "stateGetWasRemoved"
 end
 
 local function Spring<T>(

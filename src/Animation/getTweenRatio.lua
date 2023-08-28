@@ -5,7 +5,7 @@
 	tween between two values over time.
 ]]
 
-local TweenService = game:GetService("TweenService")
+local TweenService = game:GetService "TweenService"
 
 local function getTweenRatio(tweenInfo: TweenInfo, currentTime: number): number
 	local delay = tweenInfo.DelayTime
@@ -20,7 +20,10 @@ local function getTweenRatio(tweenInfo: TweenInfo, currentTime: number): number
 		cycleDuration += duration
 	end
 
-	if currentTime >= cycleDuration * numCycles and tweenInfo.RepeatCount > -1 then
+	if
+		currentTime >= cycleDuration * numCycles
+		and tweenInfo.RepeatCount > -1
+	then
 		return 1
 	end
 

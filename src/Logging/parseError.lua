@@ -5,7 +5,7 @@
 	errors, such as clean messages and stack traces.
 ]]
 
-local Types = require("../Types")
+local Types = require "../Types"
 
 local function parseError(err: string): Types.Error
 	return {

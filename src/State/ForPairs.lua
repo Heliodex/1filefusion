@@ -11,20 +11,20 @@
 	when running the processor to the destructor when the created object is cleaned up.
 ]]
 
-local PubTypes = require("../PubTypes")
-local Types = require("../Types")
+local PubTypes = require "../PubTypes"
+local Types = require "../Types"
 -- Logging
-local parseError = require("../Logging/parseError")
-local logErrorNonFatal = require("../Logging/logErrorNonFatal")
-local logError = require("../Logging/logError")
-local logWarn = require("../Logging/logWarn")
+local parseError = require "../Logging/parseError"
+local logErrorNonFatal = require "../Logging/logErrorNonFatal"
+local logError = require "../Logging/logError"
+local logWarn = require "../Logging/logWarn"
 -- Utility
-local cleanup = require("../Utility/cleanup")
-local needsDestruction = require("../Utility/needsDestruction")
+local cleanup = require "../Utility/cleanup"
+local needsDestruction = require "../Utility/needsDestruction"
 -- State
-local peek = require("../State/peek")
-local makeUseCallback = require("../State/makeUseCallback")
-local isState = require("../State/isState")
+local peek = require "../State/peek"
+local makeUseCallback = require "../State/makeUseCallback"
+local isState = require "../State/isState"
 
 local class = {}
 
@@ -64,7 +64,8 @@ function class:update(): boolean
 		dependency.dependentSet[self] = nil
 	end
 
-	self._oldDependencySet, self.dependencySet = self.dependencySet, self._oldDependencySet
+	self._oldDependencySet, self.dependencySet =
+		self.dependencySet, self._oldDependencySet
 	table.clear(self.dependencySet)
 
 	-- if the input table is a state object, add it as a dependency
@@ -74,7 +75,8 @@ function class:update(): boolean
 	end
 
 	-- clean out output table
-	self._oldOutputTable, self._outputTable = self._outputTable, self._oldOutputTable
+	self._oldOutputTable, self._outputTable =
+		self._outputTable, self._oldOutputTable
 
 	local oldOutputTable = self._oldOutputTable
 	local newOutputTable = self._outputTable
@@ -110,7 +112,8 @@ function class:update(): boolean
 
 		-- recalculate the output pair if necessary
 		if shouldRecalculate then
-			keyData.oldDependencySet, keyData.dependencySet = keyData.dependencySet, keyData.oldDependencySet
+			keyData.oldDependencySet, keyData.dependencySet =
+				keyData.dependencySet, keyData.oldDependencySet
 			table.clear(keyData.dependencySet)
 
 			local use = makeUseCallback(keyData.dependencySet)
@@ -120,9 +123,13 @@ function class:update(): boolean
 			if processOK then
 				if
 					self._destructor == nil
-					and (needsDestruction(newOutKey) or needsDestruction(newOutValue) or needsDestruction(newMetaValue))
+					and (
+						needsDestruction(newOutKey)
+						or needsDestruction(newOutValue)
+						or needsDestruction(newMetaValue)
+					)
 				then
-					logWarn("destructorNeededForPairs")
+					logWarn "destructorNeededForPairs"
 				end
 
 				-- if this key was already written to on this run-through, throw a fatal error.
@@ -157,8 +164,13 @@ function class:update(): boolean
 				if oldOutValue ~= newOutValue then
 					local oldMetaValue = meta[newOutKey]
 					if oldOutValue ~= nil then
-						local destructOK, err =
-							xpcall(self._destructor or cleanup, parseError, newOutKey, oldOutValue, oldMetaValue)
+						local destructOK, err = xpcall(
+							self._destructor or cleanup,
+							parseError,
+							newOutKey,
+							oldOutValue,
+							oldMetaValue
+						)
 						if not destructOK then
 							logErrorNonFatal("forPairsDestructorError", err)
 						end
@@ -177,7 +189,8 @@ function class:update(): boolean
 				didChange = true
 			else
 				-- restore old dependencies, because the new dependencies may be corrupt
-				keyData.oldDependencySet, keyData.dependencySet = keyData.dependencySet, keyData.oldDependencySet
+				keyData.oldDependencySet, keyData.dependencySet =
+					keyData.dependencySet, keyData.oldDependencySet
 
 				logErrorNonFatal("forPairsProcessorError", newOutKey)
 			end
@@ -232,8 +245,13 @@ function class:update(): boolean
 			-- clean up the old output pair
 			local oldMetaValue = meta[oldOutKey]
 			if oldOutValue ~= nil then
-				local destructOK, err =
-					xpcall(self._destructor or cleanup, parseError, oldOutKey, oldOutValue, oldMetaValue)
+				local destructOK, err = xpcall(
+					self._destructor or cleanup,
+					parseError,
+					oldOutKey,
+					oldOutValue,
+					oldMetaValue
+				)
 				if not destructOK then
 					logErrorNonFatal("forPairsDestructorError", err)
 				end
@@ -267,7 +285,7 @@ function class:_peek(): any
 end
 
 function class:get()
-	logError("stateGetWasRemoved")
+	logError "stateGetWasRemoved"
 end
 
 local function ForPairs<KI, VI, KO, VO, M>(

@@ -5,13 +5,13 @@
 	state object using a tween.
 ]]
 
-local PubTypes = require("../PubTypes")
-local Types = require("../Types")
-local TweenScheduler = require("../Animation/TweenScheduler")
-local logError = require("../Logging/logError")
-local logErrorNonFatal = require("../Logging/logErrorNonFatal")
-local xtypeof = require("../Utility/xtypeof")
-local peek = require("../State/peek")
+local PubTypes = require "../PubTypes"
+local Types = require "../Types"
+local TweenScheduler = require "../Animation/TweenScheduler"
+local logError = require "../Logging/logError"
+local logErrorNonFatal = require "../Logging/logErrorNonFatal"
+local xtypeof = require "../Utility/xtypeof"
+local peek = require "../State/peek"
 
 local class = {}
 
@@ -66,7 +66,7 @@ function class:_peek(): any
 end
 
 function class:get()
-	logError("stateGetWasRemoved")
+	logError "stateGetWasRemoved"
 end
 
 local function Tween<T>(

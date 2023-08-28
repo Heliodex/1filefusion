@@ -5,13 +5,13 @@
 	reactive state.
 ]]
 
-local Types = require("../Types")
+local Types = require "../Types"
 -- Logging
-local logError = require("../Logging/logError")
+local logError = require "../Logging/logError"
 -- State
-local updateAll = require("../State/updateAll")
+local updateAll = require "../State/updateAll"
 -- Utility
-local isSimilar = require("../Utility/isSimilar")
+local isSimilar = require "../Utility/isSimilar"
 
 local class = {}
 
@@ -41,7 +41,7 @@ function class:_peek(): any
 end
 
 function class:get()
-	logError("stateGetWasRemoved")
+	logError "stateGetWasRemoved"
 end
 
 local function Value<T>(initialValue: T): Types.State<T>

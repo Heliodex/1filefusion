@@ -8,7 +8,7 @@
 	for breaking changes.
 ]]
 
-local PubTypes = require("./PubTypes")
+local PubTypes = require "./PubTypes"
 
 type Set<T> = { [T]: any }
 

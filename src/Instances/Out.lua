@@ -5,9 +5,9 @@
 	an instance into an automatically-updated Value object.
 ]]
 
-local PubTypes = require("../PubTypes")
-local logError = require("../Logging/logError")
-local xtypeof = require("../Utility/xtypeof")
+local PubTypes = require "../PubTypes"
+local logError = require "../Logging/logError"
+local xtypeof = require "../Utility/xtypeof"
 
 local function Out(propertyName: string): PubTypes.SpecialKey
 	local outKey = {}
@@ -15,12 +15,17 @@ local function Out(propertyName: string): PubTypes.SpecialKey
 	outKey.kind = "Out"
 	outKey.stage = "observer"
 
-	function outKey:apply(outState: any, applyTo: Instance, cleanupTasks: { PubTypes.Task })
-		local ok, event = pcall(applyTo.GetPropertyChangedSignal, applyTo, propertyName)
+	function outKey:apply(
+		outState: any,
+		applyTo: Instance,
+		cleanupTasks: { PubTypes.Task }
+	)
+		local ok, event =
+			pcall(applyTo.GetPropertyChangedSignal, applyTo, propertyName)
 		if not ok then
 			logError("invalidOutProperty", nil, applyTo.ClassName, propertyName)
 		elseif xtypeof(outState) ~= "State" or outState.kind ~= "Value" then
-			logError("invalidOutType")
+			logError "invalidOutType"
 		else
 			outState:set((applyTo :: any)[propertyName])
 			table.insert(

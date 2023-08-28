@@ -13,14 +13,18 @@
 	each occurence.
 ]]
 
-local PubTypes = require("../PubTypes")
-local cleanup = require("../Utility/cleanup")
-local xtypeof = require("../Utility/xtypeof")
-local logError = require("../Logging/logError")
-local Observer = require("../State/Observer")
-local peek = require("../State/peek")
+local PubTypes = require "../PubTypes"
+local cleanup = require "../Utility/cleanup"
+local xtypeof = require "../Utility/xtypeof"
+local logError = require "../Logging/logError"
+local Observer = require "../State/Observer"
+local peek = require "../State/peek"
 
-local function setProperty_unsafe(instance: Instance, property: string, value: any)
+local function setProperty_unsafe(
+	instance: Instance,
+	property: string,
+	value: any
+)
 	(instance :: any)[property] = value
 end
 
@@ -36,14 +40,26 @@ local function setProperty(instance: Instance, property: string, value: any)
 				logError("setPropertyNilRef", nil, property, tostring(value))
 			else
 				-- property is not assignable
-				logError("cannotAssignProperty", nil, instance.ClassName, property)
+				logError(
+					"cannotAssignProperty",
+					nil,
+					instance.ClassName,
+					property
+				)
 			end
 		else
 			-- property is assignable, but this specific assignment failed
 			-- this typically implies the wrong type was received
 			local givenType = typeof(value)
 			local expectedType = typeof((instance :: any)[property])
-			logError("invalidPropertyType", nil, instance.ClassName, property, expectedType, givenType)
+			logError(
+				"invalidPropertyType",
+				nil,
+				instance.ClassName,
+				property,
+				expectedType,
+				givenType
+			)
 		end
 	end
 end
@@ -75,7 +91,10 @@ local function bindProperty(
 	end
 end
 
-local function applyInstanceProps(props: PubTypes.PropertyTable, applyTo: Instance)
+local function applyInstanceProps(
+	props: PubTypes.PropertyTable,
+	applyTo: Instance
+)
 	local specialKeys = {
 		self = {} :: { [PubTypes.SpecialKey]: any },
 		descendants = {} :: { [PubTypes.SpecialKey]: any },

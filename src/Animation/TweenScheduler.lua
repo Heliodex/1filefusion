@@ -4,10 +4,10 @@
 	Manages batch updating of tween objects.
 ]]
 
-local Types = require("../Types")
-local lerpType = require("../Animation/lerpType")
-local getTweenRatio = require("../Animation/getTweenRatio")
-local updateAll = require("../State/updateAll")
+local Types = require "../Types"
+local lerpType = require "../Animation/lerpType"
+local getTweenRatio = require "../Animation/getTweenRatio"
+local updateAll = require "../State/updateAll"
 
 local TweenScheduler = {}
 
@@ -43,7 +43,10 @@ function TweenScheduler.updateAllTweens()
 	for tween: Tween in pairs(allTweens :: any) do
 		local currentTime = now - tween._currentTweenStartTime
 
-		if currentTime > tween._currentTweenDuration and tween._currentTweenInfo.RepeatCount > -1 then
+		if
+			currentTime > tween._currentTweenDuration
+			and tween._currentTweenInfo.RepeatCount > -1
+		then
 			if tween._currentTweenInfo.Reverses then
 				tween._currentValue = tween._prevValue
 			else
@@ -54,7 +57,8 @@ function TweenScheduler.updateAllTweens()
 			TweenScheduler.remove(tween)
 		else
 			local ratio = getTweenRatio(tween._currentTweenInfo, currentTime)
-			local currentValue = lerpType(tween._prevValue, tween._nextValue, ratio)
+			local currentValue =
+				lerpType(tween._prevValue, tween._nextValue, ratio)
 			tween._currentValue = currentValue
 			tween._currentlyAnimating = true
 			updateAll(tween)

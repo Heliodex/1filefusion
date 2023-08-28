@@ -4,38 +4,38 @@
 	The entry point for the Fusion library.
 ]]
 
-local PubTypes = require("./PubTypes")
-local restrictRead = require("./Utility/restrictRead")
-local bindScheduler = require("./bindScheduler")
+local PubTypes = require "./PubTypes"
+local restrictRead = require "./Utility/restrictRead"
+local bindScheduler = require "./bindScheduler"
 
 local Fusion = restrictRead("Fusion", {
 	version = { major = 0, minor = 3, isRelease = false },
 
-	New = require("./Instances/New"),
-	Hydrate = require("./Instances/Hydrate"),
-	Ref = require("./Instances/Ref"),
-	Out = require("./Instances/Out"),
-	Cleanup = require("./Instances/Cleanup"),
-	Children = require("./Instances/Children"),
-	OnEvent = require("./Instances/OnEvent"),
-	OnChange = require("./Instances/OnChange"),
-	Attribute = require("./Instances/Attribute"),
-	AttributeChange = require("./Instances/AttributeChange"),
-	AttributeOut = require("./Instances/AttributeOut"),
+	New = require "./Instances/New",
+	Hydrate = require "./Instances/Hydrate",
+	Ref = require "./Instances/Ref",
+	Out = require "./Instances/Out",
+	Cleanup = require "./Instances/Cleanup",
+	Children = require "./Instances/Children",
+	OnEvent = require "./Instances/OnEvent",
+	OnChange = require "./Instances/OnChange",
+	Attribute = require "./Instances/Attribute",
+	AttributeChange = require "./Instances/AttributeChange",
+	AttributeOut = require "./Instances/AttributeOut",
 
-	Value = require("./State/Value"),
-	Computed = require("./State/Computed"),
-	ForPairs = require("./State/ForPairs"),
-	ForKeys = require("./State/ForKeys"),
-	ForValues = require("./State/ForValues"),
-	Observer = require("./State/Observer"),
+	Value = require "./State/Value",
+	Computed = require "./State/Computed",
+	ForPairs = require "./State/ForPairs",
+	ForKeys = require "./State/ForKeys",
+	ForValues = require "./State/ForValues",
+	Observer = require "./State/Observer",
 
-	Tween = require("./Animation/Tween"),
-	Spring = require("./Animation/Spring"),
+	Tween = require "./Animation/Tween",
+	Spring = require "./Animation/Spring",
 
-	cleanup = require("./Utility/cleanup"),
-	doNothing = require("./Utility/doNothing"),
-	peek = require("./State/peek"),
+	cleanup = require "./Utility/cleanup",
+	doNothing = require "./Utility/doNothing",
+	peek = require "./State/peek",
 }) :: Fusion
 
 export type StateObject<T> = PubTypes.StateObject<T>
@@ -54,8 +54,12 @@ export type Use = PubTypes.Use
 type Fusion = {
 	version: PubTypes.Version,
 
-	New: (className: string) -> ((propertyTable: PubTypes.PropertyTable) -> Instance),
-	Hydrate: (target: Instance) -> ((propertyTable: PubTypes.PropertyTable) -> Instance),
+	New: (
+		className: string
+	) -> (propertyTable: PubTypes.PropertyTable) -> Instance,
+	Hydrate: (
+		target: Instance
+	) -> (propertyTable: PubTypes.PropertyTable) -> Instance,
 	Ref: PubTypes.SpecialKey,
 	Cleanup: PubTypes.SpecialKey,
 	Children: PubTypes.SpecialKey,
@@ -86,7 +90,11 @@ type Fusion = {
 	Observer: (watchedState: StateObject<any>) -> Observer,
 
 	Tween: <T>(goalState: StateObject<T>, tweenInfo: TweenInfo?) -> Tween<T>,
-	Spring: <T>(goalState: StateObject<T>, speed: CanBeState<number>?, damping: CanBeState<number>?) -> Spring<T>,
+	Spring: <T>(
+		goalState: StateObject<T>,
+		speed: CanBeState<number>?,
+		damping: CanBeState<number>?
+	) -> Spring<T>,
 
 	cleanup: (...any) -> (),
 	doNothing: (...any) -> (),
