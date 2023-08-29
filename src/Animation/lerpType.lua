@@ -102,11 +102,14 @@ local function lerpType(from: any, to: any, ratio: number): any
 				(to.Scale - from.Scale) * ratio + from.Scale,
 				(to.Offset - from.Offset) * ratio + from.Offset
 			)
-		elseif
-			typeString == "UDim2"
-			or typeString == "Vector2"
-			or typeString == "Vector3"
-		then
+		elseif typeString == "UDim2" then
+			return UDim2.new(
+				(to.X.Scale - from.X.Scale) * ratio + from.X.Scale,
+				(to.X.Offset - from.X.Offset) * ratio + from.X.Offset,
+				(to.Y.Scale - from.Y.Scale) * ratio + from.Y.Scale,
+				(to.Y.Offset - from.Y.Offset) * ratio + from.Y.Offset
+			)
+		elseif typeString == "Vector2" or typeString == "Vector3" then
 			return from:Lerp(to, ratio)
 		elseif typeString == "Vector2int16" then
 			return Vector2int16.new(

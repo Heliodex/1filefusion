@@ -28,6 +28,10 @@ return function(value)
 			{ "ClassName" },
 		},
 		{
+			"EnumItem",
+			{ "EnumType", "Name", "Value" },
+		},
+		{
 			"Enum",
 			{ "GetEnumItems" },
 		},
@@ -76,23 +80,23 @@ return function(value)
 		{
 			"Vector3",
 			{
-				"x",
-				"y",
-				"z",
 				"Lerp",
 				-- "Cross",
 				-- "Dot",
 				"unit",
 				"magnitude",
+				"x",
+				"y",
+				"z",
 			},
 		},
 		{
 			"Vector3int16",
-			{ "x", "y", "z" },
+			{ "z", "x", "y" },
 		},
 		{
 			"Vector2",
-			{ "x", "y", "unit", "magnitude" },
+			{ "unit", "magnitude", "x", "y" },
 		},
 		{
 			"Vector2int16",
@@ -122,7 +126,7 @@ return function(value)
 		},
 		{
 			"Axes",
-			{ "X", "Y", "Z" },
+			{ "Z", "X", "Y" },
 		},
 		{
 			"UDim2",

@@ -37,7 +37,7 @@ New "ScreenGui" {
 
 		New "TextLabel" {
 			Name = "Message",
-			Position = Tween(position, TweenInfo.new(0.5)),
+			Position = Tween(position, TweenInfo.new(2.5, "Exponential")),
 			Size = UDim2.new(0, 200, 0, 50),
 
 			BackgroundColor3 = Color3.new(1, 1, 1),

@@ -5,7 +5,8 @@
 	tween between two values over time.
 ]]
 
-local TweenService = game:GetService "TweenService"
+-- local TweenService = game:GetService "TweenService"
+local easing = require "../Polyfill/easing"
 
 local function getTweenRatio(tweenInfo: TweenInfo, currentTime: number): number
 	local delay = tweenInfo.DelayTime
@@ -38,7 +39,8 @@ local function getTweenRatio(tweenInfo: TweenInfo, currentTime: number): number
 		tweenProgress = 2 - tweenProgress
 	end
 
-	return TweenService:GetValue(tweenProgress, easeStyle, easeDirection)
+	-- return TweenService:GetValue(tweenProgress, easeStyle, easeDirection)
+	return easing[easeStyle][easeDirection](tweenProgress, 0, 1)
 end
 
 return getTweenRatio

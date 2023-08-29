@@ -47,4 +47,7 @@ return {
 	unrecognisedChildType = "'%s' type children aren't accepted by `[Children]`.",
 	unrecognisedPropertyKey = "'%s' keys aren't accepted in property tables.",
 	unrecognisedPropertyStage = "'%s' isn't a valid stage for a special key to be applied at.",
+
+	invalidEasingStyle = "The easing style must be a valid Enum.EasingStyle or a string of 'Linear', 'Quad', 'Cubic', 'Quart', 'Quint', 'Sine', 'Exponential', 'Circular', 'Elastic', 'Back', 'Bounce'. (got %s)",
+	invalidEasingDirection = "The easing direction must be a valid Enum.EasingDirection or a string of 'In', 'Out', 'InOut', 'OutIn'. (got %s)",
 }
