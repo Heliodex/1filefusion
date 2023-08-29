@@ -7,7 +7,7 @@
 local typeof = require "../typeof"
 
 local function isState(target: any): boolean
-	return typeof(target) == "table" and typeof(target._peek) == "function"
+	return type(target) == "table" and type(target._peek) == "function"
 end
 
 return isState

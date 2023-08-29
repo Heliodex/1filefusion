@@ -180,10 +180,6 @@ local mSuccess, mResult = pcall(function()
 		__DARKLUA_BUNDLE_MODULES.f = Oklab
 	end
 	do
-		if typeof then
-			return typeof
-		end
-
 		__DARKLUA_BUNDLE_MODULES.g = function(value)
 			local basicType = type(value)
 
@@ -207,47 +203,10 @@ local mSuccess, mResult = pcall(function()
 					},
 				},
 				{
-					"Enum",
+					"RBXScriptSignal",
 					{
-						"GetEnumItems",
-					},
-				},
-				{
-					"Enums",
-					{
-						"MembershipType",
-					},
-				},
-				{
-					"Vector3",
-					{
-						"x",
-						"y",
-						"z",
-						"Lerp",
-						"Cross",
-						"Dot",
-						"unit",
-						"magnitude",
-					},
-				},
-				{
-					"Vector2",
-					{
-						"x",
-						"y",
-						"unit",
-						"magnitude",
-					},
-				},
-				{
-					"Ray",
-					{
-						"Origin",
-						"Direction",
-						"Unit",
-						"ClosestPoint",
-						"Distance",
+						"connect",
+						"wait",
 					},
 				},
 				{
@@ -261,18 +220,69 @@ local mSuccess, mResult = pcall(function()
 					},
 				},
 				{
+					"Vector3",
+					{
+						"x",
+						"y",
+						"z",
+						"Lerp",
+						"unit",
+						"magnitude",
+					},
+				},
+				{
+					"Vector3int16",
+					{
+						"x",
+						"y",
+						"z",
+					},
+				},
+				{
+					"Vector2",
+					{
+						"x",
+						"y",
+						"unit",
+						"magnitude",
+					},
+				},
+				{
+					"Vector2int16",
+					{
+						"x",
+						"y",
+					},
+				},
+				{
+					"Region3",
+					{
+						"CFrame",
+						"Size",
+					},
+				},
+				{
+					"Region3int16",
+					{
+						"Min",
+						"Max",
+					},
+				},
+				{
+					"Ray",
+					{
+						"Origin",
+						"Direction",
+						"Unit",
+						"ClosestPoint",
+						"Distance",
+					},
+				},
+				{
 					"UDim",
 					{
 						"Scale",
 						"Offset",
-					},
-				},
-				{
-					"Axes",
-					{
-						"X",
-						"Y",
-						"Z",
 					},
 				},
 				{
@@ -301,17 +311,6 @@ local mSuccess, mResult = pcall(function()
 						"b",
 					},
 				},
-				{
-					"Faces",
-					{
-						"Right",
-						"Top",
-						"Back",
-						"Left",
-						"Bottom",
-						"Front",
-					},
-				},
 			}
 
 			for _, v in ipairs(tests) do
@@ -338,88 +337,26 @@ local mSuccess, mResult = pcall(function()
 
 			if typeof(to) == typeString then
 				if typeString == "number" then
-					local to, from = to, from
-
 					return (to - from) * ratio + from
 				elseif typeString == "CFrame" then
-					local to, from = to, from
-
 					return from:Lerp(to, ratio)
 				elseif typeString == "Color3" then
-					local to, from = to, from
 					local fromLab = Oklab.to(from)
 					local toLab = Oklab.to(to)
 
 					return Oklab.from(fromLab:Lerp(toLab, ratio), false)
-				elseif typeString == "ColorSequenceKeypoint" then
-					local to, from = to, from
-					local fromLab = Oklab.to(from.Value)
-					local toLab = Oklab.to(to.Value)
-
-					return ColorSequenceKeypoint.new(
-						(to.Time - from.Time) * ratio + from.Time,
-						Oklab.from(fromLab:Lerp(toLab, ratio), false)
-					)
-				elseif typeString == "DateTime" then
-					local to, from = to, from
-
-					return DateTime.fromUnixTimestampMillis(
-						(to.UnixTimestampMillis - from.UnixTimestampMillis)
-								* ratio
-							+ from.UnixTimestampMillis
-					)
-				elseif typeString == "NumberRange" then
-					local to, from = to, from
-
-					return NumberRange.new(
-						(to.Min - from.Min) * ratio + from.Min,
-						(to.Max - from.Max) * ratio + from.Max
-					)
-				elseif typeString == "NumberSequenceKeypoint" then
-					local to, from = to, from
-
-					return NumberSequenceKeypoint.new(
-						(to.Time - from.Time) * ratio + from.Time,
-						(to.Value - from.Value) * ratio + from.Value,
-						(to.Envelope - from.Envelope) * ratio + from.Envelope
-					)
-				elseif typeString == "PhysicalProperties" then
-					local to, from = to, from
-
-					return PhysicalProperties.new(
-						(to.Density - from.Density) * ratio + from.Density,
-						(to.Friction - from.Friction) * ratio + from.Friction,
-						(to.Elasticity - from.Elasticity) * ratio
-							+ from.Elasticity,
-						(to.FrictionWeight - from.FrictionWeight) * ratio
-							+ from.FrictionWeight,
-						(to.ElasticityWeight - from.ElasticityWeight) * ratio
-							+ from.ElasticityWeight
-					)
 				elseif typeString == "Ray" then
-					local to, from = to, from
-
 					return Ray.new(
 						from.Origin:Lerp(to.Origin, ratio),
 						from.Direction:Lerp(to.Direction, ratio)
 					)
-				elseif typeString == "Rect" then
-					local to, from = to, from
-
-					return Rect.new(
-						from.Min:Lerp(to.Min, ratio),
-						from.Max:Lerp(to.Max, ratio)
-					)
 				elseif typeString == "Region3" then
-					local to, from = to, from
 					local position =
 						from.CFrame.Position:Lerp(to.CFrame.Position, ratio)
 					local halfSize = from.Size:Lerp(to.Size, ratio) / 2
 
 					return Region3.new(position - halfSize, position + halfSize)
 				elseif typeString == "Region3int16" then
-					local to, from = to, from
-
 					return Region3int16.new(
 						Vector3int16.new(
 							(to.Min.X - from.Min.X) * ratio + from.Min.X,
@@ -433,34 +370,22 @@ local mSuccess, mResult = pcall(function()
 						)
 					)
 				elseif typeString == "UDim" then
-					local to, from = to, from
-
 					return UDim.new(
 						(to.Scale - from.Scale) * ratio + from.Scale,
 						(to.Offset - from.Offset) * ratio + from.Offset
 					)
-				elseif typeString == "UDim2" then
-					local to, from = to, from
-
-					return from:Lerp(to, ratio)
-				elseif typeString == "Vector2" then
-					local to, from = to, from
-
+				elseif
+					typeString == "UDim2"
+					or typeString == "Vector2"
+					or typeString == "Vector3"
+				then
 					return from:Lerp(to, ratio)
 				elseif typeString == "Vector2int16" then
-					local to, from = to, from
-
 					return Vector2int16.new(
 						(to.X - from.X) * ratio + from.X,
 						(to.Y - from.Y) * ratio + from.Y
 					)
-				elseif typeString == "Vector3" then
-					local to, from = to, from
-
-					return from:Lerp(to, ratio)
 				elseif typeString == "Vector3int16" then
-					local to, from = to, from
-
 					return Vector3int16.new(
 						(to.X - from.X) * ratio + from.X,
 						(to.Y - from.Y) * ratio + from.Y,
@@ -878,9 +803,9 @@ local mSuccess, mResult = pcall(function()
 			elseif taskType == "function" then
 				task()
 			elseif taskType == "table" then
-				if typeof(task.destroy) == "function" then
+				if type(task.destroy) == "function" then
 					task:destroy()
-				elseif typeof(task.Destroy) == "function" then
+				elseif type(task.Destroy) == "function" then
 					task:Destroy()
 				elseif task[1] ~= nil then
 					for _, subtask in ipairs(task) do
@@ -903,7 +828,7 @@ local mSuccess, mResult = pcall(function()
 		local function xtypeof(x)
 			local typeString = typeof(x)
 
-			if typeString == "table" and typeof(x.type) == "string" then
+			if typeString == "table" and type(x.type) == "string" then
 				return x.type
 			else
 				return typeString
@@ -976,8 +901,7 @@ local mSuccess, mResult = pcall(function()
 		local typeof = __DARKLUA_BUNDLE_MODULES.g
 
 		local function isState(target)
-			return typeof(target) == "table"
-				and typeof(target._peek) == "function"
+			return type(target) == "table" and type(target._peek) == "function"
 		end
 
 		__DARKLUA_BUNDLE_MODULES.t = isState
@@ -1645,7 +1569,7 @@ local mSuccess, mResult = pcall(function()
 		local typeof = __DARKLUA_BUNDLE_MODULES.g
 
 		local function isSimilar(a, b)
-			if typeof(a) == "table" then
+			if type(a) == "table" then
 				return false
 			else
 				return a == b

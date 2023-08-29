@@ -29,11 +29,11 @@ local function cleanupOne(task: any)
 		task()
 	elseif taskType == "table" then
 		-- case 4: destroy() function
-		if typeof(task.destroy) == "function" then
+		if type(task.destroy) == "function" then
 			task:destroy()
 
 		-- case 5: Destroy() function
-		elseif typeof(task.Destroy) == "function" then
+		elseif type(task.Destroy) == "function" then
 			task:Destroy()
 
 		-- case 6: array of tasks

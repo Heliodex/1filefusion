@@ -1,9 +1,5 @@
 -- A basic polyfill for the typeof function
 
-if typeof then
-	return typeof
-end
-
 return function(value)
 	local basicType = type(value)
 
@@ -31,39 +27,22 @@ return function(value)
 			"Instance",
 			{ "ClassName" },
 		},
+		-- {
+		-- 	"Enum",
+		-- 	{ "GetEnumItems" },
+		-- },
+		-- {
+		-- 	"Enums",
+		-- 	{ "MembershipType" }, -- lmao
+		-- },
 		{
-			"Enum",
-			{ "GetEnumItems" },
-		},
-		{
-			"Enums",
-			{ "MembershipType" }, -- lmao
-		},
-		{
-			"Vector3",
+			"RBXScriptSignal",
 			{
-				"x",
-				"y",
-				"z",
-				"Lerp",
-				"Cross",
-				"Dot",
-				"unit",
-				"magnitude",
-			},
-		},
-		{
-			"Vector2",
-			{ "x", "y", "unit", "magnitude" },
-		},
-		{
-			"Ray",
-			{
-				"Origin",
-				"Direction",
-				"Unit",
-				"ClosestPoint",
-				"Distance",
+				"connect",
+				-- "connected",
+				-- "connectFirst",
+				-- "connectLast",
+				"wait",
 			},
 		},
 		{
@@ -77,13 +56,56 @@ return function(value)
 			},
 		},
 		{
+			"Vector3",
+			{
+				"x",
+				"y",
+				"z",
+				"Lerp",
+				-- "Cross",
+				-- "Dot",
+				"unit",
+				"magnitude",
+			},
+		},
+		{
+			"Vector3int16",
+			{ "x", "y", "z" },
+		},
+		{
+			"Vector2",
+			{ "x", "y", "unit", "magnitude" },
+		},
+		{
+			"Vector2int16",
+			{ "x", "y" },
+		},
+		{
+			"Region3",
+			{ "CFrame", "Size" },
+		},
+		{
+			"Region3int16",
+			{ "Min", "Max" },
+		},
+		{
+			"Ray",
+			{
+				"Origin",
+				"Direction",
+				"Unit",
+				"ClosestPoint",
+				"Distance",
+			},
+		},
+		{
 			"UDim",
 			{ "Scale", "Offset" },
 		},
-		{
-			"Axes",
-			{ "X", "Y", "Z" },
-		},
+		-- {
+		-- 	"Axes",
+		-- 	{ "X", "Y", "Z" },
+		-- },
 		{
 			"UDim2",
 			{ "X", "Y" },
@@ -103,17 +125,17 @@ return function(value)
 			"Color3",
 			{ "r", "g", "b" },
 		},
-		{
-			"Faces",
-			{
-				"Right",
-				"Top",
-				"Back",
-				"Left",
-				"Bottom",
-				"Front",
-			},
-		},
+		-- {
+		-- 	"Faces",
+		-- 	{
+		-- 		"Right",
+		-- 		"Top",
+		-- 		"Back",
+		-- 		-- "Left",
+		-- 		-- "Bottom",
+		-- 		-- "Front",
+		-- 	},
+		-- },
 	}
 
 	for _, v in ipairs(tests) do
