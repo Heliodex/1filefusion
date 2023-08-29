@@ -4,6 +4,8 @@
     to recompute if it changed to B.
 ]]
 
+local typeof = require "../typeof"
+
 local function isSimilar(a: any, b: any): boolean
 	-- HACK: because tables are mutable data structures, don't make assumptions
 	-- about similarity from equality for now (see issue #44)

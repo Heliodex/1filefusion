@@ -12,6 +12,7 @@ local logError = require "../Logging/logError"
 local logErrorNonFatal = require "../Logging/logErrorNonFatal"
 local xtypeof = require "../Utility/xtypeof"
 local peek = require "../State/peek"
+local typeof = require "../typeof"
 
 local class = {}
 

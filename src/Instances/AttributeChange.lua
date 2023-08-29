@@ -8,6 +8,7 @@
 local PubTypes = require "../PubTypes"
 local logError = require "../Logging/logError"
 local xtypeof = require "../Utility/xtypeof"
+local typeof = require "../typeof"
 
 local function AttributeChange(attributeName: string): PubTypes.SpecialKey
 	local attributeKey = {}

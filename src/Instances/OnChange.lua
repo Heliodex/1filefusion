@@ -7,6 +7,7 @@
 
 local PubTypes = require "../PubTypes"
 local logError = require "../Logging/logError"
+local typeof = require "../typeof"
 
 local function OnChange(propertyName: string): PubTypes.SpecialKey
 	local changeKey = {}

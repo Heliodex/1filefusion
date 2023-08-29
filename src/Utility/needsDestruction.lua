@@ -5,6 +5,8 @@
     requires manual cleanup.
 ]]
 
+local typeof = require "../typeof"
+
 local function needsDestruction(x: any): boolean
 	return typeof(x) == "Instance"
 end

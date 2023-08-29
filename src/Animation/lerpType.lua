@@ -11,6 +11,7 @@
 
 local PubTypes = require "../PubTypes"
 local Oklab = require "../Colour/Oklab"
+local typeof = require "../typeof"
 
 local function lerpType(from: any, to: any, ratio: number): any
 	local typeString = typeof(from)

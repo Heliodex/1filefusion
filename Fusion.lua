@@ -180,8 +180,158 @@ local mSuccess, mResult = pcall(function()
 		__DARKLUA_BUNDLE_MODULES.f = Oklab
 	end
 	do
+		if typeof then
+			return typeof
+		end
+
+		__DARKLUA_BUNDLE_MODULES.g = function(value)
+			local basicType = type(value)
+
+			if
+				basicType == "nil"
+				or basicType == "boolean"
+				or basicType == "number"
+				or basicType == "string"
+				or basicType == "function"
+				or basicType == "thread"
+				or basicType == "table"
+			then
+				return basicType
+			end
+
+			local tests = {
+				{
+					"Instance",
+					{
+						"ClassName",
+					},
+				},
+				{
+					"Enum",
+					{
+						"GetEnumItems",
+					},
+				},
+				{
+					"Enums",
+					{
+						"MembershipType",
+					},
+				},
+				{
+					"Vector3",
+					{
+						"x",
+						"y",
+						"z",
+						"Lerp",
+						"Cross",
+						"Dot",
+						"unit",
+						"magnitude",
+					},
+				},
+				{
+					"Vector2",
+					{
+						"x",
+						"y",
+						"unit",
+						"magnitude",
+					},
+				},
+				{
+					"Ray",
+					{
+						"Origin",
+						"Direction",
+						"Unit",
+						"ClosestPoint",
+						"Distance",
+					},
+				},
+				{
+					"CFrame",
+					{
+						"p",
+						"x",
+						"y",
+						"z",
+						"lookVector",
+					},
+				},
+				{
+					"UDim",
+					{
+						"Scale",
+						"Offset",
+					},
+				},
+				{
+					"Axes",
+					{
+						"X",
+						"Y",
+						"Z",
+					},
+				},
+				{
+					"UDim2",
+					{
+						"X",
+						"Y",
+					},
+				},
+				{
+					"BrickColor",
+					{
+						"Number",
+						"Name",
+						"Color",
+						"r",
+						"g",
+						"b",
+					},
+				},
+				{
+					"Color3",
+					{
+						"r",
+						"g",
+						"b",
+					},
+				},
+				{
+					"Faces",
+					{
+						"Right",
+						"Top",
+						"Back",
+						"Left",
+						"Bottom",
+						"Front",
+					},
+				},
+			}
+
+			for _, v in ipairs(tests) do
+				local t, test = v[1], v[2]
+				local success = pcall(function()
+					for _, prop in ipairs(test) do
+						_ = value[prop]
+					end
+				end)
+
+				if success then
+					return t
+				end
+			end
+		end
+	end
+	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 		local Oklab = __DARKLUA_BUNDLE_MODULES.f
+		local typeof = __DARKLUA_BUNDLE_MODULES.g
 
 		local function lerpType(from, to, ratio)
 			local typeString = typeof(from)
@@ -325,7 +475,7 @@ local mSuccess, mResult = pcall(function()
 			end
 		end
 
-		__DARKLUA_BUNDLE_MODULES.g = lerpType
+		__DARKLUA_BUNDLE_MODULES.h = lerpType
 	end
 	do
 		local TweenService = game:GetService "TweenService"
@@ -367,7 +517,7 @@ local mSuccess, mResult = pcall(function()
 			return ratio
 		end
 
-		__DARKLUA_BUNDLE_MODULES.h = getTweenRatio
+		__DARKLUA_BUNDLE_MODULES.i = getTweenRatio
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
@@ -430,13 +580,13 @@ local mSuccess, mResult = pcall(function()
 			end
 		end
 
-		__DARKLUA_BUNDLE_MODULES.i = updateAll
+		__DARKLUA_BUNDLE_MODULES.j = updateAll
 	end
 	do
 		local Types = __DARKLUA_BUNDLE_MODULES.b
-		local lerpType = __DARKLUA_BUNDLE_MODULES.g
-		local getTweenRatio = __DARKLUA_BUNDLE_MODULES.h
-		local updateAll = __DARKLUA_BUNDLE_MODULES.i
+		local lerpType = __DARKLUA_BUNDLE_MODULES.h
+		local getTweenRatio = __DARKLUA_BUNDLE_MODULES.i
+		local updateAll = __DARKLUA_BUNDLE_MODULES.j
 		local TweenScheduler = {}
 		local WEAK_KEYS_METATABLE = {
 			__mode = "k",
@@ -485,7 +635,7 @@ local mSuccess, mResult = pcall(function()
 			end
 		end
 
-		__DARKLUA_BUNDLE_MODULES.j = TweenScheduler
+		__DARKLUA_BUNDLE_MODULES.k = TweenScheduler
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
@@ -566,7 +716,7 @@ local mSuccess, mResult = pcall(function()
 			end
 		end
 
-		__DARKLUA_BUNDLE_MODULES.k = packType
+		__DARKLUA_BUNDLE_MODULES.l = packType
 	end
 	do
 		local function springCoefficients(time, damping, speed)
@@ -617,13 +767,13 @@ local mSuccess, mResult = pcall(function()
 			return posPos, posVel, velPos, velVel
 		end
 
-		__DARKLUA_BUNDLE_MODULES.l = springCoefficients
+		__DARKLUA_BUNDLE_MODULES.m = springCoefficients
 	end
 	do
 		local Types = __DARKLUA_BUNDLE_MODULES.b
-		local packType = __DARKLUA_BUNDLE_MODULES.k
-		local springCoefficients = __DARKLUA_BUNDLE_MODULES.l
-		local updateAll = __DARKLUA_BUNDLE_MODULES.i
+		local packType = __DARKLUA_BUNDLE_MODULES.l
+		local springCoefficients = __DARKLUA_BUNDLE_MODULES.m
+		local updateAll = __DARKLUA_BUNDLE_MODULES.j
 		local SpringScheduler = {}
 		local EPSILON = 0.0001
 		local activeSprings = {}
@@ -698,24 +848,26 @@ local mSuccess, mResult = pcall(function()
 			end
 		end
 
-		__DARKLUA_BUNDLE_MODULES.m = SpringScheduler
+		__DARKLUA_BUNDLE_MODULES.n = SpringScheduler
 	end
 	do
 		local RunService = game:GetService "RunService"
-		local TweenScheduler = __DARKLUA_BUNDLE_MODULES.j
-		local SpringScheduler = __DARKLUA_BUNDLE_MODULES.m
+		local TweenScheduler = __DARKLUA_BUNDLE_MODULES.k
+		local SpringScheduler = __DARKLUA_BUNDLE_MODULES.n
 
 		local function bindScheduler()
 			RunService.Heartbeat:connect(TweenScheduler.updateAllTweens)
 			RunService.Heartbeat:connect(SpringScheduler.updateAllSprings)
 		end
 
-		__DARKLUA_BUNDLE_MODULES.n = bindScheduler
+		__DARKLUA_BUNDLE_MODULES.o = bindScheduler
 	end
 	do
-		__DARKLUA_BUNDLE_MODULES.o = {}
+		__DARKLUA_BUNDLE_MODULES.p = {}
 	end
 	do
+		local typeof = __DARKLUA_BUNDLE_MODULES.g
+
 		local function cleanupOne(task)
 			local taskType = typeof(task)
 
@@ -743,9 +895,11 @@ local mSuccess, mResult = pcall(function()
 			end
 		end
 
-		__DARKLUA_BUNDLE_MODULES.p = cleanup
+		__DARKLUA_BUNDLE_MODULES.q = cleanup
 	end
 	do
+		local typeof = __DARKLUA_BUNDLE_MODULES.g
+
 		local function xtypeof(x)
 			local typeString = typeof(x)
 
@@ -756,7 +910,7 @@ local mSuccess, mResult = pcall(function()
 			end
 		end
 
-		__DARKLUA_BUNDLE_MODULES.q = xtypeof
+		__DARKLUA_BUNDLE_MODULES.r = xtypeof
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
@@ -816,20 +970,22 @@ local mSuccess, mResult = pcall(function()
 			return self
 		end
 
-		__DARKLUA_BUNDLE_MODULES.r = Observer
+		__DARKLUA_BUNDLE_MODULES.s = Observer
 	end
 	do
+		local typeof = __DARKLUA_BUNDLE_MODULES.g
+
 		local function isState(target)
 			return typeof(target) == "table"
 				and typeof(target._peek) == "function"
 		end
 
-		__DARKLUA_BUNDLE_MODULES.s = isState
+		__DARKLUA_BUNDLE_MODULES.t = isState
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 		local Types = __DARKLUA_BUNDLE_MODULES.b
-		local isState = __DARKLUA_BUNDLE_MODULES.s
+		local isState = __DARKLUA_BUNDLE_MODULES.t
 
 		local function peek(target)
 			if isState(target) then
@@ -839,15 +995,16 @@ local mSuccess, mResult = pcall(function()
 			end
 		end
 
-		__DARKLUA_BUNDLE_MODULES.t = peek
+		__DARKLUA_BUNDLE_MODULES.u = peek
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
-		local cleanup = __DARKLUA_BUNDLE_MODULES.p
-		local xtypeof = __DARKLUA_BUNDLE_MODULES.q
+		local cleanup = __DARKLUA_BUNDLE_MODULES.q
+		local xtypeof = __DARKLUA_BUNDLE_MODULES.r
 		local logError = __DARKLUA_BUNDLE_MODULES.d
-		local Observer = __DARKLUA_BUNDLE_MODULES.r
-		local peek = __DARKLUA_BUNDLE_MODULES.t
+		local Observer = __DARKLUA_BUNDLE_MODULES.s
+		local peek = __DARKLUA_BUNDLE_MODULES.u
+		local typeof = __DARKLUA_BUNDLE_MODULES.g
 
 		local function setProperty_unsafe(instance, property, value)
 			(instance)[property] = value
@@ -965,12 +1122,12 @@ local mSuccess, mResult = pcall(function()
 			end)
 		end
 
-		__DARKLUA_BUNDLE_MODULES.u = applyInstanceProps
+		__DARKLUA_BUNDLE_MODULES.v = applyInstanceProps
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
-		local defaultProps = __DARKLUA_BUNDLE_MODULES.o
-		local applyInstanceProps = __DARKLUA_BUNDLE_MODULES.u
+		local defaultProps = __DARKLUA_BUNDLE_MODULES.p
+		local applyInstanceProps = __DARKLUA_BUNDLE_MODULES.v
 		local logError = __DARKLUA_BUNDLE_MODULES.d
 
 		local function New(className)
@@ -995,11 +1152,11 @@ local mSuccess, mResult = pcall(function()
 			end
 		end
 
-		__DARKLUA_BUNDLE_MODULES.v = New
+		__DARKLUA_BUNDLE_MODULES.w = New
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
-		local applyInstanceProps = __DARKLUA_BUNDLE_MODULES.u
+		local applyInstanceProps = __DARKLUA_BUNDLE_MODULES.v
 
 		local function Hydrate(target)
 			return function(props)
@@ -1009,12 +1166,12 @@ local mSuccess, mResult = pcall(function()
 			end
 		end
 
-		__DARKLUA_BUNDLE_MODULES.w = Hydrate
+		__DARKLUA_BUNDLE_MODULES.x = Hydrate
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 		local logError = __DARKLUA_BUNDLE_MODULES.d
-		local xtypeof = __DARKLUA_BUNDLE_MODULES.q
+		local xtypeof = __DARKLUA_BUNDLE_MODULES.r
 		local Ref = {}
 
 		Ref.type = "SpecialKey"
@@ -1032,12 +1189,12 @@ local mSuccess, mResult = pcall(function()
 			end
 		end
 
-		__DARKLUA_BUNDLE_MODULES.x = Ref
+		__DARKLUA_BUNDLE_MODULES.y = Ref
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 		local logError = __DARKLUA_BUNDLE_MODULES.d
-		local xtypeof = __DARKLUA_BUNDLE_MODULES.q
+		local xtypeof = __DARKLUA_BUNDLE_MODULES.r
 
 		local function Out(propertyName)
 			local outKey = {}
@@ -1081,7 +1238,7 @@ local mSuccess, mResult = pcall(function()
 			return outKey
 		end
 
-		__DARKLUA_BUNDLE_MODULES.y = Out
+		__DARKLUA_BUNDLE_MODULES.z = Out
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
@@ -1095,7 +1252,7 @@ local mSuccess, mResult = pcall(function()
 			table.insert(cleanupTasks, userTask)
 		end
 
-		__DARKLUA_BUNDLE_MODULES.z = Cleanup
+		__DARKLUA_BUNDLE_MODULES.A = Cleanup
 	end
 	do
 		local messages = __DARKLUA_BUNDLE_MODULES.c
@@ -1118,14 +1275,15 @@ local mSuccess, mResult = pcall(function()
 			)
 		end
 
-		__DARKLUA_BUNDLE_MODULES.A = logWarn
+		__DARKLUA_BUNDLE_MODULES.B = logWarn
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
-		local logWarn = __DARKLUA_BUNDLE_MODULES.A
-		local Observer = __DARKLUA_BUNDLE_MODULES.r
-		local peek = __DARKLUA_BUNDLE_MODULES.t
-		local isState = __DARKLUA_BUNDLE_MODULES.s
+		local logWarn = __DARKLUA_BUNDLE_MODULES.B
+		local Observer = __DARKLUA_BUNDLE_MODULES.s
+		local peek = __DARKLUA_BUNDLE_MODULES.u
+		local isState = __DARKLUA_BUNDLE_MODULES.t
+		local typeof = __DARKLUA_BUNDLE_MODULES.g
 		local EXPERIMENTAL_AUTO_NAMING = false
 		local Children = {}
 
@@ -1233,11 +1391,12 @@ local mSuccess, mResult = pcall(function()
 			updateChildren()
 		end
 
-		__DARKLUA_BUNDLE_MODULES.B = Children
+		__DARKLUA_BUNDLE_MODULES.C = Children
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 		local logError = __DARKLUA_BUNDLE_MODULES.d
+		local typeof = __DARKLUA_BUNDLE_MODULES.g
 
 		local function getProperty_unsafe(instance, property)
 			return (instance)[property]
@@ -1269,11 +1428,12 @@ local mSuccess, mResult = pcall(function()
 			return eventKey
 		end
 
-		__DARKLUA_BUNDLE_MODULES.C = OnEvent
+		__DARKLUA_BUNDLE_MODULES.D = OnEvent
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 		local logError = __DARKLUA_BUNDLE_MODULES.d
+		local typeof = __DARKLUA_BUNDLE_MODULES.g
 
 		local function OnChange(propertyName)
 			local changeKey = {}
@@ -1311,14 +1471,14 @@ local mSuccess, mResult = pcall(function()
 			return changeKey
 		end
 
-		__DARKLUA_BUNDLE_MODULES.D = OnChange
+		__DARKLUA_BUNDLE_MODULES.E = OnChange
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 		local logError = __DARKLUA_BUNDLE_MODULES.d
-		local xtypeof = __DARKLUA_BUNDLE_MODULES.q
-		local Observer = __DARKLUA_BUNDLE_MODULES.r
-		local peek = __DARKLUA_BUNDLE_MODULES.t
+		local xtypeof = __DARKLUA_BUNDLE_MODULES.r
+		local Observer = __DARKLUA_BUNDLE_MODULES.s
+		local peek = __DARKLUA_BUNDLE_MODULES.u
 
 		local function setAttribute(instance, attribute, value)
 			instance:SetAttribute(attribute, value)
@@ -1368,12 +1528,13 @@ local mSuccess, mResult = pcall(function()
 			return AttributeKey
 		end
 
-		__DARKLUA_BUNDLE_MODULES.E = Attribute
+		__DARKLUA_BUNDLE_MODULES.F = Attribute
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 		local logError = __DARKLUA_BUNDLE_MODULES.d
-		local xtypeof = __DARKLUA_BUNDLE_MODULES.q
+		local xtypeof = __DARKLUA_BUNDLE_MODULES.r
+		local typeof = __DARKLUA_BUNDLE_MODULES.g
 
 		local function AttributeChange(attributeName)
 			local attributeKey = {}
@@ -1422,12 +1583,12 @@ local mSuccess, mResult = pcall(function()
 			return attributeKey
 		end
 
-		__DARKLUA_BUNDLE_MODULES.F = AttributeChange
+		__DARKLUA_BUNDLE_MODULES.G = AttributeChange
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 		local logError = __DARKLUA_BUNDLE_MODULES.d
-		local xtypeof = __DARKLUA_BUNDLE_MODULES.q
+		local xtypeof = __DARKLUA_BUNDLE_MODULES.r
 
 		local function AttributeOut(attributeName)
 			local attributeOutKey = {}
@@ -1478,9 +1639,11 @@ local mSuccess, mResult = pcall(function()
 			return attributeOutKey
 		end
 
-		__DARKLUA_BUNDLE_MODULES.G = AttributeOut
+		__DARKLUA_BUNDLE_MODULES.H = AttributeOut
 	end
 	do
+		local typeof = __DARKLUA_BUNDLE_MODULES.g
+
 		local function isSimilar(a, b)
 			if typeof(a) == "table" then
 				return false
@@ -1489,13 +1652,13 @@ local mSuccess, mResult = pcall(function()
 			end
 		end
 
-		__DARKLUA_BUNDLE_MODULES.H = isSimilar
+		__DARKLUA_BUNDLE_MODULES.I = isSimilar
 	end
 	do
 		local Types = __DARKLUA_BUNDLE_MODULES.b
 		local logError = __DARKLUA_BUNDLE_MODULES.d
-		local updateAll = __DARKLUA_BUNDLE_MODULES.i
-		local isSimilar = __DARKLUA_BUNDLE_MODULES.H
+		local updateAll = __DARKLUA_BUNDLE_MODULES.j
+		local isSimilar = __DARKLUA_BUNDLE_MODULES.I
 		local class = {}
 		local CLASS_METATABLE = { __index = class }
 		local WEAK_KEYS_METATABLE = {
@@ -1529,7 +1692,7 @@ local mSuccess, mResult = pcall(function()
 			return self
 		end
 
-		__DARKLUA_BUNDLE_MODULES.I = Value
+		__DARKLUA_BUNDLE_MODULES.J = Value
 	end
 	do
 		local Types = __DARKLUA_BUNDLE_MODULES.b
@@ -1571,7 +1734,7 @@ local mSuccess, mResult = pcall(function()
 			end, ...)
 		end
 
-		__DARKLUA_BUNDLE_MODULES.J = logErrorNonFatal
+		__DARKLUA_BUNDLE_MODULES.K = logErrorNonFatal
 	end
 	do
 		local Types = __DARKLUA_BUNDLE_MODULES.b
@@ -1585,19 +1748,21 @@ local mSuccess, mResult = pcall(function()
 			}
 		end
 
-		__DARKLUA_BUNDLE_MODULES.K = parseError
+		__DARKLUA_BUNDLE_MODULES.L = parseError
 	end
 	do
+		local typeof = __DARKLUA_BUNDLE_MODULES.g
+
 		local function needsDestruction(x)
 			return typeof(x) == "Instance"
 		end
 
-		__DARKLUA_BUNDLE_MODULES.L = needsDestruction
+		__DARKLUA_BUNDLE_MODULES.M = needsDestruction
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 		local Types = __DARKLUA_BUNDLE_MODULES.b
-		local isState = __DARKLUA_BUNDLE_MODULES.s
+		local isState = __DARKLUA_BUNDLE_MODULES.t
 
 		local function makeUseCallback(dependencySet)
 			local function use(target)
@@ -1613,17 +1778,17 @@ local mSuccess, mResult = pcall(function()
 			return use
 		end
 
-		__DARKLUA_BUNDLE_MODULES.M = makeUseCallback
+		__DARKLUA_BUNDLE_MODULES.N = makeUseCallback
 	end
 	do
 		local Types = __DARKLUA_BUNDLE_MODULES.b
 		local logError = __DARKLUA_BUNDLE_MODULES.d
-		local logErrorNonFatal = __DARKLUA_BUNDLE_MODULES.J
-		local logWarn = __DARKLUA_BUNDLE_MODULES.A
-		local parseError = __DARKLUA_BUNDLE_MODULES.K
-		local isSimilar = __DARKLUA_BUNDLE_MODULES.H
-		local needsDestruction = __DARKLUA_BUNDLE_MODULES.L
-		local makeUseCallback = __DARKLUA_BUNDLE_MODULES.M
+		local logErrorNonFatal = __DARKLUA_BUNDLE_MODULES.K
+		local logWarn = __DARKLUA_BUNDLE_MODULES.B
+		local parseError = __DARKLUA_BUNDLE_MODULES.L
+		local isSimilar = __DARKLUA_BUNDLE_MODULES.I
+		local needsDestruction = __DARKLUA_BUNDLE_MODULES.M
+		local makeUseCallback = __DARKLUA_BUNDLE_MODULES.N
 		local class = {}
 		local CLASS_METATABLE = { __index = class }
 		local WEAK_KEYS_METATABLE = {
@@ -1704,20 +1869,20 @@ local mSuccess, mResult = pcall(function()
 			return self
 		end
 
-		__DARKLUA_BUNDLE_MODULES.N = Computed
+		__DARKLUA_BUNDLE_MODULES.O = Computed
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 		local Types = __DARKLUA_BUNDLE_MODULES.b
-		local parseError = __DARKLUA_BUNDLE_MODULES.K
-		local logErrorNonFatal = __DARKLUA_BUNDLE_MODULES.J
+		local parseError = __DARKLUA_BUNDLE_MODULES.L
+		local logErrorNonFatal = __DARKLUA_BUNDLE_MODULES.K
 		local logError = __DARKLUA_BUNDLE_MODULES.d
-		local logWarn = __DARKLUA_BUNDLE_MODULES.A
-		local cleanup = __DARKLUA_BUNDLE_MODULES.p
-		local needsDestruction = __DARKLUA_BUNDLE_MODULES.L
-		local peek = __DARKLUA_BUNDLE_MODULES.t
-		local makeUseCallback = __DARKLUA_BUNDLE_MODULES.M
-		local isState = __DARKLUA_BUNDLE_MODULES.s
+		local logWarn = __DARKLUA_BUNDLE_MODULES.B
+		local cleanup = __DARKLUA_BUNDLE_MODULES.q
+		local needsDestruction = __DARKLUA_BUNDLE_MODULES.M
+		local peek = __DARKLUA_BUNDLE_MODULES.u
+		local makeUseCallback = __DARKLUA_BUNDLE_MODULES.N
+		local isState = __DARKLUA_BUNDLE_MODULES.t
 		local class = {}
 		local CLASS_METATABLE = { __index = class }
 		local WEAK_KEYS_METATABLE = {
@@ -1980,20 +2145,20 @@ local mSuccess, mResult = pcall(function()
 			return self
 		end
 
-		__DARKLUA_BUNDLE_MODULES.O = ForPairs
+		__DARKLUA_BUNDLE_MODULES.P = ForPairs
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 		local Types = __DARKLUA_BUNDLE_MODULES.b
-		local parseError = __DARKLUA_BUNDLE_MODULES.K
-		local logErrorNonFatal = __DARKLUA_BUNDLE_MODULES.J
+		local parseError = __DARKLUA_BUNDLE_MODULES.L
+		local logErrorNonFatal = __DARKLUA_BUNDLE_MODULES.K
 		local logError = __DARKLUA_BUNDLE_MODULES.d
-		local logWarn = __DARKLUA_BUNDLE_MODULES.A
-		local cleanup = __DARKLUA_BUNDLE_MODULES.p
-		local needsDestruction = __DARKLUA_BUNDLE_MODULES.L
-		local peek = __DARKLUA_BUNDLE_MODULES.t
-		local makeUseCallback = __DARKLUA_BUNDLE_MODULES.M
-		local isState = __DARKLUA_BUNDLE_MODULES.s
+		local logWarn = __DARKLUA_BUNDLE_MODULES.B
+		local cleanup = __DARKLUA_BUNDLE_MODULES.q
+		local needsDestruction = __DARKLUA_BUNDLE_MODULES.M
+		local peek = __DARKLUA_BUNDLE_MODULES.u
+		local makeUseCallback = __DARKLUA_BUNDLE_MODULES.N
+		local isState = __DARKLUA_BUNDLE_MODULES.t
 		local class = {}
 		local CLASS_METATABLE = { __index = class }
 		local WEAK_KEYS_METATABLE = {
@@ -2188,20 +2353,20 @@ local mSuccess, mResult = pcall(function()
 			return self
 		end
 
-		__DARKLUA_BUNDLE_MODULES.P = ForKeys
+		__DARKLUA_BUNDLE_MODULES.Q = ForKeys
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 		local Types = __DARKLUA_BUNDLE_MODULES.b
-		local parseError = __DARKLUA_BUNDLE_MODULES.K
+		local parseError = __DARKLUA_BUNDLE_MODULES.L
 		local logError = __DARKLUA_BUNDLE_MODULES.d
-		local logErrorNonFatal = __DARKLUA_BUNDLE_MODULES.J
-		local logWarn = __DARKLUA_BUNDLE_MODULES.A
-		local cleanup = __DARKLUA_BUNDLE_MODULES.p
-		local needsDestruction = __DARKLUA_BUNDLE_MODULES.L
-		local peek = __DARKLUA_BUNDLE_MODULES.t
-		local makeUseCallback = __DARKLUA_BUNDLE_MODULES.M
-		local isState = __DARKLUA_BUNDLE_MODULES.s
+		local logErrorNonFatal = __DARKLUA_BUNDLE_MODULES.K
+		local logWarn = __DARKLUA_BUNDLE_MODULES.B
+		local cleanup = __DARKLUA_BUNDLE_MODULES.q
+		local needsDestruction = __DARKLUA_BUNDLE_MODULES.M
+		local peek = __DARKLUA_BUNDLE_MODULES.u
+		local makeUseCallback = __DARKLUA_BUNDLE_MODULES.N
+		local isState = __DARKLUA_BUNDLE_MODULES.t
 		local class = {}
 		local CLASS_METATABLE = { __index = class }
 		local WEAK_KEYS_METATABLE = {
@@ -2405,16 +2570,17 @@ local mSuccess, mResult = pcall(function()
 			return self
 		end
 
-		__DARKLUA_BUNDLE_MODULES.Q = ForValues
+		__DARKLUA_BUNDLE_MODULES.R = ForValues
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 		local Types = __DARKLUA_BUNDLE_MODULES.b
-		local TweenScheduler = __DARKLUA_BUNDLE_MODULES.j
+		local TweenScheduler = __DARKLUA_BUNDLE_MODULES.k
 		local logError = __DARKLUA_BUNDLE_MODULES.d
-		local logErrorNonFatal = __DARKLUA_BUNDLE_MODULES.J
-		local xtypeof = __DARKLUA_BUNDLE_MODULES.q
-		local peek = __DARKLUA_BUNDLE_MODULES.t
+		local logErrorNonFatal = __DARKLUA_BUNDLE_MODULES.K
+		local xtypeof = __DARKLUA_BUNDLE_MODULES.r
+		local peek = __DARKLUA_BUNDLE_MODULES.u
+		local typeof = __DARKLUA_BUNDLE_MODULES.g
 		local class = {}
 		local CLASS_METATABLE = { __index = class }
 		local WEAK_KEYS_METATABLE = {
@@ -2505,7 +2671,7 @@ local mSuccess, mResult = pcall(function()
 			return self
 		end
 
-		__DARKLUA_BUNDLE_MODULES.R = Tween
+		__DARKLUA_BUNDLE_MODULES.S = Tween
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
@@ -2641,18 +2807,19 @@ local mSuccess, mResult = pcall(function()
 			end
 		end
 
-		__DARKLUA_BUNDLE_MODULES.S = unpackType
+		__DARKLUA_BUNDLE_MODULES.T = unpackType
 	end
 	do
 		local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 		local Types = __DARKLUA_BUNDLE_MODULES.b
 		local logError = __DARKLUA_BUNDLE_MODULES.d
-		local logErrorNonFatal = __DARKLUA_BUNDLE_MODULES.J
-		local unpackType = __DARKLUA_BUNDLE_MODULES.S
-		local SpringScheduler = __DARKLUA_BUNDLE_MODULES.m
-		local updateAll = __DARKLUA_BUNDLE_MODULES.i
-		local xtypeof = __DARKLUA_BUNDLE_MODULES.q
-		local peek = __DARKLUA_BUNDLE_MODULES.t
+		local logErrorNonFatal = __DARKLUA_BUNDLE_MODULES.K
+		local unpackType = __DARKLUA_BUNDLE_MODULES.T
+		local SpringScheduler = __DARKLUA_BUNDLE_MODULES.n
+		local updateAll = __DARKLUA_BUNDLE_MODULES.j
+		local xtypeof = __DARKLUA_BUNDLE_MODULES.r
+		local peek = __DARKLUA_BUNDLE_MODULES.u
+		local typeof = __DARKLUA_BUNDLE_MODULES.g
 		local class = {}
 		local CLASS_METATABLE = { __index = class }
 		local WEAK_KEYS_METATABLE = {
@@ -2825,45 +2992,45 @@ local mSuccess, mResult = pcall(function()
 			return self
 		end
 
-		__DARKLUA_BUNDLE_MODULES.T = Spring
+		__DARKLUA_BUNDLE_MODULES.U = Spring
 	end
 	do
 		local function doNothing(...) end
 
-		__DARKLUA_BUNDLE_MODULES.U = doNothing
+		__DARKLUA_BUNDLE_MODULES.V = doNothing
 	end
 
 	local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 	local restrictRead = __DARKLUA_BUNDLE_MODULES.e
-	local bindScheduler = __DARKLUA_BUNDLE_MODULES.n
+	local bindScheduler = __DARKLUA_BUNDLE_MODULES.o
 	local Fusion = restrictRead("Fusion", {
 		version = {
 			major = 0,
 			minor = 3,
 			isRelease = false,
 		},
-		New = __DARKLUA_BUNDLE_MODULES.v,
-		Hydrate = __DARKLUA_BUNDLE_MODULES.w,
-		Ref = __DARKLUA_BUNDLE_MODULES.x,
-		Out = __DARKLUA_BUNDLE_MODULES.y,
-		Cleanup = __DARKLUA_BUNDLE_MODULES.z,
-		Children = __DARKLUA_BUNDLE_MODULES.B,
-		OnEvent = __DARKLUA_BUNDLE_MODULES.C,
-		OnChange = __DARKLUA_BUNDLE_MODULES.D,
-		Attribute = __DARKLUA_BUNDLE_MODULES.E,
-		AttributeChange = __DARKLUA_BUNDLE_MODULES.F,
-		AttributeOut = __DARKLUA_BUNDLE_MODULES.G,
-		Value = __DARKLUA_BUNDLE_MODULES.I,
-		Computed = __DARKLUA_BUNDLE_MODULES.N,
-		ForPairs = __DARKLUA_BUNDLE_MODULES.O,
-		ForKeys = __DARKLUA_BUNDLE_MODULES.P,
-		ForValues = __DARKLUA_BUNDLE_MODULES.Q,
-		Observer = __DARKLUA_BUNDLE_MODULES.r,
-		Tween = __DARKLUA_BUNDLE_MODULES.R,
-		Spring = __DARKLUA_BUNDLE_MODULES.T,
-		cleanup = __DARKLUA_BUNDLE_MODULES.p,
-		doNothing = __DARKLUA_BUNDLE_MODULES.U,
-		peek = __DARKLUA_BUNDLE_MODULES.t,
+		New = __DARKLUA_BUNDLE_MODULES.w,
+		Hydrate = __DARKLUA_BUNDLE_MODULES.x,
+		Ref = __DARKLUA_BUNDLE_MODULES.y,
+		Out = __DARKLUA_BUNDLE_MODULES.z,
+		Cleanup = __DARKLUA_BUNDLE_MODULES.A,
+		Children = __DARKLUA_BUNDLE_MODULES.C,
+		OnEvent = __DARKLUA_BUNDLE_MODULES.D,
+		OnChange = __DARKLUA_BUNDLE_MODULES.E,
+		Attribute = __DARKLUA_BUNDLE_MODULES.F,
+		AttributeChange = __DARKLUA_BUNDLE_MODULES.G,
+		AttributeOut = __DARKLUA_BUNDLE_MODULES.H,
+		Value = __DARKLUA_BUNDLE_MODULES.J,
+		Computed = __DARKLUA_BUNDLE_MODULES.O,
+		ForPairs = __DARKLUA_BUNDLE_MODULES.P,
+		ForKeys = __DARKLUA_BUNDLE_MODULES.Q,
+		ForValues = __DARKLUA_BUNDLE_MODULES.R,
+		Observer = __DARKLUA_BUNDLE_MODULES.s,
+		Tween = __DARKLUA_BUNDLE_MODULES.S,
+		Spring = __DARKLUA_BUNDLE_MODULES.U,
+		cleanup = __DARKLUA_BUNDLE_MODULES.q,
+		doNothing = __DARKLUA_BUNDLE_MODULES.V,
+		peek = __DARKLUA_BUNDLE_MODULES.u,
 	})
 
 	bindScheduler()

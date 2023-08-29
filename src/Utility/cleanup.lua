@@ -11,6 +11,8 @@
 	- an array - `cleanup` will be called on each item
 ]]
 
+local typeof = require "../typeof"
+
 local function cleanupOne(task: any)
 	local taskType = typeof(task)
 

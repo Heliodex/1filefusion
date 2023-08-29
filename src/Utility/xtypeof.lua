@@ -6,6 +6,8 @@
 	Otherwise, returns `typeof()` the argument.
 ]]
 
+local typeof = require "../typeof"
+
 local function xtypeof(x: any)
 	local typeString = typeof(x)
 
