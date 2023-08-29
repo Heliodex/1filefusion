@@ -27,14 +27,14 @@ return function(value)
 			"Instance",
 			{ "ClassName" },
 		},
-		-- {
-		-- 	"Enum",
-		-- 	{ "GetEnumItems" },
-		-- },
-		-- {
-		-- 	"Enums",
-		-- 	{ "MembershipType" }, -- lmao
-		-- },
+		{
+			"Enum",
+			{ "GetEnumItems" },
+		},
+		{
+			"Enums",
+			{ "MembershipType" }, -- lmao
+		},
 		{
 			"RBXScriptSignal",
 			{
@@ -50,6 +50,17 @@ return function(value)
 			{
 				"connected",
 				"disconnect",
+			},
+		},
+		{
+			"TweenInfo",
+			{
+				"EasingDirection",
+				-- "Time",
+				-- "DelayTime",
+				"RepeatCount",
+				"EasingStyle",
+				-- "Reverses",
 			},
 		},
 		{
@@ -132,30 +143,34 @@ return function(value)
 			"Color3",
 			{ "r", "g", "b" },
 		},
-		-- {
-		-- 	"Faces",
-		-- 	{
-		-- 		"Right",
-		-- 		"Top",
-		-- 		"Back",
-		-- 		-- "Left",
-		-- 		-- "Bottom",
-		-- 		-- "Front",
-		-- 	},
-		-- },
+		{
+			"Faces",
+			{
+				"Right",
+				"Top",
+				"Back",
+				-- "Left",
+				-- "Bottom",
+				-- "Front",
+			},
+		},
 	}
 
 	for _, v in ipairs(tests) do
 		local t, test = v[1], v[2]
 
-		local success = pcall(function()
+		local ok, result = pcall(function()
 			for _, prop in ipairs(test) do
-				_ = value[prop]
-				-- Throws if property does not exist
+				if value[prop] == nil then
+					return false
+				end
+				-- Cannot throw if the property does not exist,
+				-- as userdatas may allow nil indexing
 			end
+			return true
 		end)
 
-		if success then
+		if ok and result then
 			return t
 		end
 	end

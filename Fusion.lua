@@ -203,6 +203,18 @@ local mSuccess, mResult = pcall(function()
 					},
 				},
 				{
+					"Enum",
+					{
+						"GetEnumItems",
+					},
+				},
+				{
+					"Enums",
+					{
+						"MembershipType",
+					},
+				},
+				{
 					"RBXScriptSignal",
 					{
 						"connect",
@@ -214,6 +226,14 @@ local mSuccess, mResult = pcall(function()
 					{
 						"connected",
 						"disconnect",
+					},
+				},
+				{
+					"TweenInfo",
+					{
+						"EasingDirection",
+						"RepeatCount",
+						"EasingStyle",
 					},
 				},
 				{
@@ -326,17 +346,29 @@ local mSuccess, mResult = pcall(function()
 						"b",
 					},
 				},
+				{
+					"Faces",
+					{
+						"Right",
+						"Top",
+						"Back",
+					},
+				},
 			}
 
 			for _, v in ipairs(tests) do
 				local t, test = v[1], v[2]
-				local success = pcall(function()
+				local ok, result = pcall(function()
 					for _, prop in ipairs(test) do
-						_ = value[prop]
+						if value[prop] == nil then
+							return false
+						end
 					end
+
+					return true
 				end)
 
-				if success then
+				if ok and result then
 					return t
 				end
 			end
@@ -1761,12 +1793,7 @@ local mSuccess, mResult = pcall(function()
 			end
 
 			local use = makeUseCallback(self.dependencySet)
-
-			print("use", use)
-
 			local ok, newValue, newMetaValue = pcall(self._processor, use)
-
-			print(ok, "- new - ", newValue, "- newMeta - ", newMetaValue)
 
 			if ok then
 				if self._destructor == nil and needsDestruction(newValue) then
@@ -2984,6 +3011,58 @@ local mSuccess, mResult = pcall(function()
 
 		__DARKLUA_BUNDLE_MODULES.V = doNothing
 	end
+	do
+		local TweenInfo = {}
+
+		function TweenInfo.new(
+			time,
+			easingStyle,
+			easingDirection,
+			repeatCount,
+			reverses,
+			delayTime
+		)
+			local proxy = newproxy(true)
+			local mt = getmetatable(proxy)
+
+			time = time or 1
+			easingStyle = easingStyle or Enum.EasingStyle.Quad
+			easingDirection = easingDirection or Enum.EasingDirection.Out
+			repeatCount = repeatCount or 0
+			reverses = reverses or false
+			delayTime = delayTime or 0
+			mt.__index = {
+				Time = time,
+				EasingStyle = easingStyle,
+				EasingDirection = easingDirection,
+				RepeatCount = repeatCount,
+				Reverses = reverses,
+				DelayTime = delayTime,
+			}
+			mt.__newindex = function(_, prop)
+				error(prop .. " cannot be assigned to", math.huge)
+			end
+			mt.__tostring = function()
+				return "Time:"
+					.. tostring(time)
+					.. " DelayTime:"
+					.. tostring(delayTime)
+					.. " RepeatCount:"
+					.. tostring(repeatCount)
+					.. " Reverses:"
+					.. (reverses and "True" or "False")
+					.. " EasingDirection:"
+					.. tostring(easingDirection):split(".")[3]
+					.. " EasingStyle:"
+					.. tostring(easingStyle):split(".")[3]
+			end
+			mt.__metatable = "The metatable is locked"
+
+			return proxy
+		end
+
+		__DARKLUA_BUNDLE_MODULES.W = TweenInfo
+	end
 
 	local PubTypes = __DARKLUA_BUNDLE_MODULES.a
 	local restrictRead = __DARKLUA_BUNDLE_MODULES.e
@@ -3016,6 +3095,8 @@ local mSuccess, mResult = pcall(function()
 		cleanup = __DARKLUA_BUNDLE_MODULES.q,
 		doNothing = __DARKLUA_BUNDLE_MODULES.V,
 		peek = __DARKLUA_BUNDLE_MODULES.u,
+		typeof = __DARKLUA_BUNDLE_MODULES.g,
+		TweenInfo = __DARKLUA_BUNDLE_MODULES.W,
 	})
 
 	bindScheduler()

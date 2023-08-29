@@ -5,7 +5,7 @@
     requires manual cleanup.
 ]]
 
-local typeof = require "../typeof"
+local typeof = require "../Polyfill/typeof"
 
 local function needsDestruction(x: any): boolean
 	return typeof(x) == "Instance"

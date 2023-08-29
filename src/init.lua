@@ -36,6 +36,9 @@ local Fusion = restrictRead("Fusion", {
 	cleanup = require "./Utility/cleanup",
 	doNothing = require "./Utility/doNothing",
 	peek = require "./State/peek",
+
+	typeof = require "./Polyfill/typeof",
+	TweenInfo = require "./Polyfill/TweenInfo",
 }) :: Fusion
 
 export type StateObject<T> = PubTypes.StateObject<T>

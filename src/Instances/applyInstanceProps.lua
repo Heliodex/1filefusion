@@ -19,7 +19,7 @@ local xtypeof = require "../Utility/xtypeof"
 local logError = require "../Logging/logError"
 local Observer = require "../State/Observer"
 local peek = require "../State/peek"
-local typeof = require "../typeof"
+local typeof = require "../Polyfill/typeof"
 
 local function setProperty_unsafe(
 	instance: Instance,

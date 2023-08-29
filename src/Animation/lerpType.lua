@@ -11,7 +11,7 @@
 
 local PubTypes = require "../PubTypes"
 local Oklab = require "../Colour/Oklab"
-local typeof = require "../typeof"
+local typeof = require "../Polyfill/typeof"
 
 local function lerpType(from: any, to: any, ratio: number): any
 	local typeString = typeof(from)
@@ -102,7 +102,11 @@ local function lerpType(from: any, to: any, ratio: number): any
 				(to.Scale - from.Scale) * ratio + from.Scale,
 				(to.Offset - from.Offset) * ratio + from.Offset
 			)
-		elseif typeString == "UDim2" or  typeString == "Vector2" or typeString == "Vector3" then
+		elseif
+			typeString == "UDim2"
+			or typeString == "Vector2"
+			or typeString == "Vector3"
+		then
 			return from:Lerp(to, ratio)
 		elseif typeString == "Vector2int16" then
 			return Vector2int16.new(

@@ -4,7 +4,7 @@
     to recompute if it changed to B.
 ]]
 
-local typeof = require "../typeof"
+local typeof = require "../Polyfill/typeof"
 
 local function isSimilar(a: any, b: any): boolean
 	-- HACK: because tables are mutable data structures, don't make assumptions

@@ -5,10 +5,11 @@ local Fusion = require(ReplicatedStorage.Fusion)
 local New = Fusion.New
 local Children = Fusion.Children
 local OnEvent = Fusion.OnEvent
-local Spring = Fusion.Spring
+local Tween = Fusion.Tween
 local Value = Fusion.Value
 local Computed = Fusion.Computed
 local peek = Fusion.peek
+local TweenInfo = Fusion.TweenInfo
 
 local numClicks = Value(0)
 local position = Value(UDim2.new(0.25, 0, 0.25, 0))
@@ -36,7 +37,7 @@ New "ScreenGui" {
 
 		New "TextLabel" {
 			Name = "Message",
-			Position = Spring(position, 25, 0.5),
+			Position = Tween(position, TweenInfo.new(0.5)),
 			Size = UDim2.new(0, 200, 0, 50),
 
 			BackgroundColor3 = Color3.new(1, 1, 1),

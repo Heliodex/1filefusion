@@ -38,8 +38,7 @@ local function getTweenRatio(tweenInfo: TweenInfo, currentTime: number): number
 		tweenProgress = 2 - tweenProgress
 	end
 
-	local ratio = TweenService:GetValue(tweenProgress, easeStyle, easeDirection)
-	return ratio
+	return TweenService:GetValue(tweenProgress, easeStyle, easeDirection)
 end
 
 return getTweenRatio
