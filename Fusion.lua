@@ -469,7 +469,7 @@ local mSuccess, mResult = pcall(function()
 			local queueSize = 0
 			local queuePos = 1
 
-			for object in root.dependentSet do
+			for object in pairs(root.dependentSet) do
 				queueSize = queueSize + 1
 				queue[queueSize] = object
 				flags[object] = true
@@ -487,8 +487,8 @@ local mSuccess, mResult = pcall(function()
 					end
 				end)()
 
-				if (next).dependentSet ~= nil then
-					for object in (next).dependentSet do
+				if next.dependentSet ~= nil then
+					for object in pairs(next.dependentSet) do
 						queueSize = queueSize + 1
 						queue[queueSize] = object
 					end
@@ -509,9 +509,9 @@ local mSuccess, mResult = pcall(function()
 					counter == 0
 					and flags[next]
 					and next:update()
-					and (next).dependentSet ~= nil
+					and next.dependentSet ~= nil
 				then
-					for object in (next).dependentSet do
+					for object in pairs(next.dependentSet) do
 						flags[object] = true
 					end
 				end
@@ -1687,11 +1687,17 @@ local mSuccess, mResult = pcall(function()
 		local Types = __DARKLUA_BUNDLE_MODULES.b
 
 		local function parseError(err)
+			local trace = "Traceback not available"
+
+			if debug and debug.traceback then
+				trace = debug.traceback(nil, 2)
+			end
+
 			return {
 				type = "Error",
 				raw = err,
 				message = err:gsub("^.+:%d+:%s*", ""),
-				trace = debug.traceback(nil, 2),
+				trace = trace,
 			}
 		end
 
@@ -1755,8 +1761,10 @@ local mSuccess, mResult = pcall(function()
 			end
 
 			local use = makeUseCallback(self.dependencySet)
-			local ok, newValue, newMetaValue =
-				xpcall(self._processor, parseError, use)
+
+			print("use", use)
+
+			local ok, newValue, newMetaValue = pcall(self._processor, use)
 
 			print(ok, "- new - ", newValue, "- newMeta - ", newMetaValue)
 
@@ -1785,7 +1793,7 @@ local mSuccess, mResult = pcall(function()
 
 				return not similar
 			else
-				logErrorNonFatal("computedCallbackError", newValue)
+				logErrorNonFatal("computedCallbackError", parseError(newValue))
 
 				self._oldDependencySet, self.dependencySet =
 					self.dependencySet, self._oldDependencySet

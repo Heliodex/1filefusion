@@ -20,7 +20,7 @@ local function updateAll(root: PubTypes.Dependency)
 	local queueSize = 0
 	local queuePos = 1
 
-	for object in root.dependentSet do
+	for object in pairs(root.dependentSet) do
 		queueSize += 1
 		queue[queueSize] = object
 		flags[object] = true
@@ -37,8 +37,8 @@ local function updateAll(root: PubTypes.Dependency)
 				return counter + 1
 			end
 		end)()
-		if (next :: any).dependentSet ~= nil then
-			for object in (next :: any).dependentSet do
+		if next.dependentSet ~= nil then
+			for object in pairs(next.dependentSet) do
 				queueSize += 1
 				queue[queueSize] = object
 			end
@@ -56,9 +56,9 @@ local function updateAll(root: PubTypes.Dependency)
 			counter == 0
 			and flags[next]
 			and next:update()
-			and (next :: any).dependentSet ~= nil
+			and next.dependentSet ~= nil
 		then
-			for object in (next :: any).dependentSet do
+			for object in pairs(next.dependentSet) do
 				flags[object] = true
 			end
 		end

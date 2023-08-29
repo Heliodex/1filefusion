@@ -8,11 +8,16 @@
 local Types = require "../Types"
 
 local function parseError(err: string): Types.Error
+	local trace = "Traceback not available"
+	if debug and debug.traceback then
+		trace = debug.traceback(nil, 2)
+	end
+
 	return {
 		type = "Error",
 		raw = err,
 		message = err:gsub("^.+:%d+:%s*", ""),
-		trace = debug.traceback(nil, 2),
+		trace = trace,
 	}
 end
 

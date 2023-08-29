@@ -44,8 +44,9 @@ function class:update(): boolean
 	end
 
 	local use = makeUseCallback(self.dependencySet)
-	local ok, newValue, newMetaValue = xpcall(self._processor, parseError, use)
-	print(ok, "- new - ", newValue, "- newMeta - ", newMetaValue)
+	-- local ok, newValue, newMetaValue =
+	-- 	xpcall(self._processor, parseError, use)
+	local ok, newValue, newMetaValue = pcall(self._processor, use)
 
 	if ok then
 		if self._destructor == nil and needsDestruction(newValue) then
@@ -73,7 +74,7 @@ function class:update(): boolean
 	else
 		-- this needs to be non-fatal, because otherwise it'd disrupt the
 		-- update process
-		logErrorNonFatal("computedCallbackError", newValue)
+		logErrorNonFatal("computedCallbackError", parseError(newValue))
 
 		-- restore old dependencies, because the new dependencies may be corrupt
 		self._oldDependencySet, self.dependencySet =
