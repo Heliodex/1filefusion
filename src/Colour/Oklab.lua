@@ -11,9 +11,9 @@ local Oklab = {}
 
 -- Converts a Color3 in RGB space to a Vector3 in Oklab space.
 function Oklab.to(rgb: Color3): Vector3
-	local l = rgb.R * 0.4122214708 + rgb.G * 0.5363325363 + rgb.B * 0.0514459929
-	local m = rgb.R * 0.2119034982 + rgb.G * 0.6806995451 + rgb.B * 0.1073969566
-	local s = rgb.R * 0.0883024619 + rgb.G * 0.2817188376 + rgb.B * 0.6299787005
+	local l = rgb.r * 0.4122214708 + rgb.g * 0.5363325363 + rgb.b * 0.0514459929
+	local m = rgb.r * 0.2119034982 + rgb.g * 0.6806995451 + rgb.b * 0.1073969566
+	local s = rgb.r * 0.0883024619 + rgb.g * 0.2817188376 + rgb.b * 0.6299787005
 
 	local lRoot = l ^ (1 / 3)
 	local mRoot = m ^ (1 / 3)
@@ -42,9 +42,12 @@ function Oklab.from(lab: Vector3, unclamped: boolean?): Color3
 	local blue = l * -0.0041960863 - m * 0.7034186147 + s * 1.7076147010
 
 	if not unclamped then
-		red = math.clamp(red, 0, 1)
-		green = math.clamp(green, 0, 1)
-		blue = math.clamp(blue, 0, 1)
+		-- red = math.clamp(red, 0, 1)
+		-- green = math.clamp(green, 0, 1)
+		-- blue = math.clamp(blue, 0, 1)
+		red = math.max(0, math.min(red, 1))
+		green = math.max(0, math.min(green, 1))
+		blue = math.max(0, math.min(blue, 1))
 	end
 
 	return Color3.new(red, green, blue)

@@ -130,15 +130,15 @@ local mSuccess, mResult = pcall(function()
 		local Oklab = {}
 
 		function Oklab.to(rgb)
-			local l = rgb.R * 0.4122214708
-				+ rgb.G * 0.5363325363
-				+ rgb.B * 0.0514459929
-			local m = rgb.R * 0.2119034982
-				+ rgb.G * 0.6806995451
-				+ rgb.B * 0.1073969566
-			local s = rgb.R * 0.0883024619
-				+ rgb.G * 0.2817188376
-				+ rgb.B * 0.6299787005
+			local l = rgb.r * 0.4122214708
+				+ rgb.g * 0.5363325363
+				+ rgb.b * 0.0514459929
+			local m = rgb.r * 0.2119034982
+				+ rgb.g * 0.6806995451
+				+ rgb.b * 0.1073969566
+			local s = rgb.r * 0.0883024619
+				+ rgb.g * 0.2817188376
+				+ rgb.b * 0.6299787005
 			local lRoot = l ^ 0.3333333333333333
 			local mRoot = m ^ 0.3333333333333333
 			local sRoot = s ^ 0.3333333333333333
@@ -171,9 +171,9 @@ local mSuccess, mResult = pcall(function()
 				+ s * 1.707614701
 
 			if not unclamped then
-				red = math.clamp(red, 0, 1)
-				green = math.clamp(green, 0, 1)
-				blue = math.clamp(blue, 0, 1)
+				red = math.max(0, math.min(red, 1))
+				green = math.max(0, math.min(green, 1))
+				blue = math.max(0, math.min(blue, 1))
 			end
 
 			return Color3.new(red, green, blue)
@@ -1195,7 +1195,95 @@ local mSuccess, mResult = pcall(function()
 		__DARKLUA_BUNDLE_MODULES.p = bindScheduler
 	end
 	do
-		__DARKLUA_BUNDLE_MODULES.q = {}
+		__DARKLUA_BUNDLE_MODULES.q = {
+			BillboardGui = { Active = true },
+			Frame = {
+				BackgroundColor3 = Color3.new(1, 1, 1),
+				BorderColor3 = Color3.new(0, 0, 0),
+				BorderSizePixel = 0,
+			},
+			TextLabel = {
+				BackgroundColor3 = Color3.new(1, 1, 1),
+				BorderColor3 = Color3.new(0, 0, 0),
+				BorderSizePixel = 0,
+				Font = Enum.Font.SourceSans,
+				Text = "",
+				TextColor3 = Color3.new(0, 0, 0),
+				FontSize = Enum.FontSize.Size14,
+			},
+			TextButton = {
+				BackgroundColor3 = Color3.new(1, 1, 1),
+				BorderColor3 = Color3.new(0, 0, 0),
+				BorderSizePixel = 0,
+				AutoButtonColor = false,
+				Font = Enum.Font.SourceSans,
+				Text = "",
+				TextColor3 = Color3.new(0, 0, 0),
+				FontSize = Enum.FontSize.Size14,
+			},
+			TextBox = {
+				BackgroundColor3 = Color3.new(1, 1, 1),
+				BorderColor3 = Color3.new(0, 0, 0),
+				BorderSizePixel = 0,
+				ClearTextOnFocus = false,
+				Font = Enum.Font.SourceSans,
+				Text = "",
+				TextColor3 = Color3.new(0, 0, 0),
+				FontSize = Enum.FontSize.Size14,
+			},
+			ImageLabel = {
+				BackgroundColor3 = Color3.new(1, 1, 1),
+				BorderColor3 = Color3.new(0, 0, 0),
+				BorderSizePixel = 0,
+			},
+			ImageButton = {
+				BackgroundColor3 = Color3.new(1, 1, 1),
+				BorderColor3 = Color3.new(0, 0, 0),
+				BorderSizePixel = 0,
+				AutoButtonColor = false,
+			},
+			SpawnLocation = { Duration = 0 },
+			Part = {
+				Anchored = true,
+				Size = Vector3.new(1, 1, 1),
+				FrontSurface = Enum.SurfaceType.Smooth,
+				BackSurface = Enum.SurfaceType.Smooth,
+				LeftSurface = Enum.SurfaceType.Smooth,
+				RightSurface = Enum.SurfaceType.Smooth,
+				TopSurface = Enum.SurfaceType.Smooth,
+				BottomSurface = Enum.SurfaceType.Smooth,
+			},
+			TrussPart = {
+				Anchored = true,
+				Size = Vector3.new(2, 2, 2),
+				FrontSurface = Enum.SurfaceType.Smooth,
+				BackSurface = Enum.SurfaceType.Smooth,
+				LeftSurface = Enum.SurfaceType.Smooth,
+				RightSurface = Enum.SurfaceType.Smooth,
+				TopSurface = Enum.SurfaceType.Smooth,
+				BottomSurface = Enum.SurfaceType.Smooth,
+			},
+			CornerWedgePart = {
+				Anchored = true,
+				Size = Vector3.new(1, 1, 1),
+				FrontSurface = Enum.SurfaceType.Smooth,
+				BackSurface = Enum.SurfaceType.Smooth,
+				LeftSurface = Enum.SurfaceType.Smooth,
+				RightSurface = Enum.SurfaceType.Smooth,
+				TopSurface = Enum.SurfaceType.Smooth,
+				BottomSurface = Enum.SurfaceType.Smooth,
+			},
+			VehicleSeat = {
+				Anchored = true,
+				Size = Vector3.new(1, 1, 1),
+				FrontSurface = Enum.SurfaceType.Smooth,
+				BackSurface = Enum.SurfaceType.Smooth,
+				LeftSurface = Enum.SurfaceType.Smooth,
+				RightSurface = Enum.SurfaceType.Smooth,
+				TopSurface = Enum.SurfaceType.Smooth,
+				BottomSurface = Enum.SurfaceType.Smooth,
+			},
+		}
 	end
 	do
 		local typeof = __DARKLUA_BUNDLE_MODULES.g
