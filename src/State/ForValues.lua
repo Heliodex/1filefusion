@@ -60,7 +60,10 @@ function class:update(): boolean
 		self._valueCache, self._oldValueCache
 	local newValueCache = self._valueCache
 	local oldValueCache = self._oldValueCache
-	table.clear(newValueCache)
+	-- table.clear(newValueCache)
+	for i, _ in pairs(newValueCache) do
+		newValueCache[i] = nil
+	end
 
 	-- clean out main dependency set
 	for dependency in pairs(self.dependencySet) do
@@ -68,7 +71,10 @@ function class:update(): boolean
 	end
 	self._oldDependencySet, self.dependencySet =
 		self.dependencySet, self._oldDependencySet
-	table.clear(self.dependencySet)
+	-- table.clear(self.dependencySet)
+	for i, _ in pairs(self.dependencySet) do
+		self.dependencySet[i] = nil
+	end
 
 	-- if the input table is a state object, add it as a dependency
 	if inputIsState then
@@ -121,7 +127,10 @@ function class:update(): boolean
 		if shouldRecalculate then
 			valueData.oldDependencySet, valueData.dependencySet =
 				valueData.dependencySet, valueData.oldDependencySet
-			table.clear(valueData.dependencySet)
+			-- table.clear(valueData.dependencySet)
+			for i, _ in pairs(valueData.dependencySet) do
+				valueData.dependencySet[i] = nil
+			end
 
 			local use = makeUseCallback(valueData.dependencySet)
 			local processOK, newOutValue, newMetaValue =
@@ -207,7 +216,10 @@ function class:update(): boolean
 			didChange = true
 		end
 
-		table.clear(oldCachedValueInfo)
+		-- table.clear(oldCachedValueInfo)
+		for i, _ in pairs(oldCachedValueInfo) do
+			oldCachedValueInfo[i] = nil
+		end
 	end
 
 	self._outputTable = outputValues

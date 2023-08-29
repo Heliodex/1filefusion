@@ -48,8 +48,14 @@ function Children:apply(
 
 		oldParented, newParented = newParented, oldParented
 		oldDisconnects, newDisconnects = newDisconnects, oldDisconnects
-		table.clear(newParented)
-		table.clear(newDisconnects)
+		-- table.clear(newParented)
+		for i, _ in pairs(newParented) do
+			newParented[i] = nil
+		end
+		-- table.clear(newDisconnects)
+		for i, _ in pairs(newDisconnects) do
+			newDisconnects[i] = nil
+		end
 
 		local function processChild(child: any, autoName: string?)
 			local childType = typeof(child)

@@ -66,7 +66,10 @@ function class:update(): boolean
 
 	self._oldDependencySet, self.dependencySet =
 		self.dependencySet, self._oldDependencySet
-	table.clear(self.dependencySet)
+	-- table.clear(self.dependencySet)
+	for i, _ in pairs(self.dependencySet) do
+		self.dependencySet[i] = nil
+	end
 
 	-- if the input table is a state object, add it as a dependency
 	if inputIsState then
@@ -80,7 +83,10 @@ function class:update(): boolean
 
 	local oldOutputTable = self._oldOutputTable
 	local newOutputTable = self._outputTable
-	table.clear(newOutputTable)
+	-- table.clear(newOutputTable)
+	for i, _ in pairs(newOutputTable) do
+		newOutputTable[i] = nil
+	end
 
 	-- Step 1: find key/value pairs that changed or were not previously present
 
@@ -114,7 +120,10 @@ function class:update(): boolean
 		if shouldRecalculate then
 			keyData.oldDependencySet, keyData.dependencySet =
 				keyData.dependencySet, keyData.oldDependencySet
-			table.clear(keyData.dependencySet)
+			-- table.clear(keyData.dependencySet)
+			for i, _ in pairs(keyData.dependencySet) do
+				keyData.dependencySet[i] = nil
+			end
 
 			local use = makeUseCallback(keyData.dependencySet)
 			local processOK, newOutKey, newOutValue, newMetaValue =

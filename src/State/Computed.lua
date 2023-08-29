@@ -38,7 +38,10 @@ function class:update(): boolean
 	-- overhead of allocating new tables each update.
 	self._oldDependencySet, self.dependencySet =
 		self.dependencySet, self._oldDependencySet
-	table.clear(self.dependencySet)
+	-- table.clear(self.dependencySet)
+	for i, _ in pairs(self.dependencySet) do
+		self.dependencySet[i] = nil
+	end
 
 	local use = makeUseCallback(self.dependencySet)
 	local ok, newValue, newMetaValue = xpcall(self._processor, parseError, use)

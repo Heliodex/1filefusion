@@ -20,8 +20,12 @@ local function OnChange(propertyName: string): PubTypes.SpecialKey
 		applyTo: Instance,
 		cleanupTasks: { PubTypes.Task }
 	)
-		local ok, event =
-			pcall(applyTo.GetPropertyChangedSignal, applyTo, propertyName)
+		-- local ok, event =
+		-- 	pcall(applyTo.GetPropertyChangedSignal, applyTo, propertyName)
+		local ok, event = pcall(function()
+			return applyTo.Changed
+		end)
+
 		if not ok then
 			logError(
 				"cannotConnectChange",
@@ -34,8 +38,10 @@ local function OnChange(propertyName: string): PubTypes.SpecialKey
 		else
 			table.insert(
 				cleanupTasks,
-				event:connect(function()
-					callback((applyTo :: any)[propertyName])
+				event:connect(function(prop)
+					if prop == propertyName then
+						callback((applyTo :: any)[propertyName])
+					end
 				end)
 			)
 		end

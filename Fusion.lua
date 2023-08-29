@@ -210,6 +210,13 @@ local mSuccess, mResult = pcall(function()
 					},
 				},
 				{
+					"RBXScriptConnection",
+					{
+						"connected",
+						"disconnect",
+					},
+				},
+				{
 					"CFrame",
 					{
 						"p",
@@ -283,6 +290,14 @@ local mSuccess, mResult = pcall(function()
 					{
 						"Scale",
 						"Offset",
+					},
+				},
+				{
+					"Axes",
+					{
+						"X",
+						"Y",
+						"Z",
 					},
 				},
 				{
@@ -1041,9 +1056,13 @@ local mSuccess, mResult = pcall(function()
 				key:apply(value, applyTo, cleanupTasks)
 			end
 
-			applyTo.Destroying:connect(function()
-				cleanup(cleanupTasks)
-			end)
+			if applyTo.Parent then
+				game.DescendantRemoving:connect(function(descendant)
+					if descendant == applyTo then
+						cleanup(cleanupTasks)
+					end
+				end)
+			end
 		end
 
 		__DARKLUA_BUNDLE_MODULES.v = applyInstanceProps
@@ -1128,11 +1147,9 @@ local mSuccess, mResult = pcall(function()
 			outKey.stage = "observer"
 
 			function outKey:apply(outState, applyTo, cleanupTasks)
-				local ok, event = pcall(
-					applyTo.GetPropertyChangedSignal,
-					applyTo,
-					propertyName
-				)
+				local ok, event = pcall(function()
+					return applyTo.Changed
+				end)
 
 				if not ok then
 					logError(
@@ -1149,8 +1166,10 @@ local mSuccess, mResult = pcall(function()
 					outState:set((applyTo)[propertyName])
 					table.insert(
 						cleanupTasks,
-						event:connect(function()
-							outState:set((applyTo)[propertyName])
+						event:connect(function(prop)
+							if prop == propertyName then
+								outState:set((applyTo)[propertyName])
+							end
 						end)
 					)
 					table.insert(cleanupTasks, function()
@@ -1232,8 +1251,12 @@ local mSuccess, mResult = pcall(function()
 				oldParented, newParented = newParented, oldParented
 				oldDisconnects, newDisconnects = newDisconnects, oldDisconnects
 
-				table.clear(newParented)
-				table.clear(newDisconnects)
+				for i, _ in pairs(newParented) do
+					newParented[i] = nil
+				end
+				for i, _ in pairs(newDisconnects) do
+					newDisconnects[i] = nil
+				end
 
 				local function processChild(child, autoName)
 					local childType = typeof(child)
@@ -1367,11 +1390,9 @@ local mSuccess, mResult = pcall(function()
 			changeKey.stage = "observer"
 
 			function changeKey:apply(callback, applyTo, cleanupTasks)
-				local ok, event = pcall(
-					applyTo.GetPropertyChangedSignal,
-					applyTo,
-					propertyName
-				)
+				local ok, event = pcall(function()
+					return applyTo.Changed
+				end)
 
 				if not ok then
 					logError(
@@ -1385,8 +1406,10 @@ local mSuccess, mResult = pcall(function()
 				else
 					table.insert(
 						cleanupTasks,
-						event:connect(function()
-							callback((applyTo)[propertyName])
+						event:connect(function(prop)
+							if prop == propertyName then
+								callback((applyTo)[propertyName])
+							end
 						end)
 					)
 				end
@@ -1727,7 +1750,9 @@ local mSuccess, mResult = pcall(function()
 			self._oldDependencySet, self.dependencySet =
 				self.dependencySet, self._oldDependencySet
 
-			table.clear(self.dependencySet)
+			for i, _ in pairs(self.dependencySet) do
+				self.dependencySet[i] = nil
+			end
 
 			local use = makeUseCallback(self.dependencySet)
 			local ok, newValue, newMetaValue =
@@ -1828,7 +1853,9 @@ local mSuccess, mResult = pcall(function()
 			self._oldDependencySet, self.dependencySet =
 				self.dependencySet, self._oldDependencySet
 
-			table.clear(self.dependencySet)
+			for i, _ in pairs(self.dependencySet) do
+				self.dependencySet[i] = nil
+			end
 
 			if inputIsState then
 				self._inputTable.dependentSet[self] = true
@@ -1841,8 +1868,9 @@ local mSuccess, mResult = pcall(function()
 			local oldOutputTable = self._oldOutputTable
 			local newOutputTable = self._outputTable
 
-			table.clear(newOutputTable)
-
+			for i, _ in pairs(newOutputTable) do
+				newOutputTable[i] = nil
+			end
 			for newInKey, newInValue in pairs(newInputTable) do
 				local keyData = self._keyData[newInKey]
 
@@ -1876,7 +1904,9 @@ local mSuccess, mResult = pcall(function()
 					keyData.oldDependencySet, keyData.dependencySet =
 						keyData.dependencySet, keyData.oldDependencySet
 
-					table.clear(keyData.dependencySet)
+					for i, _ in pairs(keyData.dependencySet) do
+						keyData.dependencySet[i] = nil
+					end
 
 					local use = makeUseCallback(keyData.dependencySet)
 					local processOK, newOutKey, newOutValue, newMetaValue =
@@ -2106,7 +2136,9 @@ local mSuccess, mResult = pcall(function()
 			self._oldDependencySet, self.dependencySet =
 				self.dependencySet, self._oldDependencySet
 
-			table.clear(self.dependencySet)
+			for i, _ in pairs(self.dependencySet) do
+				self.dependencySet[i] = nil
+			end
 
 			if inputIsState then
 				self._inputTable.dependentSet[self] = true
@@ -2146,7 +2178,9 @@ local mSuccess, mResult = pcall(function()
 					keyData.oldDependencySet, keyData.dependencySet =
 						keyData.dependencySet, keyData.oldDependencySet
 
-					table.clear(keyData.dependencySet)
+					for i, _ in pairs(keyData.dependencySet) do
+						keyData.dependencySet[i] = nil
+					end
 
 					local use = makeUseCallback(keyData.dependencySet)
 					local processOK, newOutKey, newMetaValue =
@@ -2309,8 +2343,9 @@ local mSuccess, mResult = pcall(function()
 			local newValueCache = self._valueCache
 			local oldValueCache = self._oldValueCache
 
-			table.clear(newValueCache)
-
+			for i, _ in pairs(newValueCache) do
+				newValueCache[i] = nil
+			end
 			for dependency in pairs(self.dependencySet) do
 				dependency.dependentSet[self] = nil
 			end
@@ -2318,7 +2353,9 @@ local mSuccess, mResult = pcall(function()
 			self._oldDependencySet, self.dependencySet =
 				self.dependencySet, self._oldDependencySet
 
-			table.clear(self.dependencySet)
+			for i, _ in pairs(self.dependencySet) do
+				self.dependencySet[i] = nil
+			end
 
 			if inputIsState then
 				self._inputTable.dependentSet[self] = true
@@ -2376,7 +2413,9 @@ local mSuccess, mResult = pcall(function()
 					valueData.oldDependencySet, valueData.dependencySet =
 						valueData.dependencySet, valueData.oldDependencySet
 
-					table.clear(valueData.dependencySet)
+					for i, _ in pairs(valueData.dependencySet) do
+						valueData.dependencySet[i] = nil
+					end
 
 					local use = makeUseCallback(valueData.dependencySet)
 					local processOK, newOutValue, newMetaValue =
@@ -2457,8 +2496,9 @@ local mSuccess, mResult = pcall(function()
 
 					didChange = true
 				end
-
-				table.clear(oldCachedValueInfo)
+				for i, _ in pairs(oldCachedValueInfo) do
+					oldCachedValueInfo[i] = nil
+				end
 			end
 
 			self._outputTable = outputValues

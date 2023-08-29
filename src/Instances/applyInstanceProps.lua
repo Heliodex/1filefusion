@@ -143,9 +143,17 @@ local function applyInstanceProps(
 		key:apply(value, applyTo, cleanupTasks)
 	end
 
-	applyTo.Destroying:connect(function()
-		cleanup(cleanupTasks)
-	end)
+	-- applyTo.Destroying:connect(function()
+	-- 	cleanup(cleanupTasks)
+	-- end)
+
+	if applyTo.Parent then -- close enough?
+		game.DescendantRemoving:connect(function(descendant)
+			if descendant == applyTo then
+				cleanup(cleanupTasks)
+			end
+		end)
+	end
 end
 
 return applyInstanceProps

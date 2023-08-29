@@ -20,8 +20,12 @@ local function Out(propertyName: string): PubTypes.SpecialKey
 		applyTo: Instance,
 		cleanupTasks: { PubTypes.Task }
 	)
-		local ok, event =
-			pcall(applyTo.GetPropertyChangedSignal, applyTo, propertyName)
+		-- local ok, event =
+		-- 	pcall(applyTo.GetPropertyChangedSignal, applyTo, propertyName)
+		local ok, event = pcall(function()
+			return applyTo.Changed
+		end)
+
 		if not ok then
 			logError("invalidOutProperty", nil, applyTo.ClassName, propertyName)
 		elseif xtypeof(outState) ~= "State" or outState.kind ~= "Value" then
@@ -30,8 +34,10 @@ local function Out(propertyName: string): PubTypes.SpecialKey
 			outState:set((applyTo :: any)[propertyName])
 			table.insert(
 				cleanupTasks,
-				event:connect(function()
-					outState:set((applyTo :: any)[propertyName])
+				event:connect(function(prop)
+					if prop == propertyName then
+						outState:set((applyTo :: any)[propertyName])
+					end
 				end)
 			)
 			table.insert(cleanupTasks, function()

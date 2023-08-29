@@ -46,6 +46,13 @@ return function(value)
 			},
 		},
 		{
+			"RBXScriptConnection",
+			{
+				"connected",
+				"disconnect",
+			},
+		},
+		{
 			"CFrame",
 			{
 				"p",
@@ -102,10 +109,10 @@ return function(value)
 			"UDim",
 			{ "Scale", "Offset" },
 		},
-		-- {
-		-- 	"Axes",
-		-- 	{ "X", "Y", "Z" },
-		-- },
+		{
+			"Axes",
+			{ "X", "Y", "Z" },
+		},
 		{
 			"UDim2",
 			{ "X", "Y" },

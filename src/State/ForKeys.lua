@@ -68,7 +68,10 @@ function class:update(): boolean
 
 	self._oldDependencySet, self.dependencySet =
 		self.dependencySet, self._oldDependencySet
-	table.clear(self.dependencySet)
+	-- table.clear(self.dependencySet)
+	for i, _ in pairs(self.dependencySet) do
+		self.dependencySet[i] = nil
+	end
 
 	-- if the input table is a state object, add it as a dependency
 	if inputIsState then
@@ -107,7 +110,10 @@ function class:update(): boolean
 		if shouldRecalculate then
 			keyData.oldDependencySet, keyData.dependencySet =
 				keyData.dependencySet, keyData.oldDependencySet
-			table.clear(keyData.dependencySet)
+			-- table.clear(keyData.dependencySet)
+			for i, _ in pairs(keyData.dependencySet) do
+				keyData.dependencySet[i] = nil
+			end
 
 			local use = makeUseCallback(keyData.dependencySet)
 			local processOK, newOutKey, newMetaValue =
