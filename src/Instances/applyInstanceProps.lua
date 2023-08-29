@@ -77,10 +77,13 @@ local function bindProperty(
 		local function updateLater()
 			if not willUpdate then
 				willUpdate = true
-				task.defer(function()
+				-- task.defer(function()
+				-- Delay(0, function()
+				-- fuckj up
+				coroutine.resume(coroutine.create(function()
 					willUpdate = false
 					setProperty(instance, property, peek(value))
-				end)
+				end))
 			end
 		end
 

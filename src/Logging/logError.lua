@@ -24,14 +24,15 @@ local function logError(messageID: string, errObj: Types.Error?, ...)
 			...
 		)
 	else
-		formatString = formatString:gsub("ERROR_MESSAGE", errObj.message)
+		formatString =
+			formatString:gsub("ERROR_MESSAGE", tostring(errObj.message))
 		errorString = string.format(
 			"[Fusion] "
 				.. formatString
 				.. "\n(ID: "
 				.. messageID
 				.. ")\n---- Stack trace ----\n"
-				.. errObj.trace,
+				.. tostring(errObj.trace),
 			...
 		)
 	end

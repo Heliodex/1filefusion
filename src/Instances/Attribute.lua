@@ -26,10 +26,13 @@ local function bindAttribute(
 		local function update()
 			if not didDefer then
 				didDefer = true
-				task.defer(function()
+				-- task.defer(function()
+				-- Delay(0, function()
+				-- fuckj up
+				coroutine.resume(coroutine.create(function()
 					didDefer = false
 					setAttribute(instance, attribute, peek(value))
-				end)
+				end))
 			end
 		end
 		setAttribute(instance, attribute, peek(value))

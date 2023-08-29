@@ -138,7 +138,10 @@ function Children:apply(
 	queueUpdate = function()
 		if not updateQueued then
 			updateQueued = true
-			task.defer(updateChildren)
+			-- task.defer(updateChildren)
+			-- Delay(0, updateChildren)
+			-- fuckj up
+			coroutine.resume(coroutine.create(updateChildren))
 		end
 	end
 

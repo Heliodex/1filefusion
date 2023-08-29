@@ -23,7 +23,7 @@ local strongRefs: Set<Types.Observer> = {}
 ]]
 function class:update(): boolean
 	for _, callback in pairs(self._changeListeners) do
-		task.spawn(callback)
+		Spawn(callback)
 	end
 	return false
 end
@@ -66,7 +66,7 @@ end
 	immediately.
 ]]
 function class:onBind(callback: () -> ()): () -> ()
-	task.spawn(callback)
+	Spawn(callback)
 	return self:onChange(callback)
 end
 

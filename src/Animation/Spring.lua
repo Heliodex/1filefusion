@@ -123,8 +123,17 @@ function class:update(): boolean
 			-- position and velocity tables
 			self._currentValue = self._goalValue
 
-			local springPositions = table.create(numSprings, 0)
-			local springVelocities = table.create(numSprings, 0)
+			-- local springPositions = (numSprings, 0)
+			local springPositions = {}
+			for i = 1, numSprings do
+				springPositions[i] = 0
+			end
+			-- local springVelocities = (numSprings, 0)
+			local springVelocities = {}
+			for i = 1, numSprings do
+				springVelocities[i] = 0
+			end
+
 			for index, springGoal in ipairs(springGoals) do
 				springPositions[index] = springGoal
 			end

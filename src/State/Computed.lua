@@ -45,6 +45,7 @@ function class:update(): boolean
 
 	local use = makeUseCallback(self.dependencySet)
 	local ok, newValue, newMetaValue = xpcall(self._processor, parseError, use)
+	print(ok, "- new - ", newValue, "- newMeta - ", newMetaValue)
 
 	if ok then
 		if self._destructor == nil and needsDestruction(newValue) then
@@ -60,6 +61,7 @@ function class:update(): boolean
 		if self._destructor ~= nil then
 			self._destructor(oldValue)
 		end
+		print("computed update", newValue)
 		self._value = newValue
 
 		-- add this object to the dependencies' dependent sets

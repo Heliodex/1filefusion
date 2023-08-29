@@ -81,14 +81,14 @@ local mSuccess, mResult = pcall(function()
 				)
 			else
 				formatString =
-					formatString:gsub("ERROR_MESSAGE", errObj.message)
+					formatString:gsub("ERROR_MESSAGE", tostring(errObj.message))
 				errorString = string.format(
 					"[Fusion] "
 						.. formatString
 						.. "\n(ID: "
 						.. messageID
 						.. ")\n---- Stack trace ----\n"
-						.. errObj.trace,
+						.. tostring(errObj.trace),
 					...
 				)
 			end
@@ -861,7 +861,7 @@ local mSuccess, mResult = pcall(function()
 
 		function class:update()
 			for _, callback in pairs(self._changeListeners) do
-				task.spawn(callback)
+				Spawn(callback)
 			end
 
 			return false
@@ -890,7 +890,7 @@ local mSuccess, mResult = pcall(function()
 			end
 		end
 		function class:onBind(callback)
-			task.spawn(callback)
+			Spawn(callback)
 
 			return self:onChange(callback)
 		end
@@ -992,11 +992,11 @@ local mSuccess, mResult = pcall(function()
 					if not willUpdate then
 						willUpdate = true
 
-						task.defer(function()
+						coroutine.resume(coroutine.create(function()
 							willUpdate = false
 
 							setProperty(instance, property, peek(value))
-						end)
+						end))
 					end
 				end
 
@@ -1322,7 +1322,7 @@ local mSuccess, mResult = pcall(function()
 				if not updateQueued then
 					updateQueued = true
 
-					task.defer(updateChildren)
+					coroutine.resume(coroutine.create(updateChildren))
 				end
 			end
 
@@ -1438,11 +1438,11 @@ local mSuccess, mResult = pcall(function()
 					if not didDefer then
 						didDefer = true
 
-						task.defer(function()
+						coroutine.resume(coroutine.create(function()
 							didDefer = false
 
 							setAttribute(instance, attribute, peek(value))
-						end)
+						end))
 					end
 				end
 
@@ -1664,19 +1664,19 @@ local mSuccess, mResult = pcall(function()
 				)
 			else
 				formatString =
-					formatString:gsub("ERROR_MESSAGE", errObj.message)
+					formatString:gsub("ERROR_MESSAGE", tostring(errObj.message))
 				errorString = string.format(
 					"[Fusion] "
 						.. formatString
 						.. "\n(ID: "
 						.. messageID
 						.. ")\n---- Stack trace ----\n"
-						.. errObj.trace,
+						.. tostring(errObj.trace),
 					...
 				)
 			end
 
-			task.spawn(function(...)
+			Spawn(function(...)
 				error(errorString:gsub("\n", "\n    "), 0)
 			end, ...)
 		end
@@ -1758,6 +1758,8 @@ local mSuccess, mResult = pcall(function()
 			local ok, newValue, newMetaValue =
 				xpcall(self._processor, parseError, use)
 
+			print(ok, "- new - ", newValue, "- newMeta - ", newMetaValue)
+
 			if ok then
 				if self._destructor == nil and needsDestruction(newValue) then
 					logWarn "destructorNeededComputed"
@@ -1772,6 +1774,8 @@ local mSuccess, mResult = pcall(function()
 				if self._destructor ~= nil then
 					self._destructor(oldValue)
 				end
+
+				print("computed update", newValue)
 
 				self._value = newValue
 
@@ -2883,8 +2887,17 @@ local mSuccess, mResult = pcall(function()
 				if newType ~= oldType then
 					self._currentValue = self._goalValue
 
-					local springPositions = table.create(numSprings, 0)
-					local springVelocities = table.create(numSprings, 0)
+					local springPositions = {}
+
+					for i = 1, numSprings do
+						springPositions[i] = 0
+					end
+
+					local springVelocities = {}
+
+					for i = 1, numSprings do
+						springVelocities[i] = 0
+					end
 
 					for index, springGoal in ipairs(springGoals) do
 						springPositions[index] = springGoal
