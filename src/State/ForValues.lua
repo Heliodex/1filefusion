@@ -133,8 +133,10 @@ function class:update(): boolean
 			end
 
 			local use = makeUseCallback(valueData.dependencySet)
+			-- local processOK, newOutValue, newMetaValue =
+			-- 	xpcall(self._processor, parseError, use, inValue)
 			local processOK, newOutValue, newMetaValue =
-				xpcall(self._processor, parseError, use, inValue)
+				pcall(self._processor, use, inValue)
 
 			if processOK then
 				if
@@ -149,14 +151,13 @@ function class:update(): boolean
 
 				-- pass the old value to the destructor if it exists
 				if value ~= nil then
-					local destructOK, err = xpcall(
-						self._destructor or cleanup,
-						parseError,
-						value,
-						meta
-					)
+					local destructOK, err =
+						pcall(self._destructor or cleanup, value, meta)
 					if not destructOK then
-						logErrorNonFatal("forValuesDestructorError", err)
+						logErrorNonFatal(
+							"forValuesDestructorError",
+							parseError(err)
+						)
 					end
 				end
 
@@ -168,7 +169,10 @@ function class:update(): boolean
 				-- restore old dependencies, because the new dependencies may be corrupt
 				valueData.oldDependencySet, valueData.dependencySet =
 					valueData.dependencySet, valueData.oldDependencySet
-				logErrorNonFatal("forValuesProcessorError", newOutValue)
+				logErrorNonFatal(
+					"forValuesProcessorError",
+					parseError(newOutValue)
+				)
 			end
 		end
 
@@ -203,14 +207,10 @@ function class:update(): boolean
 			local oldValue = valueInfo.value
 			local oldMetaValue = valueInfo.meta
 
-			local destructOK, err = xpcall(
-				self._destructor or cleanup,
-				parseError,
-				oldValue,
-				oldMetaValue
-			)
+			local destructOK, err =
+				pcall(self._destructor or cleanup, oldValue, oldMetaValue)
 			if not destructOK then
-				logErrorNonFatal("forValuesDestructorError", err)
+				logErrorNonFatal("forValuesDestructorError", parseError(err))
 			end
 
 			didChange = true

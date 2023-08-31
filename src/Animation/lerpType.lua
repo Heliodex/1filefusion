@@ -128,9 +128,8 @@ local function lerpType(from: any, to: any, ratio: number): any
 	-- fallback case: the types are different or not animatable
 	if ratio < 0.5 then
 		return from
-	else
-		return to
 	end
+	return to
 end
 
 return lerpType

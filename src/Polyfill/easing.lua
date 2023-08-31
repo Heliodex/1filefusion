@@ -49,20 +49,18 @@ easing.Quad.Out = function(t, b, c)
 end
 
 easing.Quad.InOut = function(t, b, c)
-	t = t * 2
+	t *= 2
 	if t < 1 then
 		return c / 2 * pow(t, 2) + b
-	else
-		return -c / 2 * ((t - 1) * (t - 3) - 1) + b
 	end
+	return -c / 2 * ((t - 1) * (t - 3) - 1) + b
 end
 
 easing.Quad.OutIn = function(t, b, c)
-	if t < 1 / 2 then
+	if t < 0.5 then
 		return easing.Quad.Out(t * 2, b, c / 2)
-	else
-		return easing.Quad.In((t * 2) - 1, b + c / 2, c / 2)
 	end
+	return easing.Quad.In((t * 2) - 1, b + c / 2, c / 2)
 end
 
 easing.Cubic.In = function(t, b, c)
@@ -70,26 +68,24 @@ easing.Cubic.In = function(t, b, c)
 end
 
 easing.Cubic.Out = function(t, b, c)
-	t = t - 1
+	t -= 1
 	return c * (pow(t, 3) + 1) + b
 end
 
 easing.Cubic.InOut = function(t, b, c)
-	t = t * 2
+	t *= 2
 	if t < 1 then
 		return c / 2 * t * t * t + b
-	else
-		t = t - 2
-		return c / 2 * (t * t * t + 2) + b
 	end
+	t -= 2
+	return c / 2 * (t * t * t + 2) + b
 end
 
 easing.Cubic.OutIn = function(t, b, c)
-	if t < 1 / 2 then
+	if t < 0.5 then
 		return easing.Cubic.Out(t * 2, b, c / 2)
-	else
-		return easing.Cubic.In((t * 2) - 1, b + c / 2, c / 2)
 	end
+	return easing.Cubic.In((t * 2) - 1, b + c / 2, c / 2)
 end
 
 easing.Quart.In = function(t, b, c)
@@ -97,26 +93,24 @@ easing.Quart.In = function(t, b, c)
 end
 
 easing.Quart.Out = function(t, b, c)
-	t = t - 1
+	t -= 1
 	return -c * (pow(t, 4) - 1) + b
 end
 
 easing.Quart.InOut = function(t, b, c)
-	t = t * 2
+	t *= 2
 	if t < 1 then
 		return c / 2 * pow(t, 4) + b
-	else
-		t = t - 2
-		return -c / 2 * (pow(t, 4) - 2) + b
 	end
+	t -= 2
+	return -c / 2 * (pow(t, 4) - 2) + b
 end
 
 easing.Quart.OutIn = function(t, b, c)
-	if t < 1 / 2 then
+	if t < 0.5 then
 		return easing.Quart.Out(t * 2, b, c / 2)
-	else
-		return easing.Quart.In((t * 2) - 1, b + c / 2, c / 2)
 	end
+	return easing.Quart.In((t * 2) - 1, b + c / 2, c / 2)
 end
 
 easing.Quint.In = function(t, b, c)
@@ -124,26 +118,24 @@ easing.Quint.In = function(t, b, c)
 end
 
 easing.Quint.Out = function(t, b, c)
-	t = t - 1
+	t -= 1
 	return c * (pow(t, 5) + 1) + b
 end
 
 easing.Quint.InOut = function(t, b, c)
-	t = t * 2
+	t *= 2
 	if t < 1 then
 		return c / 2 * pow(t, 5) + b
-	else
-		t = t - 2
-		return c / 2 * (pow(t, 5) + 2) + b
 	end
+	t -= 2
+	return c / 2 * (pow(t, 5) + 2) + b
 end
 
 easing.Quint.OutIn = function(t, b, c)
-	if t < 1 / 2 then
+	if t < 0.5 then
 		return easing.Quint.Out(t * 2, b, c / 2)
-	else
-		return easing.Quint.In((t * 2) - 1, b + c / 2, c / 2)
 	end
+	return easing.Quint.In((t * 2) - 1, b + c / 2, c / 2)
 end
 
 easing.Sine.In = function(t, b, c)
@@ -159,51 +151,45 @@ easing.Sine.InOut = function(t, b, c)
 end
 
 easing.Sine.OutIn = function(t, b, c)
-	if t < 1 / 2 then
+	if t < 0.5 then
 		return easing.Sine.Out(t * 2, b, c / 2)
-	else
-		return easing.Sine.In((t * 2) - 1, b + c / 2, c / 2)
 	end
+	return easing.Sine.In((t * 2) - 1, b + c / 2, c / 2)
 end
 
 easing.Exponential.In = function(t, b, c)
 	if t == 0 then
 		return b
-	else
-		return c * pow(2, 10 * (t - 1)) + b - c * 0.001
 	end
+	return c * pow(2, 10 * (t - 1)) + b - c * 0.001
 end
 
 easing.Exponential.Out = function(t, b, c)
 	if t == 1 then
 		return b + c
-	else
-		return c * 1.001 * (-pow(2, -10 * t) + 1) + b
 	end
+	return c * 1.001 * (-pow(2, -10 * t) + 1) + b
 end
 
 easing.Exponential.InOut = function(t, b, c)
 	if t == 0 then
 		return b
-	end
-	if t == 1 then
+	elseif t == 1 then
 		return b + c
 	end
-	t = t * 2
+	t *= 2
 	if t < 1 then
 		return c / 2 * pow(2, 10 * (t - 1)) + b - c * 0.0005
-	else
-		t = t - 1
-		return c / 2 * 1.0005 * (-pow(2, -10 * t) + 2) + b
 	end
+	t -= 1
+	return c / 2 * 1.0005 * (-pow(2, -10 * t) + 2) + b
 end
 
 easing.Exponential.OutIn = function(t, b, c)
-	if t < 1 / 2 then
+	if t < 0.5 then
 		return t.Exponential.Out(t * 2, b, c / 2)
-	else
-		return t.Exponential.In((t * 2) - 1, b + c / 2, c / 2)
 	end
+	return t.Exponential.In((t * 2) - 1, b + c / 2, c / 2)
 end
 
 easing.Circular.In = function(t, b, c)
@@ -211,43 +197,39 @@ easing.Circular.In = function(t, b, c)
 end
 
 easing.Circular.Out = function(t, b, c)
-	t = t - 1
+	t -= 1
 	return (c * sqrt(1 - pow(t, 2)) + b)
 end
 
 easing.Circular.InOut = function(t, b, c)
-	t = t * 2
+	t *= 2
 	if t < 1 then
 		return -c / 2 * (sqrt(1 - t * t) - 1) + b
-	else
-		t = t - 2
-		return c / 2 * (sqrt(1 - t * t) + 1) + b
 	end
+	t -= 2
+	return c / 2 * (sqrt(1 - t * t) + 1) + b
 end
 
 easing.Circular.OutIn = function(t, b, c)
-	if t < 1 / 2 then
+	if t < 0.5 then
 		return easing.Circular.Out(t * 2, b, c / 2)
-	else
-		return easing.Circular.In((t * 2) - 1, b + c / 2, c / 2)
 	end
+	return easing.Circular.In((t * 2) - 1, b + c / 2, c / 2)
 end
 
 easing.Elastic.In = function(t, b, c) --, a, p)
 	if t == 0 then
 		return b
-	end
-
-	if t == 1 then
+	elseif t == 1 then
 		return b + c
 	end
 
-	local p = 1 * 0.3
+	local p = 0.3
 	local s
 
 	s = p / 4
 
-	t = t - 1
+	t -= 1
 
 	return -(c * pow(2, 10 * t) * sin((t * 1 - s) * (2 * pi) / p)) + b
 end
@@ -255,9 +237,7 @@ end
 easing.Elastic.Out = function(t, b, c) --, a, p)
 	if t == 0 then
 		return b
-	end
-
-	if t == 1 then
+	elseif t == 1 then
 		return b + c
 	end
 
@@ -273,7 +253,7 @@ easing.Elastic.InOut = function(t, b, c) --, a, p)
 		return b
 	end
 
-	t = t * 2
+	t *= 2
 
 	if t == 2 then
 		return b + c
@@ -290,21 +270,18 @@ easing.Elastic.InOut = function(t, b, c) --, a, p)
 		s = p / (2 * pi) * asin(c / a)
 	end
 
+	t -= 1
 	if t < 1 then
-		t = t - 1
 		return -0.5 * (a * pow(2, 10 * t) * sin((t - s) * (2 * pi) / p)) + b
-	else
-		t = t - 1
-		return a * pow(2, -10 * t) * sin((t - s) * (2 * pi) / p) * 0.5 + c + b
 	end
+	return a * pow(2, -10 * t) * sin((t - s) * (2 * pi) / p) * 0.5 + c + b
 end
 
 easing.Elastic.OutIn = function(t, b, c) --, a, p)
-	if t < 1 / 2 then
+	if t < 0.5 then
 		return easing.Elastic.Out(t * 2, b, c / 2)
-	else
-		return easing.Elastic.In((t * 2) - 1, b + c / 2, c / 2)
 	end
+	return easing.Elastic.In((t * 2) - 1, b + c / 2, c / 2)
 end
 
 easing.Back.In = function(t, b, c) --, s)
@@ -314,42 +291,39 @@ end
 
 easing.Back.Out = function(t, b, c) --, s)
 	local s = 1.70158
-	t = t - 1
+	t -= 1
 	return c * (t * t * ((s + 1) * t + s) + 1) + b
 end
 
 easing.Back.InOut = function(t, b, c) --, s)
 	local s = 2.5949095
-	t = t * 2
+	t *= 2
 	if t < 1 then
 		return c / 2 * (t * t * ((s + 1) * t - s)) + b
-	else
-		t = t - 2
-		return c / 2 * (t * t * ((s + 1) * t + s) + 2) + b
 	end
+	t -= 2
+	return c / 2 * (t * t * ((s + 1) * t + s) + 2) + b
 end
 
 easing.Back.OutIn = function(t, b, c) --, s)
-	if t < 1 / 2 then
+	if t < 0.5 then
 		return easing.Back.Out(t * 2, b, c / 2)
-	else
-		return easing.Back.In((t * 2) - 1, b + c / 2, c / 2)
 	end
+	return easing.Back.In((t * 2) - 1, b + c / 2, c / 2)
 end
 
 easing.Bounce.Out = function(t, b, c)
 	if t < 1 / 2.75 then
 		return c * (7.5625 * t * t) + b
 	elseif t < 2 / 2.75 then
-		t = t - (1.5 / 2.75)
+		t -= 1.5 / 2.75
 		return c * (7.5625 * t * t + 0.75) + b
 	elseif t < 2.5 / 2.75 then
-		t = t - (2.25 / 2.75)
+		t -= 2.25 / 2.75
 		return c * (7.5625 * t * t + 0.9375) + b
-	else
-		t = t - (2.625 / 2.75)
-		return c * (7.5625 * t * t + 0.984375) + b
 	end
+	t -= 2.625 / 2.75
+	return c * (7.5625 * t * t + 0.984375) + b
 end
 
 easing.Bounce.In = function(t, b, c)
@@ -357,19 +331,17 @@ easing.Bounce.In = function(t, b, c)
 end
 
 easing.Bounce.InOut = function(t, b, c)
-	if t < 1 / 2 then
+	if t < 0.5 then
 		return easing.Bounce.In(t * 2, 0, c) * 0.5 + b
-	else
-		return easing.Bounce.Out(t * 2 - 1, 0, c) * 0.5 + c * 0.5 + b
 	end
+	return easing.Bounce.Out(t * 2 - 1, 0, c) * 0.5 + c * 0.5 + b
 end
 
 easing.Bounce.OutIn = function(t, b, c)
-	if t < 1 / 2 then
+	if t < 0.5 then
 		return easing.Bounce.Out(t * 2, b, c / 2)
-	else
-		return easing.Bounce.In((t * 2) - 1, b + c / 2, c / 2)
 	end
+	return easing.Bounce.In((t * 2) - 1, b + c / 2, c / 2)
 end
 
 return easing

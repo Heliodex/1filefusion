@@ -116,8 +116,10 @@ function class:update(): boolean
 			end
 
 			local use = makeUseCallback(keyData.dependencySet)
+			-- local processOK, newOutKey, newMetaValue =
+			-- 	xpcall(self._processor, parseError, use, newInKey)
 			local processOK, newOutKey, newMetaValue =
-				xpcall(self._processor, parseError, use, newInKey)
+				pcall(self._processor, use, newInKey)
 
 			if processOK then
 				if
@@ -152,14 +154,16 @@ function class:update(): boolean
 					-- clean up the old calculated value
 					local oldMetaValue = meta[oldOutKey]
 
-					local destructOK, err = xpcall(
+					local destructOK, err = pcall(
 						self._destructor or cleanup,
-						parseError,
 						oldOutKey,
 						oldMetaValue
 					)
 					if not destructOK then
-						logErrorNonFatal("forKeysDestructorError", err)
+						logErrorNonFatal(
+							"forKeysDestructorError",
+							parseError(err)
+						)
 					end
 
 					keyOIMap[oldOutKey] = nil
@@ -181,7 +185,7 @@ function class:update(): boolean
 				keyData.oldDependencySet, keyData.dependencySet =
 					keyData.dependencySet, keyData.oldDependencySet
 
-				logErrorNonFatal("forKeysProcessorError", newOutKey)
+				logErrorNonFatal("forKeysProcessorError", parseError(newOutKey))
 			end
 		end
 
@@ -200,14 +204,10 @@ function class:update(): boolean
 			-- clean up the old calculated value
 			local oldMetaValue = meta[outputKey]
 
-			local destructOK, err = xpcall(
-				self._destructor or cleanup,
-				parseError,
-				outputKey,
-				oldMetaValue
-			)
+			local destructOK, err =
+				pcall(self._destructor or cleanup, outputKey, oldMetaValue)
 			if not destructOK then
-				logErrorNonFatal("forKeysDestructorError", err)
+				logErrorNonFatal("forKeysDestructorError", parseError(err))
 			end
 
 			-- remove data
