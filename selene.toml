@@ -1,4 +1,4 @@
-std = "roblox+testez"
+std = "mercury+testez"
 
 [rules]
 # Too aggressive in tests
