@@ -5636,6 +5636,8 @@ globals:
   Spawn:
     args:
       - type: function
+      - required: false
+        type: "..."
   LoadLibrary:
     args:
       - type: string

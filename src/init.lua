@@ -19,9 +19,6 @@ local Fusion = restrictRead("Fusion", {
 	Children = require "./Instances/Children",
 	OnEvent = require "./Instances/OnEvent",
 	OnChange = require "./Instances/OnChange",
-	Attribute = require "./Instances/Attribute",
-	AttributeChange = require "./Instances/AttributeChange",
-	AttributeOut = require "./Instances/AttributeOut",
 
 	Value = require "./State/Value",
 	Computed = require "./State/Computed",
@@ -69,9 +66,6 @@ type Fusion = {
 	Out: (propertyName: string) -> PubTypes.SpecialKey,
 	OnEvent: (eventName: string) -> PubTypes.SpecialKey,
 	OnChange: (propertyName: string) -> PubTypes.SpecialKey,
-	Attribute: (attributeName: string) -> PubTypes.SpecialKey,
-	AttributeChange: (attributeName: string) -> PubTypes.SpecialKey,
-	AttributeOut: (attributeName: string) -> PubTypes.SpecialKey,
 
 	Value: <T>(initialValue: T) -> Value<T>,
 	Computed: <T>(callback: (Use) -> T, destructor: (T) -> ()?) -> Computed<T>,

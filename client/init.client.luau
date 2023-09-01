@@ -1,37 +1,26 @@
 local ReplicatedStorage = game:GetService "ReplicatedStorage"
-local Players = game:GetService "Players"
 local Fusion = require(ReplicatedStorage.Fusion)
 
+local New = Fusion.New
+local Children = Fusion.Children
 local Value = Fusion.Value
-local peek = Fusion.peek
-local ForPairs = Fusion.ForPairs
 
-local function tprint(tbl)
-	for i, v in pairs(peek(tbl)) do
-		print(i, "=", v)
-	end
-	print "---"
-end
+local child1 = New "Folder" {
+	Name = "Child one",
+}
+local child2 = New "Folder" {
+	Name = "Child two",
+}
 
-local itemColours = Value { shoes = "red", socks = "blue" }
-local owner = Value "Taskmanager"
+local childState = Value(child1)
 
-local manipulated = ForPairs(itemColours, function(use, thing, colour)
-	local newKey = colour
-	local newValue = use(owner) .. "'s " .. thing
-	return newKey, newValue
-end)
+local parent = New "Folder" {
+	[Children] = childState,
+}
 
-tprint(manipulated) --> {red = "Taskmanager's shoes", blue = "Taskmanager's socks"}
+print(unpack(parent:GetChildren())) -- { Child one }
 
-owner:set "Heliodex"
-tprint(manipulated) --> {red = "Heliodex's shoes", blue = "Heliodex's socks"}
+childState:set(child2)
+wait(1) -- wait for deferred updates to run
 
-itemColours:set { shoes = "green", socks = "yellow" }
-tprint(manipulated) --> {green = "Heliodex's shoes", yellow = "Heliodex's socks"}
-
-owner:set "Shedletsky"
-itemColours:set { shirt = "shirts", pants = "pants" }
-tprint(manipulated) --> {shirts = "Shedletsky's shirt", pants = "Shedletsky's pants"}
-
-itemColours:set { key = "value", key2 = "value2", key3 = "value" } --> Error, as two keys are the same
+print(unpack(parent:GetChildren())) -- { Child two }

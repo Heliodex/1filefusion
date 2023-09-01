@@ -16,9 +16,8 @@ local function makeUseCallback(dependencySet: Set<PubTypes.Dependency>)
 		if isState(target) then
 			dependencySet[target] = true
 			return (target :: Types.StateObject<T>):_peek()
-		else
-			return target
 		end
+		return target
 	end
 	return use
 end

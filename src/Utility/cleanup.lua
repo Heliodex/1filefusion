@@ -22,7 +22,7 @@ local function cleanupOne(task: any)
 
 	-- case 2: RBXScriptConnection
 	elseif taskType == "RBXScriptConnection" then
-		task:Disconnect()
+		task:disconnect()
 
 	-- case 3: callback
 	elseif taskType == "function" then
