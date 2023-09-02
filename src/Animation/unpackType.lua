@@ -17,7 +17,6 @@ local Oklab = require "../Colour/Oklab"
 
 local function unpackType(value: any, typeString: string): { number }
 	if typeString == "number" then
-		local value = value :: number
 		return { value }
 	elseif typeString == "CFrame" then
 		-- FUTURE: is there a better way of doing this? doing distance

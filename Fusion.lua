@@ -1384,8 +1384,6 @@ local mSuccess, mResult = pcall(function()
 		__DARKLUA_BUNDLE_MODULES.t = Observer
 	end
 	do
-		local typeof = __DARKLUA_BUNDLE_MODULES.g
-
 		local function isState(target)
 			return type(target) == "table" and type(target._peek) == "function"
 		end
@@ -2957,8 +2955,6 @@ local mSuccess, mResult = pcall(function()
 
 		local function unpackType(value, typeString)
 			if typeString == "number" then
-				local value = value
-
 				return { value }
 			elseif typeString == "CFrame" then
 				local axis, angle = value:ToAxisAngle()
