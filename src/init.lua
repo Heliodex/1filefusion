@@ -36,6 +36,10 @@ local Fusion = restrictRead("Fusion", {
 
 	typeof = require "./Polyfill/typeof",
 	TweenInfo = require "./Polyfill/TweenInfo",
+
+	Help = function()
+		return "See https://elttob.uk/Fusion/0.3/ for more information."
+	end,
 }) :: Fusion
 
 export type StateObject<T> = PubTypes.StateObject<T>

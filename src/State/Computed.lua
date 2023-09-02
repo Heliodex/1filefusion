@@ -62,7 +62,6 @@ function class:update(): boolean
 		if self._destructor ~= nil then
 			self._destructor(oldValue)
 		end
-		print("computed update", newValue)
 		self._value = newValue
 
 		-- add this object to the dependencies' dependent sets

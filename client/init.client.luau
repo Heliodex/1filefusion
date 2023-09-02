@@ -1,7 +1,6 @@
-local ReplicatedStorage = game:GetService "ReplicatedStorage"
 local Players = game:GetService "Players"
 local playerGui = Players.LocalPlayer:WaitForChild "PlayerGui"
-local Fusion = require(ReplicatedStorage.Fusion)
+local Fusion = LoadLibrary "Fusion"
 
 local New = Fusion.New
 local Children = Fusion.Children
@@ -10,8 +9,6 @@ local Computed = Fusion.Computed
 local Spring = Fusion.Spring
 local OnEvent = Fusion.OnEvent
 local peek = Fusion.peek
-local TweenInfo = Fusion.TweenInfo
-local Observer = Fusion.Observer
 
 local function VectorFromCentre(distance)
 	-- Returns a random direction vector with a length of distance

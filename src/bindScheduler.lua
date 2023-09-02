@@ -16,8 +16,8 @@ local function bindScheduler()
 	-- 		SpringScheduler.updateAllSprings
 	-- 	)
 	-- else
-	RunService.Heartbeat:connect(TweenScheduler.updateAllTweens)
-	RunService.Heartbeat:connect(SpringScheduler.updateAllSprings)
+	RunService.RenderStepped:connect(TweenScheduler.updateAllTweens)
+	RunService.RenderStepped:connect(SpringScheduler.updateAllSprings)
 	-- end
 end
 

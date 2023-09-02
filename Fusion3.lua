@@ -1,12 +1,6 @@
 local __DARKLUA_BUNDLE_MODULES = {}
 
 do
-	__DARKLUA_BUNDLE_MODULES.a = nil
-end
-do
-	__DARKLUA_BUNDLE_MODULES.b = nil
-end
-do
 	__DARKLUA_BUNDLE_MODULES.c = {
 		cannotAssignProperty = "The class type '%s' has no assignable property '%s'.",
 		cannotConnectChange = "The %s class doesn't have a property called '%s'.",
@@ -1150,8 +1144,8 @@ do
 	local SpringScheduler = __DARKLUA_BUNDLE_MODULES.o
 
 	local function bindScheduler()
-		RunService.Heartbeat:connect(TweenScheduler.updateAllTweens)
-		RunService.Heartbeat:connect(SpringScheduler.updateAllSprings)
+		RunService.RenderStepped:connect(TweenScheduler.updateAllTweens)
+		RunService.RenderStepped:connect(SpringScheduler.updateAllSprings)
 	end
 
 	__DARKLUA_BUNDLE_MODULES.p = bindScheduler
@@ -2022,8 +2016,6 @@ do
 			if self._destructor ~= nil then
 				self._destructor(oldValue)
 			end
-
-			print("computed update", newValue)
 
 			self._value = newValue
 
@@ -3314,6 +3306,9 @@ local Fusion = restrictRead("Fusion", {
 	peek = __DARKLUA_BUNDLE_MODULES.v,
 	typeof = __DARKLUA_BUNDLE_MODULES.g,
 	TweenInfo = __DARKLUA_BUNDLE_MODULES.U,
+	Help = function()
+		return "See https://elttob.uk/Fusion/0.3/ for more information."
+	end,
 })
 
 bindScheduler()

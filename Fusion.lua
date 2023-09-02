@@ -1179,8 +1179,8 @@ local mSuccess, mResult = pcall(function()
 		local SpringScheduler = __DARKLUA_BUNDLE_MODULES.o
 
 		local function bindScheduler()
-			RunService.Heartbeat:connect(TweenScheduler.updateAllTweens)
-			RunService.Heartbeat:connect(SpringScheduler.updateAllSprings)
+			RunService.RenderStepped:connect(TweenScheduler.updateAllTweens)
+			RunService.RenderStepped:connect(SpringScheduler.updateAllSprings)
 		end
 
 		__DARKLUA_BUNDLE_MODULES.p = bindScheduler
@@ -2076,8 +2076,6 @@ local mSuccess, mResult = pcall(function()
 				if self._destructor ~= nil then
 					self._destructor(oldValue)
 				end
-
-				print("computed update", newValue)
 
 				self._value = newValue
 
@@ -3423,11 +3421,15 @@ local mSuccess, mResult = pcall(function()
 		peek = __DARKLUA_BUNDLE_MODULES.v,
 		typeof = __DARKLUA_BUNDLE_MODULES.g,
 		TweenInfo = __DARKLUA_BUNDLE_MODULES.U,
+		Help = function()
+			return "See https://elttob.uk/Fusion/0.3/ for more information."
+		end,
 	})
 
 	bindScheduler()
 
 	return Fusion
+
 end)
 
 print("Success", mSuccess)
