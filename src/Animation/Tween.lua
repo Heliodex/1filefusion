@@ -6,6 +6,7 @@
 ]]
 
 local PubTypes = require "../PubTypes"
+local External = require "../External"
 local Types = require "../Types"
 local TweenScheduler = require "../Animation/TweenScheduler"
 local logError = require "../Logging/logError"
@@ -43,7 +44,7 @@ function class:update(): boolean
 	self._prevValue = self._currentValue
 	self._nextValue = goalValue
 
-	self._currentTweenStartTime = time()
+	self._currentTweenStartTime = External.lastUpdateStep()
 	self._currentTweenInfo = tweenInfo
 
 	local tweenDuration = tweenInfo.DelayTime + tweenInfo.Time

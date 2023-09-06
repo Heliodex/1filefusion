@@ -14,7 +14,7 @@ Cleanup.stage = "observer"
 
 function Cleanup:apply(
 	userTask: any,
-	applyTo: Instance,
+	_,
 	cleanupTasks: { PubTypes.Task }
 )
 	table.insert(cleanupTasks, userTask)

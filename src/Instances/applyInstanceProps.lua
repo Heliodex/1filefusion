@@ -14,6 +14,7 @@
 ]]
 
 local PubTypes = require "../PubTypes"
+local External = require "../External"
 local cleanup = require "../Utility/cleanup"
 local xtypeof = require "../Utility/xtypeof"
 local logError = require "../Logging/logError"
@@ -77,13 +78,10 @@ local function bindProperty(
 		local function updateLater()
 			if not willUpdate then
 				willUpdate = true
-				-- task.defer(function()
-				-- Delay(0, function()
-				-- fuckj up
-				coroutine.resume(coroutine.create(function()
+				External.doTaskDeferred(function()
 					willUpdate = false
 					setProperty(instance, property, peek(value))
-				end))
+				end)
 			end
 		end
 

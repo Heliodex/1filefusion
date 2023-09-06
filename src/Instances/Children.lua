@@ -6,6 +6,7 @@
 ]]
 
 local PubTypes = require "../PubTypes"
+local External = require "../External"
 local logWarn = require "../Logging/logWarn"
 local Observer = require "../State/Observer"
 local peek = require "../State/peek"
@@ -130,7 +131,7 @@ function Children:apply(
 		end
 
 		-- disconnect observers which weren't reused
-		for oldState, disconnect in pairs(oldDisconnects) do
+		for _, disconnect in pairs(oldDisconnects) do
 			disconnect()
 		end
 	end
@@ -138,10 +139,7 @@ function Children:apply(
 	queueUpdate = function()
 		if not updateQueued then
 			updateQueued = true
-			-- task.defer(updateChildren)
-			-- Delay(0, updateChildren)
-			-- fuckj up
-			coroutine.resume(coroutine.create(updateChildren))
+			External.doTaskDeferred(updateChildren)
 		end
 	end
 
@@ -156,4 +154,4 @@ function Children:apply(
 	updateChildren()
 end
 
-return Children :: PubTypes.SpecialKey
+return Children

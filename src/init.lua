@@ -5,8 +5,15 @@
 ]]
 
 local PubTypes = require "./PubTypes"
+local External = require "./External"
 local restrictRead = require "./Utility/restrictRead"
-local bindScheduler = require "./bindScheduler"
+
+-- Down the line, this will be conditional based on whether Fusion is being
+-- compiled for Mercury.
+do
+	local MercuryExternal = require "./MercuryExternal"
+	External.setExternalScheduler(MercuryExternal)
+end
 
 local Fusion = restrictRead("Fusion", {
 	version = { major = 0, minor = 3, isRelease = false },
@@ -101,7 +108,5 @@ type Fusion = {
 	doNothing: (...any) -> (),
 	peek: Use,
 }
-
-bindScheduler()
 
 return Fusion

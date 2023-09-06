@@ -37,9 +37,9 @@ local function logErrorNonFatal(messageID: string, errObj: Types.Error?, ...)
 		)
 	end
 
-	Spawn(function(...)
+	coroutine.wrap(function()
 		error(errorString:gsub("\n", "\n    "), 0)
-	end, ...)
+	end)()
 end
 
 return logErrorNonFatal

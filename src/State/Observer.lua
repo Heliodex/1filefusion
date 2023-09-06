@@ -9,6 +9,7 @@
 
 local PubTypes = require "../PubTypes"
 local Types = require "../Types"
+local External = require "../External"
 
 type Set<T> = { [T]: any }
 
@@ -23,7 +24,7 @@ local strongRefs: Set<Types.Observer> = {}
 ]]
 function class:update(): boolean
 	for _, callback in pairs(self._changeListeners) do
-		Spawn(callback)
+		External.doTaskImmediate(callback)
 	end
 	return false
 end
@@ -66,7 +67,7 @@ end
 	immediately.
 ]]
 function class:onBind(callback: () -> ()): () -> ()
-	Spawn(callback)
+	External.doTaskImmediate(callback)
 	return self:onChange(callback)
 end
 

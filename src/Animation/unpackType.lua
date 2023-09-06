@@ -12,7 +12,6 @@
 	type checkable.
 ]]
 
-local PubTypes = require "../PubTypes"
 local Oklab = require "../Colour/Oklab"
 
 local function unpackType(value: any, typeString: string): { number }

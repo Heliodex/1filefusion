@@ -9,7 +9,6 @@
 	from the Luau typechecker - ideally these wouldn't be required
 ]]
 
-local PubTypes = require "../PubTypes"
 local Oklab = require "../Colour/Oklab"
 local typeof = require "../Polyfill/typeof"
 

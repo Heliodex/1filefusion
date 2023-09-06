@@ -5,6 +5,7 @@
 ]]
 
 local Types = require "../Types"
+local External = require "../External"
 local packType = require "../Animation/packType"
 local springCoefficients = require "../Animation/springCoefficients"
 local updateAll = require "../State/updateAll"
@@ -16,7 +17,7 @@ local SpringScheduler = {}
 
 local EPSILON = 0.0001
 local activeSprings: Set<Spring> = {}
-local lastUpdateTime = time()
+local lastUpdateTime = External.lastUpdateStep()
 
 function SpringScheduler.add(spring: Spring)
 	-- we don't necessarily want to use the most accurate time - here we snap to
@@ -38,9 +39,9 @@ function SpringScheduler.remove(spring: Spring)
 	activeSprings[spring] = nil
 end
 
-function SpringScheduler.updateAllSprings()
+local function updateAllSprings(now: number)
 	local springsToSleep: Set<Spring> = {}
-	lastUpdateTime = time()
+	lastUpdateTime = now
 
 	for spring in pairs(activeSprings) do
 		local posPos, posVel, velPos, velVel = springCoefficients(
@@ -91,5 +92,7 @@ function SpringScheduler.updateAllSprings()
 			packType(spring._springGoals, spring._currentType)
 	end
 end
+
+External.bindToUpdateStep(updateAllSprings)
 
 return SpringScheduler
