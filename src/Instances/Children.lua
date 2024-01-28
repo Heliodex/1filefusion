@@ -154,4 +154,4 @@ function Children:apply(
 	updateChildren()
 end
 
-return Children
+return Children :: PubTypes.SpecialKey

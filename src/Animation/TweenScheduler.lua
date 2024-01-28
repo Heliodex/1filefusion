@@ -38,9 +38,7 @@ end
 --[[
 	Updates all Tween objects.
 ]]
-local function updateAllTweens(
-	now: number
-)
+local function updateAllTweens(now: number)
 	-- FIXME: Typed Luau doesn't understand this loop yet
 	for tween: Tween in pairs(allTweens :: any) do
 		local currentTime = now - tween._currentTweenStartTime

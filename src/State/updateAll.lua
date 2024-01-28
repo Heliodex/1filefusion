@@ -30,13 +30,11 @@ local function updateAll(root: PubTypes.Dependency)
 	while queuePos <= queueSize do
 		local next = queue[queuePos]
 		local counter = counters[next]
-		counters[next] = (function()
-			if counter == nil then
-				return 1
-			else
-				return counter + 1
-			end
-		end)()
+		if counter == nil then
+			counters[next] = 1
+		else
+			counters[next] = counter + 1
+		end
 		if next.dependentSet ~= nil then
 			for object in pairs(next.dependentSet) do
 				queueSize += 1

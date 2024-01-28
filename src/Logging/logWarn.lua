@@ -16,12 +16,7 @@ local function logWarn(messageID, ...)
 		formatString = messages[messageID]
 	end
 
-	warn(
-		string.format(
-			"[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")",
-			...
-		)
-	)
+	warn(string.format(`[Fusion] {formatString}\n(ID: {messageID})`, ...))
 end
 
 return logWarn

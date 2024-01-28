@@ -37,6 +37,7 @@ local Fusion = restrictRead("Fusion", {
 	Tween = require "./Animation/Tween",
 	Spring = require "./Animation/Spring",
 
+	Contextual = require "./Utility/Contextual",
 	cleanup = require "./Utility/cleanup",
 	doNothing = require "./Utility/doNothing",
 	peek = require "./State/peek",
@@ -61,16 +62,17 @@ export type Observer = PubTypes.Observer
 export type Tween<T> = PubTypes.Tween<T>
 export type Spring<T> = PubTypes.Spring<T>
 export type Use = PubTypes.Use
+export type Contextual<T> = PubTypes.Contextual<T>
 
 type Fusion = {
 	version: PubTypes.Version,
 
 	New: (
 		className: string
-	) -> (propertyTable: PubTypes.PropertyTable) -> Instance,
+	) -> ((propertyTable: PubTypes.PropertyTable) -> Instance),
 	Hydrate: (
 		target: Instance
-	) -> (propertyTable: PubTypes.PropertyTable) -> Instance,
+	) -> ((propertyTable: PubTypes.PropertyTable) -> Instance),
 	Ref: PubTypes.SpecialKey,
 	Cleanup: PubTypes.SpecialKey,
 	Children: PubTypes.SpecialKey,
@@ -104,6 +106,7 @@ type Fusion = {
 		damping: CanBeState<number>?
 	) -> Spring<T>,
 
+	Contextual: <T>(defaultValue: T) -> Contextual<T>,
 	cleanup: (...any) -> (),
 	doNothing: (...any) -> (),
 	peek: Use,

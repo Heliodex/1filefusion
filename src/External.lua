@@ -60,6 +60,7 @@ end
 --[[
     Registers a callback to the update step of the external scheduler.
     Returns a function that can be used to disconnect later.
+
     Callbacks are given the current number of seconds since an arbitrary epoch.
     
     TODO: This epoch may change between schedulers. We could investigate ways

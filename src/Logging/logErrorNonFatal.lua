@@ -19,10 +19,8 @@ local function logErrorNonFatal(messageID: string, errObj: Types.Error?, ...)
 
 	local errorString
 	if errObj == nil then
-		errorString = string.format(
-			"[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")",
-			...
-		)
+		errorString =
+			string.format(`[Fusion] {formatString}\n(ID: {messageID})`, ...)
 	else
 		formatString =
 			formatString:gsub("ERROR_MESSAGE", tostring(errObj.message))

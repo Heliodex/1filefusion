@@ -49,6 +49,18 @@ export type Version = {
 	minor: number,
 	isRelease: boolean,
 }
+
+-- An object which stores a value scoped in time.
+export type Contextual<T> = {
+	type: "Contextual",
+	now: (Contextual<T>) -> T,
+	is: (Contextual<T>, T) -> ContextualIsMethods,
+}
+
+type ContextualIsMethods = {
+	during: <T, A...>(ContextualIsMethods, (A...) -> T, A...) -> T,
+}
+
 --[[
 	Generic reactive graph types
 ]]
@@ -68,6 +80,7 @@ export type Dependent = {
 export type StateObject<T> = Dependency & {
 	type: "State",
 	kind: string,
+	_typeIdentifier: T,
 }
 
 -- Either a constant value of type T, or a state object containing type T.
@@ -120,7 +133,7 @@ export type Spring<T> = StateObject<T> & Dependent & {
 -- An object which can listen for updates on another state object.
 export type Observer = Dependent & {
 	kind: "Observer",
-	onChange: (Observer, callback: () -> ()) -> () -> (),
+	onChange: (Observer, callback: () -> ()) -> (() -> ()),
 }
 
 --[[
